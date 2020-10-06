@@ -180,7 +180,7 @@ public class HomePage extends JFrame {
         setLayout(null);
 
         setSize(750, 750);
-        setLocation(500, 200);
+        setLocation(400, 50);
         setVisible(true);
     }
 

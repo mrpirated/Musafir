@@ -8,10 +8,12 @@ import java.util.*;
 
 public class SignUp extends JFrame{
     
-    JLabel head,name,date,phone,dob,month,year,gender,email;
-    JTextField namet,emailt;
+    JLabel head,name,date,phone,dob,month,year,gender,email,pass,cnfpass,cnfpass2;
+    JTextField namet,emailt,phonet,passt,cnfpasst;
     JRadioButton m,o,fl;
     JComboBox dd,mm,yy;
+    JButton done;
+
     SignUp(){
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -114,7 +116,46 @@ public class SignUp extends JFrame{
         emailt.setBounds(200, 225, 400, 25);
         add(emailt);
 
+        phone=new JLabel("PHONE");
+        phone.setFont(new Font("Times new Roman",Font.BOLD,20));
+        phone.setBounds(30, 275, 100, 32);
+        add(phone);
 
+        phonet=new JTextField();
+        phonet.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
+        phonet.setBounds(200, 275, 200, 25);
+        add(phonet);
+
+        pass=new JLabel("PASSWORD");
+        pass.setFont(new Font("Times new Roman",Font.BOLD,20));
+        pass.setBounds(30, 325, 150, 32);
+        add(pass);
+
+        passt=new JTextField();
+        passt.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
+        passt.setBounds(200, 325, 200, 25);
+        add(passt);
+
+        cnfpass=new JLabel("CONFIRM");
+        cnfpass.setFont(new Font("Times new Roman",Font.BOLD,20));
+        cnfpass.setBounds(30, 375, 100, 32);
+        add(cnfpass);
+        cnfpass2=new JLabel("PASSWORD");
+        cnfpass2.setFont(new Font("Times new Roman",Font.BOLD,20));
+        cnfpass2.setBounds(30, 400, 150, 32);
+        add(cnfpass2);
+
+        cnfpasst=new JTextField();
+        cnfpasst.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
+        cnfpasst.setBounds(200, 375, 200, 25);
+        add(cnfpasst);
+
+        done=new JButton("DONE");
+        done.setFont(new Font("Times new Roman",Font.BOLD,20));
+        done.setBackground(Color.BLACK);
+        done.setForeground(Color.WHITE);
+        done.setBounds(300,600,100,32);
+        add(done);
 
 
 
