@@ -25,7 +25,7 @@ public class HomePage extends JFrame {
         int w = z / y;
         String pad = "";
         // for (int i=0; i!=w; i++) pad +=" ";
-        pad = String.format("%" + w * 3.2 + "s", pad);
+        pad = String.format("%" + w * 4 + "s", pad);
         setTitle(pad + "HOME PAGE");
 
         p1 = new JPanel();
@@ -180,7 +180,7 @@ public class HomePage extends JFrame {
         setLayout(null);
 
         setSize(750, 750);
-        setLocation(500, 200);
+        setLocation(400, 50);
         setVisible(true);
     }
 
