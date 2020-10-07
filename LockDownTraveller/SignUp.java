@@ -31,123 +31,134 @@ public class SignUp extends JFrame{
 
         head=new JLabel("SIGNUP");
         head.setFont(new Font("Times new Roman",Font.BOLD,38));
-        head.setBounds(265, 16, 460, 32);
+        head.setBounds(265, 66, 460, 32);
         add(head);
+
+        ImageIcon i1 =new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/mainicon.png"));
+        Image i2= i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        ImageIcon i3 = new ImageIcon(i2);
+        JLabel l1=new JLabel(i3);
+        l1.setBounds(25,25,100,100);
+        add(l1);
+        JLabel l2=new JLabel(i3);
+        l2.setBounds(560,25,100,100);
+        add(l2);
+
         
         name=new JLabel("NAME");
         name.setFont(new Font("Times new Roman",Font.BOLD,20));
-        name.setBounds(30, 75, 100, 32);
+        name.setBounds(30, 150, 100, 32);
         add(name);
 
         namet=new JTextField();
         namet.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
-        namet.setBounds(200, 75, 400, 25);
+        namet.setBounds(200, 150, 400, 25);
         add(namet);
 
 
         dob=new JLabel("DATE OF BIRTH");
         dob.setFont(new Font("Times new Roman",Font.BOLD,20));
-        dob.setBounds(30, 125, 300, 32);
+        dob.setBounds(30, 200, 300, 32);
         add(dob);
 
         date=new JLabel("Date");
         date.setFont(new Font("Times new Roman",Font.BOLD,18));
-        date.setBounds(200, 122, 75, 32);
+        date.setBounds(200, 197, 75, 32);
         add(date);
 
         String date[]={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31",};
         dd=new JComboBox(date);
         dd.setBackground(Color.WHITE);
-        dd.setBounds(245,125,40,25);
+        dd.setBounds(245,200,40,25);
         add(dd);
 
         month=new JLabel("Month");
         month.setFont(new Font("Times new Roman",Font.BOLD,18));
-        month.setBounds(300, 122, 100, 32);
+        month.setBounds(300, 197, 100, 32);
         add(month);
 
         String month[]={"January","February","March","April","May","June","July","August","September","October","November","December"};
         mm=new JComboBox(month);
         mm.setBackground(Color.WHITE);
-        mm.setBounds(365,125,120,25);
+        mm.setBounds(365,200,120,25);
         add(mm);
 
         year=new JLabel("Year");
         year.setFont(new Font("Times new Roman",Font.BOLD,18));
-        year.setBounds(500, 122, 100, 32);
+        year.setBounds(500, 197, 100, 32);
         add(year);
 
         String year[]={"1974","1975","1976","1977","1978","1979","1980","1981","1982","1983","1984","1985","1986","1987","1988","1989","1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000","2001","2002","2003","2004","2005","2007","2008","2009","2010"};
         yy=new JComboBox(year);
         yy.setBackground(Color.WHITE);
-        yy.setBounds(550,125,60,25);
+        yy.setBounds(550,200,60,25);
         add(yy);
 
         gender=new JLabel("GENDER");
         gender.setFont(new Font("Times new Roman",Font.BOLD,20));
-        gender.setBounds(30, 175, 100, 32);
+        gender.setBounds(30, 250, 100, 32);
         add(gender);
 
         m=new JRadioButton("Male");
         m.setFont(new Font("Times new Roman",Font.BOLD,18));
         m.setBackground(Color.WHITE);
-        m.setBounds(200, 175, 75, 32);
+        m.setBounds(200, 250, 75, 32);
         add(m);
 
         fl=new JRadioButton("Female");
         fl.setFont(new Font("Times new Roman",Font.BOLD,18));
         fl.setBackground(Color.WHITE);
-        fl.setBounds(300, 175, 100, 32);
+        fl.setBounds(300, 250, 100, 32);
         add(fl);
 
         o=new JRadioButton("Other");
         o.setFont(new Font("Times new Roman",Font.BOLD,18));
         o.setBackground(Color.WHITE);
-        o.setBounds(420, 175, 75, 32);
+        o.setBounds(420, 250, 75, 32);
         add(o);
 
         email=new JLabel("EMAIL");
         email.setFont(new Font("Times new Roman",Font.BOLD,20));
-        email.setBounds(30, 225, 100, 32);
+        email.setBounds(30, 300, 100, 32);
         add(email);
 
         emailt=new JTextField();
         emailt.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
-        emailt.setBounds(200, 225, 400, 25);
+        emailt.setBounds(200, 300, 400, 25);
         add(emailt);
 
         phone=new JLabel("PHONE");
         phone.setFont(new Font("Times new Roman",Font.BOLD,20));
-        phone.setBounds(30, 275, 100, 32);
+        phone.setBounds(30, 350, 100, 32);
         add(phone);
 
         phonet=new JTextField();
         phonet.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
-        phonet.setBounds(200, 275, 200, 25);
+        phonet.setBounds(200, 350, 200, 25);
         add(phonet);
 
         pass=new JLabel("PASSWORD");
         pass.setFont(new Font("Times new Roman",Font.BOLD,20));
-        pass.setBounds(30, 325, 150, 32);
+        pass.setBounds(30, 400, 150, 32);
         add(pass);
 
         passt=new JTextField();
         passt.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
-        passt.setBounds(200, 325, 200, 25);
+        passt.setBounds(200, 400, 200, 25);
         add(passt);
 
         cnfpass=new JLabel("CONFIRM");
         cnfpass.setFont(new Font("Times new Roman",Font.BOLD,20));
-        cnfpass.setBounds(30, 375, 100, 32);
+        cnfpass.setBounds(30, 450, 100, 32);
         add(cnfpass);
         cnfpass2=new JLabel("PASSWORD");
         cnfpass2.setFont(new Font("Times new Roman",Font.BOLD,20));
-        cnfpass2.setBounds(30, 400, 150, 32);
+        cnfpass2.setBounds(30, 475, 150, 32);
         add(cnfpass2);
 
         cnfpasst=new JTextField();
         cnfpasst.setFont(new Font("Times new Roman",Font.CENTER_BASELINE,14));
-        cnfpasst.setBounds(200, 375, 200, 25);
+        cnfpasst.setBounds(200, 450, 200, 25);
         add(cnfpasst);
 
         done=new JButton("DONE");
