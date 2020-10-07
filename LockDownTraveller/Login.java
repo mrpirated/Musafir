@@ -22,17 +22,17 @@ public class Login extends JFrame {
         int w = z / y;
         String pad = "";
         // for (int i=0; i!=w; i++) pad +=" ";
-        pad = String.format("%" + w + "s", pad);
+        pad = String.format("%" + w*1.3 + "s", pad);
         setTitle(pad + "LOGIN DIALOG BOX");
 
         l1 = new JLabel("LOGIN");
-        l1.setFont(new Font("Osward", Font.BOLD, 38));
+        l1.setFont(new Font("Times new roman", Font.BOLD, 38));
 
         l2 = new JLabel("USER ID:");
-        l2.setFont(new Font("Raleway", Font.BOLD, 28));
+        l2.setFont(new Font("Times new roman", Font.BOLD, 28));
 
         l3 = new JLabel("PASSWORD:");
-        l3.setFont(new Font("Raleway", Font.BOLD, 28));
+        l3.setFont(new Font("Times new roman", Font.BOLD, 28));
 
         tf1 = new JTextField(15);
         pf2 = new JPasswordField(15);
@@ -51,40 +51,40 @@ public class Login extends JFrame {
 
         setLayout(null);
 
-        l1.setBounds(175, 50, 450, 200);
+        l1.setBounds(175, 10, 200, 32);
         add(l1);
 
-        l2.setBounds(125, 150, 375, 200);
+        l2.setBounds(25, 75, 150, 32);
         add(l2);
 
-        tf1.setBounds(300, 235, 230, 30);
+        tf1.setBounds(200, 75, 230, 30);
         add(tf1);
 
-        l3.setBounds(125, 225, 375, 200);
+        l3.setBounds(25, 150, 200, 32);
         add(l3);
 
-        tf1.setFont(new Font("Arial", Font.BOLD, 14));
+        tf1.setFont(new Font("Times new roman", Font.BOLD, 14));
 
-        pf2.setFont(new Font("Arial", Font.BOLD, 14));
-        pf2.setBounds(300, 310, 230, 30);
+        pf2.setFont(new Font("Times new roman", Font.BOLD, 14));
+        pf2.setBounds(200, 150, 230, 30);
         add(pf2);
 
-        b1.setFont(new Font("Arial", Font.BOLD, 14));
+        b1.setFont(new Font("Times new roman", Font.BOLD, 14));
         b1.setBounds(300, 400, 100, 30);
         add(b1);
 
-        b2.setFont(new Font("Arial", Font.BOLD, 14));
+        b2.setFont(new Font("Times new roman", Font.BOLD, 14));
         b2.setBounds(430, 400, 100, 30);
         add(b2);
 
-        b3.setFont(new Font("Arial", Font.BOLD, 14));
+        b3.setFont(new Font("Times new roman", Font.BOLD, 14));
         b3.setBounds(300, 450, 230, 30);
         add(b3);
 
         getContentPane().setBackground(Color.WHITE);
 
-        setSize(600, 600);
-        setLocation(100, 100);
+        setSize(500, 300);
+        setLocation(500, 250);
         setVisible(true);
 
     }
