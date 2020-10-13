@@ -2,8 +2,24 @@ package LockDownTraveller;
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
 
-public class Login extends JFrame {
+class LoginInfo{
+    private String username;
+    private char[] password;
+    public LoginInfo(String username,char[] password){
+        this.password=password;
+        this.username=username;
+    }
+    public char[] getPassword() {
+        return password;
+    }
+    public String getUsername() {
+        return username;
+    }
+}
+public class Login extends JFrame implements ActionListener{
     JLabel l1, l2, l3;
     JTextField tf1;
     JPasswordField pf2;
@@ -11,7 +27,6 @@ public class Login extends JFrame {
 
     Login() {
 
-        // Move the text to the center
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -21,7 +36,6 @@ public class Login extends JFrame {
         int z = getWidth() - x;
         int w = z / y;
         String pad = "";
-        // for (int i=0; i!=w; i++) pad +=" ";
         pad = String.format("%" + w*1.4 + "s", pad);
         setTitle(pad + "LOGIN DIALOG BOX");
 
@@ -81,6 +95,10 @@ public class Login extends JFrame {
         b3.setBounds(125, 300, 230, 30);
         add(b3);
 
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+
         getContentPane().setBackground(Color.WHITE);
 
         setSize(500, 400);
@@ -88,8 +106,38 @@ public class Login extends JFrame {
         setVisible(true);
 
     }
+    public void actionPerformed(ActionEvent ae){
+        try{
+            
+            if(ae.getSource()==b1)
+            {
+                String username = tf1.getText();
+                char[] password =pf2.getPassword();
+                LoginInfo user =new LoginInfo(username,password);
+                Connect.os.writeObject(user);
+                boolean b=Connect.din.readBoolean();
+                if(b)
+                {
+                    new HomePage().setVisible(true);
+                }
 
+            }
+            else if(ae.getSource()==b2)
+            {
+                tf1.setText("");
+                pf2.setText("");
+            }else if(ae.getSource()==b3){
+                new SignUp().setVisible(true);
+                setVisible(false);
+            }
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
+        Connect.ConnectServer();
         new Login().setVisible(true);
     }
 
