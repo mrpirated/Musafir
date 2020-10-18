@@ -4,21 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
+import Classes.*;
 
-class LoginInfo{
-    private String username;
-    private char[] password;
-    public LoginInfo(String username,char[] password){
-        this.password=password;
-        this.username=username;
-    }
-    public char[] getPassword() {
-        return password;
-    }
-    public String getUsername() {
-        return username;
-    }
-}
 public class Login extends JFrame implements ActionListener{
     JLabel l1, l2, l3;
     JTextField tf1;
@@ -115,17 +102,23 @@ public class Login extends JFrame implements ActionListener{
                 String username = tf1.getText();
                 char[] password =pf2.getPassword();
                 LoginInfo user =new LoginInfo(username,password);
-                DataOutputStream dos =new DataOutputStream(Connect.socket.getOutputStream());
-                dos.writeBoolean(true);
-                dos.flush();
-                DataInputStream din =new DataInputStream(Connect.socket.getInputStream());
-                String s=(String)din.readUTF();
-                System.out.println(s);
-                /*boolean b=(boolean)din.readBoolean();
-                if(b)
+                try{
+                
+                ObjectOutputStream os =new ObjectOutputStream(Connect.socket.getOutputStream());
+                os.writeInt(1);
+                os.writeObject(user);
+                os.flush();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi =new ObjectInputStream(Connect.socket.getInputStream());
+                String s=(String)oi.readUTF();
+                if(s!="")
                 {
+                    System.out.println(s);
                     new HomePage().setVisible(true);
-                }*/
+                }
 
             }
             else if(ae.getSource()==b2)

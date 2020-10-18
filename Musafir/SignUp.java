@@ -5,45 +5,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.util.*;
-
-class UserInfo{
-    private String name,email,phone,gender,dd,mm,yy;
-    private char[] password;
-    public UserInfo(String name,String email,String phone,String gender,char[] password,String dd,String mm,String yy){
-        this.name=name;
-        this.email=email;
-        this.phone=phone;
-        this.password=password;
-        this.dd=dd;
-        this.mm=mm;
-        this.yy=yy;
-    }
-    public String getDd() {
-        return dd;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public String getGender() {
-        return gender;
-    }
-    public String getMm() {
-        return mm;
-    }
-    public String getName() {
-        return name;
-    }
-    public char[] getPassword() {
-        return password;
-    }
-    public String getPhone() {
-        return phone;
-    }
-    public String getYy() {
-        return yy;
-    }
-
-}
+import java.io.*;
+import Classes.*;
 
 public class SignUp extends JFrame implements ActionListener{
 
@@ -256,9 +219,19 @@ public class SignUp extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(null, "Fill all fields");
                 }
                 UserInfo user=new UserInfo(name,email,phone,gender,password,date,month,year);
-                
+                ObjectOutputStream os =new ObjectOutputStream(Connect.socket.getOutputStream());
+                os.writeInt(2);
+                os.writeObject(user);
+                os.flush();
+                ObjectInputStream oi =new ObjectInputStream(Connect.socket.getInputStream());
+                Boolean b=(Boolean)oi.readBoolean();
+                if(b){
                 new Login().setVisible(true);
                 setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Account not created");
+                }
                 }
 
             }
