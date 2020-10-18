@@ -33,7 +33,7 @@ public class AdminHome extends JFrame {
         home.setBounds(220, 10, 400, 30);
         add(home);
         
-        i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/passengers.png"));
+        i1 = new ImageIcon(ClassLoader.getSystemResource("LockdownTraveller/icons/passengers.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         passengerbt = new JButton(i3);

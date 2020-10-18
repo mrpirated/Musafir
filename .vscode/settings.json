@@ -1,0 +1,12 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "d:\\Downloads\\Jar files\\swingx-action-1.6.5.jar",
+        "d:\\Downloads\\Jar files\\swingx-autocomplete-1.6.5.jar",
+        "d:\\Downloads\\Jar files\\swingx-common-1.6.5.jar",
+        "d:\\Downloads\\Jar files\\swingx-core-1.6.5.jar",
+        "d:\\Downloads\\Jar files\\swingx-graphics-1.6.5.jar",
+        "d:\\Downloads\\Jar files\\swingx-painters-1.6.5.jar",
+        "d:\\Downloads\\Jar files\\swingx-plaf-1.6.5.jar"
+    ]
+}

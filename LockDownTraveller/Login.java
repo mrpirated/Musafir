@@ -24,6 +24,7 @@ public class Login extends JFrame implements ActionListener{
     JTextField tf1;
     JPasswordField pf2;
     JButton b1, b2, b3;
+    static boolean flag=false;
 
     Login() {
 
@@ -114,12 +115,14 @@ public class Login extends JFrame implements ActionListener{
                 String username = tf1.getText();
                 char[] password =pf2.getPassword();
                 LoginInfo user =new LoginInfo(username,password);
-                Connect.os.writeObject(user);
-                boolean b=Connect.din.readBoolean();
-                if(b)
+                Connect.dos =new DataOutputStream(Connect.socket.getOutputStream());
+                Connect.dos.writeBoolean(true);
+                Connect.dos.flush();
+                /*boolean b=(boolean)Connect.din.readBoolean();
+                //if(b)
                 {
                     new HomePage().setVisible(true);
-                }
+                }*/
 
             }
             else if(ae.getSource()==b2)
@@ -137,8 +140,13 @@ public class Login extends JFrame implements ActionListener{
         }
     }
     public static void main(String[] args) {
-        Connect.ConnectServer();
         new Login().setVisible(true);
+        if(flag==false)
+        {
+            Connect.ConnectServer();
+            flag=true;
+        }
+        
     }
 
 }

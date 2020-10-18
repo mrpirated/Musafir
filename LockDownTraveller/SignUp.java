@@ -6,13 +6,53 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.*;
 
-public class SignUp extends JFrame {
+class UserInfo{
+    private String name,email,phone,gender,dd,mm,yy;
+    private char[] password;
+    public UserInfo(String name,String email,String phone,String gender,char[] password,String dd,String mm,String yy){
+        this.name=name;
+        this.email=email;
+        this.phone=phone;
+        this.password=password;
+        this.dd=dd;
+        this.mm=mm;
+        this.yy=yy;
+    }
+    public String getDd() {
+        return dd;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getGender() {
+        return gender;
+    }
+    public String getMm() {
+        return mm;
+    }
+    public String getName() {
+        return name;
+    }
+    public char[] getPassword() {
+        return password;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public String getYy() {
+        return yy;
+    }
+
+}
+
+public class SignUp extends JFrame implements ActionListener{
 
     JLabel head, name, date, phone, dob, month, year, gender, email, pass, cnfpass, cnfpass2;
-    JTextField namet, emailt, phonet, passt, cnfpasst;
+    JTextField namet, emailt, phonet;
+    JPasswordField passt,cnfpasst;
     JRadioButton m, o, fl;
     JComboBox dd, mm, yy;
-    JButton done;
+    JButton done,back;
 
     SignUp() {
         setFont(new Font("System", Font.BOLD, 22));
@@ -143,7 +183,7 @@ public class SignUp extends JFrame {
         pass.setBounds(30, 400, 150, 32);
         add(pass);
 
-        passt = new JTextField();
+        passt = new JPasswordField();
         passt.setFont(new Font("Times new Roman", Font.CENTER_BASELINE, 14));
         passt.setBounds(200, 400, 200, 25);
         add(passt);
@@ -157,7 +197,7 @@ public class SignUp extends JFrame {
         cnfpass2.setBounds(30, 475, 150, 32);
         add(cnfpass2);
 
-        cnfpasst = new JTextField();
+        cnfpasst = new JPasswordField();
         cnfpasst.setFont(new Font("Times new Roman", Font.CENTER_BASELINE, 14));
         cnfpasst.setBounds(200, 450, 200, 25);
         add(cnfpasst);
@@ -166,14 +206,71 @@ public class SignUp extends JFrame {
         done.setFont(new Font("Times new Roman", Font.BOLD, 20));
         done.setBackground(Color.BLACK);
         done.setForeground(Color.WHITE);
-        done.setBounds(300, 600, 100, 32);
+        done.setBounds(500, 600, 100, 32);
         add(done);
+
+        back =new JButton("Back");
+        back.setFont(new Font("Times new Roman", Font.BOLD, 20));
+        back.setBackground(Color.BLACK);
+        back.setForeground(Color.WHITE);
+        back.setBounds(100, 600, 100, 32);
+        add(back);
+
+        done.addActionListener(this);
+        back.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setSize(700, 700);
         setLocation(500, 90);
         setVisible(true);
 
+    }
+    public void actionPerformed(ActionEvent ae){
+        try{
+            if(ae.getSource()==done)
+            {
+                
+                String name =namet.getText();
+                String email=emailt.getText();
+                char[] password = passt.getPassword();
+                char[] cnfpass =cnfpasst.getPassword();
+                String p=new String(password);
+                String cp =new String(cnfpass);
+                if(!p.equals(cp))
+                {
+                    JOptionPane.showMessageDialog(null, "Passwords don't match");
+                }else{
+                String phone =phonet.getText();
+                String date = (String)dd.getSelectedItem();
+                String month =(String)mm.getSelectedItem();
+                String year =(String)yy.getSelectedItem(); 
+                String gender;
+                if(m.isSelected())
+                gender="Male";
+                else if(fl.isSelected())
+                gender ="Female";
+                else 
+                gender="Other";
+                if(name==""||email==""||phone==""||(!m.isSelected()&&!fl.isSelected()&&!o.isSelected()))
+                {
+                    JOptionPane.showMessageDialog(null, "Fill all fields");
+                }
+                UserInfo user=new UserInfo(name,email,phone,gender,password,date,month,year);
+                Connect.os.writeObject(user);
+                new Login().setVisible(true);
+                setVisible(false);
+                }
+
+            }
+            if(ae.getSource()==back)
+            {
+                setVisible(false);
+                new Login().setVisible(true);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
