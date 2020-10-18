@@ -1,4 +1,4 @@
-package LockDownTraveller;
+package Musafir;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -33,7 +33,7 @@ public class AdminHome extends JFrame {
         home.setBounds(220, 10, 400, 30);
         add(home);
         
-        i1 = new ImageIcon(ClassLoader.getSystemResource("LockdownTraveller/icons/passengers.png"));
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/passengers.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         passengerbt = new JButton(i3);
@@ -47,7 +47,7 @@ public class AdminHome extends JFrame {
         passenger.setBounds(35, 180, 200, 24);
         add(passenger);
 
-        i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/trainicon1.png"));
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/trainicon1.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         trainbt = new JButton(i3);
@@ -60,7 +60,7 @@ public class AdminHome extends JFrame {
         train.setBounds(340, 180, 200, 24);
         add(train);
 
-        i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/ticket.png"));
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/ticket.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         bookbt = new JButton(i3);
@@ -75,7 +75,7 @@ public class AdminHome extends JFrame {
 
         
 
-        i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/cancel.png"));
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/cancel.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         cancelbt = new JButton(i3);
@@ -89,7 +89,7 @@ public class AdminHome extends JFrame {
         add(cancel);
 
 
-        i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/add.png"));
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/add.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         addbt = new JButton(i3);
@@ -102,7 +102,7 @@ public class AdminHome extends JFrame {
         add.setBounds(315, 355, 200, 24);
         add(add);
 
-        i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/reroute.png"));
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/reroute.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         reroutebt = new JButton(i3);

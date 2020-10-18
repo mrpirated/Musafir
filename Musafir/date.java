@@ -1,4 +1,4 @@
-package LockDownTraveller;
+package Musafir;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

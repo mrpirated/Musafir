@@ -1,4 +1,4 @@
-package LockDownTraveller;
+package Musafir;
 
 import java.awt.*;
 import javax.swing.*;
@@ -115,11 +115,14 @@ public class Login extends JFrame implements ActionListener{
                 String username = tf1.getText();
                 char[] password =pf2.getPassword();
                 LoginInfo user =new LoginInfo(username,password);
-                Connect.dos =new DataOutputStream(Connect.socket.getOutputStream());
-                Connect.dos.writeBoolean(true);
-                Connect.dos.flush();
-                /*boolean b=(boolean)Connect.din.readBoolean();
-                //if(b)
+                DataOutputStream dos =new DataOutputStream(Connect.socket.getOutputStream());
+                dos.writeBoolean(true);
+                dos.flush();
+                DataInputStream din =new DataInputStream(Connect.socket.getInputStream());
+                String s=(String)din.readUTF();
+                System.out.println(s);
+                /*boolean b=(boolean)din.readBoolean();
+                if(b)
                 {
                     new HomePage().setVisible(true);
                 }*/

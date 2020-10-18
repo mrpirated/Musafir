@@ -1,4 +1,4 @@
-package LockDownTraveller;
+package Musafir;
 
 import java.awt.*;
 import javax.swing.*;

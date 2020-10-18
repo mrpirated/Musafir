@@ -1,4 +1,4 @@
-package LockDownTraveller;
+package Musafir;
 
 import java.awt.*;
 import javax.swing.*;
@@ -73,7 +73,7 @@ public class SignUp extends JFrame implements ActionListener{
         head.setBounds(265, 66, 460, 32);
         add(head);
 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/mainicon.png"));
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/mainicon.png"));
         Image i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JLabel l1 = new JLabel(i3);
@@ -256,7 +256,7 @@ public class SignUp extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(null, "Fill all fields");
                 }
                 UserInfo user=new UserInfo(name,email,phone,gender,password,date,month,year);
-                Connect.os.writeObject(user);
+                
                 new Login().setVisible(true);
                 setVisible(false);
                 }

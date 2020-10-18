@@ -1,4 +1,4 @@
-package LockDownTraveller;
+package Musafir;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -34,7 +34,7 @@ public class HomePage extends JFrame {
         p1.setBounds(0, 0, 750, 45);
         add(p1);
 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/backArrow.png"));
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/backArrow.png"));
         Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JLabel l1 = new JLabel(i3);
@@ -53,7 +53,7 @@ public class HomePage extends JFrame {
         l3.setBounds(650, 12, 100, 24);
         p1.add(l3);
 
-        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/planMyJourney.png"));
+        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/planMyJourney.png"));
         Image i5 = i4.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i6 = new ImageIcon(i5);
         JLabel l4 = new JLabel(i6);
@@ -66,7 +66,7 @@ public class HomePage extends JFrame {
         l5.setBounds(40, 160, 200, 24);
         add(l5);
 
-        ImageIcon i7 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/myBookings.png"));
+        ImageIcon i7 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/myBookings.png"));
         Image i8 = i7.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i9 = new ImageIcon(i8);
         JLabel l6 = new JLabel(i9);
@@ -79,7 +79,7 @@ public class HomePage extends JFrame {
         l7.setBounds(310, 160, 200, 24);
         add(l7);
 
-        ImageIcon i10 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/pnrEnquiry.png"));
+        ImageIcon i10 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/pnrEnquiry.png"));
         Image i11 = i10.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i12 = new ImageIcon(i11);
         JLabel l8 = new JLabel(i12);
@@ -92,7 +92,7 @@ public class HomePage extends JFrame {
         l9.setBounds(530, 160, 200, 24);
         add(l9);
 
-        ImageIcon i13 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/cancelTicket.png"));
+        ImageIcon i13 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/cancelTicket.png"));
         Image i14 = i13.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i15 = new ImageIcon(i14);
         JLabel l10 = new JLabel(i15);
@@ -105,7 +105,7 @@ public class HomePage extends JFrame {
         l11.setBounds(50, 290, 200, 24);
         add(l11);
 
-        ImageIcon i16 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/refundHistory.png"));
+        ImageIcon i16 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/refundHistory.png"));
         Image i17 = i16.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i18 = new ImageIcon(i17);
         JLabel l12 = new JLabel(i18);
@@ -118,7 +118,7 @@ public class HomePage extends JFrame {
         l13.setBounds(310, 290, 200, 24);
         add(l13);
 
-        ImageIcon i19 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/cancelled.png"));
+        ImageIcon i19 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/cancelled.png"));
         Image i20 = i19.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i21 = new ImageIcon(i20);
         JLabel l14 = new JLabel(i21);
@@ -131,7 +131,7 @@ public class HomePage extends JFrame {
         l15.setBounds(520, 290, 200, 24);
         add(l15);
 
-        ImageIcon i22 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/reroute.png"));
+        ImageIcon i22 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/reroute.png"));
         Image i23 = i22.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i24 = new ImageIcon(i23);
         JLabel l16 = new JLabel(i24);
@@ -150,7 +150,7 @@ public class HomePage extends JFrame {
         p2.setBounds(0, 520, 750, 10);
         add(p2);
 
-        ImageIcon i25 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/meal.png"));
+        ImageIcon i25 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/meal.png"));
         Image i26 = i25.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i27 = new ImageIcon(i26);
         JLabel l18 = new JLabel(i27);
@@ -163,7 +163,7 @@ public class HomePage extends JFrame {
         l19.setBounds(175, 640, 210, 24);
         add(l19);
 
-        ImageIcon i28 = new ImageIcon(ClassLoader.getSystemResource("LockDownTraveller/icons/bot.png"));
+        ImageIcon i28 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/bot.png"));
         Image i29 = i28.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i30 = new ImageIcon(i29);
         JLabel l20 = new JLabel(i30);
