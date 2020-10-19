@@ -11,6 +11,7 @@ public class Server {
         System.out.println("Server Started");
         try{
             serverSocket=new ServerSocket(5000);
+            Conn c=new Conn();
         }catch (IOException e)
         {
             e.printStackTrace();
@@ -20,6 +21,7 @@ public class Server {
             try{
                 socket=serverSocket.accept();
                 System.out.println("Connected to Client");
+
                 Thread t=new Thread(new HandleClient(socket));
                 t.start();
             }

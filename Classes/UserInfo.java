@@ -3,9 +3,10 @@ package Classes;
 import java.io.*;
 
 public class UserInfo implements Serializable{
-    private String name,email,phone,gender,dd,mm,yy;
+    private String name,email,phone,dd,mm,yy;
     private char[] password;
-    public UserInfo(String name,String email,String phone,String gender,char[] password,String dd,String mm,String yy){
+    private char gender;
+    public UserInfo(String name,String email,String phone,char gender,char[] password,String dd,String mm,String yy){
         this.name=name;
         this.email=email;
         this.phone=phone;
@@ -20,7 +21,7 @@ public class UserInfo implements Serializable{
     public String getEmail() {
         return email;
     }
-    public String getGender() {
+    public char getGender() {
         return gender;
     }
     public String getMm() {

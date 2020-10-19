@@ -20,7 +20,17 @@ public class HandleClient implements Runnable{
         return "dprathi";
     }
     private Boolean Signup(UserInfo userInfo){
-        return false;
+        Conn c1=new Conn();
+        String d=userInfo.getMm()+"-"+userInfo.getDd()+"-"+userInfo.getYy();
+        String q1="INSERT INTO `user_info` ( `name`, `dob`, `gender`, `email`, `phone`, `password`) VALUES ( '"+userInfo.getName()+"', STR_TO_DATE('"+d+"','%m-%d-%Y'), '"+userInfo.getGender()+"', '"+userInfo.getEmail()+"', '"+userInfo.getPhone()+"', '"+String.valueOf(userInfo.getPassword())+"')";
+        try{
+        c1.s.executeUpdate(q1);
+        }catch(Exception e){
+            e.printStackTrace();
+            
+        }
+
+        return true;
     }
     @Override
     public void run() {

@@ -3,12 +3,42 @@ package Musafir;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.sql.*;
 import java.util.*;
 import java.io.*;
 import Classes.*;
 
 public class SignUp extends JFrame implements ActionListener{
+
+    public static String monthtonum(String month){
+        if(month.equals("January"))
+        return "01";
+        if(month.equals("February"))
+        return "02";
+        if(month.equals("March"))
+        return "03";
+        if(month.equals("April"))
+        return "04";
+        if(month.equals("May"))
+        return "05";
+        if(month.equals("June"))
+        return "06";
+        if(month.equals("July"))
+        return "07";
+        if(month.equals("August"))
+        return "08";
+        if(month.equals("September"))
+        return "09";
+        if(month.equals("October"))
+        return "10";
+        if(month.equals("November"))
+        return "11";
+        if(month.equals("December"))
+        return "12";
+
+        return "0";
+
+        
+    }
 
     JLabel head, name, date, phone, dob, month, year, gender, email, pass, cnfpass, cnfpass2;
     JTextField namet, emailt, phonet;
@@ -206,14 +236,16 @@ public class SignUp extends JFrame implements ActionListener{
                 String phone =phonet.getText();
                 String date = (String)dd.getSelectedItem();
                 String month =(String)mm.getSelectedItem();
+                month=monthtonum(month);
                 String year =(String)yy.getSelectedItem(); 
-                String gender;
+                
+                char gender;
                 if(m.isSelected())
-                gender="Male";
+                gender='M';
                 else if(fl.isSelected())
-                gender ="Female";
+                gender ='F';
                 else 
-                gender="Other";
+                gender='O';
                 if(name==""||email==""||phone==""||(!m.isSelected()&&!fl.isSelected()&&!o.isSelected()))
                 {
                     JOptionPane.showMessageDialog(null, "Fill all fields");
