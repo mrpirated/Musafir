@@ -115,6 +115,7 @@ public class Login extends JFrame implements ActionListener {
                 if (s != "") {
                     System.out.println(s);
                     new HomePage().setVisible(true);
+                    setVisible(false);
                 }
 
             } else if (ae.getSource() == b2) {
