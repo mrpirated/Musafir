@@ -112,10 +112,10 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         try {
 
-            if (ae.getSource() == l1) {
+            /*if (ae.getSource() == l1) {
                 new HomePage().setVisible(true);
                 setVisible(false);
-            }
+            }*/
 
         } catch (Exception e) {
             e.printStackTrace();

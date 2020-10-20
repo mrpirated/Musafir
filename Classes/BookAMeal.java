@@ -1,6 +1,8 @@
 package Classes;
+import java.io.*;
 
-public class BookAMeal {
+
+public class BookAMeal implements Serializable{
     private String pnr;
     private Integer choice;
 
