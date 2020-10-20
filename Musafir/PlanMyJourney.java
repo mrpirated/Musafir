@@ -12,11 +12,13 @@ import org.jdesktop.swingx.JXDatePicker;
 
 public class PlanMyJourney extends JFrame implements ActionListener {
     JPanel p1, p2, panel;
-    JButton l1, b1, b2, b3, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20;
+    JButton back, b1, b2, b3, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20, submit;
     JTextField from, to;
     JPasswordField pf2;
+    private String name;
 
-    PlanMyJourney() {
+    PlanMyJourney(String name) {
+        this.name = name;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -39,12 +41,12 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/backArrow.png"));
         Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
-        l1 = new JButton(i3);
-        l1.setBackground(Color.BLACK);
+        back = new JButton(i3);
+        back.setBackground(Color.BLACK);
         Border emptyBorder = BorderFactory.createEmptyBorder();
-        l1.setBorder(emptyBorder);
-        l1.setBounds(5, 8, 30, 30);
-        p1.add(l1);
+        back.setBorder(emptyBorder);
+        back.setBounds(5, 8, 30, 30);
+        p1.add(back);
 
         JLabel l2 = new JLabel("PLAN MY JOURNEY");
         l2.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 30));
@@ -99,7 +101,15 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         panel.add(picker);
         add(panel);
 
-        l1.addActionListener(this);
+        submit = new JButton("Submit");
+        submit.setBackground(Color.BLACK);
+        submit.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        submit.setForeground(Color.WHITE);
+        submit.setBorder(emptyBorder);
+        submit.setBounds(300, 600, 100, 30);
+        add(submit);
+
+        back.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -112,10 +122,15 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         try {
 
-            /*if (ae.getSource() == l1) {
-                new HomePage().setVisible(true);
+            if (ae.getSource() == back) {
+                new HomePage(name).setVisible(true);
                 setVisible(false);
-            }*/
+            }
+
+            else if (ae.getSource() == submit) {
+                new HomePage(name).setVisible(true);
+                setVisible(false);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

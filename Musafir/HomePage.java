@@ -1,21 +1,23 @@
 package Musafir;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 
 public class HomePage extends JFrame implements ActionListener {
-    
-    JLabel home,plan,booking,pnr,cancel,refund,traincancel,reroute,meal,query;
-    JButton planbt, bookingbt, pnrbt, cancelbt, refundbt, traincancelbt, reroutebt, mealbt, querybt;
-    
-    ImageIcon i1,i3;
+
+    private String name;
+    JLabel home, plan, booking, pnr, cancel, refund, traincancel, reroute, meal, query;
+    JButton planbt, bookingbt, pnrbt, cancelbt, refundbt, traincancelbt, reroutebt, mealbt, querybt, logout;
+
+    ImageIcon i1, i3;
     Image i2;
 
     HomePage(String name) {
-
+        this.name = name;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -24,20 +26,24 @@ public class HomePage extends JFrame implements ActionListener {
         int z = getWidth() - x;
         int w = z / y;
         String pad = "";
-        pad = String.format("%" + w *2.5 + "s", pad);
+        pad = String.format("%" + w * 2.5 + "s", pad);
         setTitle(pad + "HOME PAGE");
 
-
-        home = new JLabel("Welcome "+name);
+        home = new JLabel("Welcome " + name);
         home.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 30));
         home.setBackground(Color.WHITE);
-        home.setBounds(220, 10, 400, 30);
+        home.setBounds(240, 10, 400, 30);
         add(home);
-       
-        
 
-       
-        
+        logout = new JButton("LogOut");
+        Border emptyBorder = BorderFactory.createEmptyBorder();
+        logout.setBorder(emptyBorder);
+        logout.setBackground(Color.BLACK);
+        logout.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        logout.setForeground(Color.WHITE);
+        logout.setBounds(600, 10, 100, 30);
+        add(logout);
+
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/planMyJourney.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
@@ -57,7 +63,6 @@ public class HomePage extends JFrame implements ActionListener {
         bookingbt = new JButton(i3);
         bookingbt.setBounds(315, 75, 100, 100);
         add(bookingbt);
-
 
         booking = new JLabel("My Bookings");
         booking.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
@@ -98,7 +103,6 @@ public class HomePage extends JFrame implements ActionListener {
         refundbt.setBounds(315, 250, 100, 100);
         add(refundbt);
 
-
         refund = new JLabel("Refund");
         refund.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         refund.setForeground(Color.BLACK);
@@ -108,7 +112,7 @@ public class HomePage extends JFrame implements ActionListener {
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/cancel.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
-        traincancelbt=new JButton(i3);
+        traincancelbt = new JButton(i3);
         traincancelbt.setBounds(555, 250, 100, 100);
         add(traincancelbt);
 
@@ -118,12 +122,10 @@ public class HomePage extends JFrame implements ActionListener {
         traincancel.setBounds(545, 355, 200, 24);
         add(traincancel);
 
-        
-
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/reroute.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
-        reroutebt=new JButton(i3);
+        reroutebt = new JButton(i3);
         reroutebt.setBounds(75, 425, 100, 100);
         add(reroutebt);
 
@@ -133,14 +135,12 @@ public class HomePage extends JFrame implements ActionListener {
         reroute.setBounds(75, 530, 200, 24);
         add(reroute);
 
-
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/meal.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         mealbt = new JButton(i3);
         mealbt.setBounds(315, 425, 100, 100);
         add(mealbt);
-
 
         meal = new JLabel("Book a Meal");
         meal.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
@@ -151,7 +151,7 @@ public class HomePage extends JFrame implements ActionListener {
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/bot.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
-        querybt=new JButton(i3);
+        querybt = new JButton(i3);
         querybt.setBounds(555, 425, 100, 100);
         add(querybt);
 
@@ -160,7 +160,7 @@ public class HomePage extends JFrame implements ActionListener {
         query.setForeground(Color.BLACK);
         query.setBounds(545, 530, 200, 24);
         add(query);
-        
+
         planbt.addActionListener(this);
         bookingbt.addActionListener(this);
         pnrbt.addActionListener(this);
@@ -170,6 +170,7 @@ public class HomePage extends JFrame implements ActionListener {
         reroutebt.addActionListener(this);
         mealbt.addActionListener(this);
         querybt.addActionListener(this);
+        logout.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -183,10 +184,16 @@ public class HomePage extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == planbt) {
-                new PlanMyJourney().setVisible(true);
+                new PlanMyJourney(name).setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == logout) {
+                new Login().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == pnrbt) {
+                new PnrEnquiry(name).setVisible(true);
                 setVisible(false);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -196,5 +203,4 @@ public class HomePage extends JFrame implements ActionListener {
         new HomePage("Deepesh").setVisible(true);
     }
 
-    
 }
