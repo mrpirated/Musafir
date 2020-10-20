@@ -112,9 +112,13 @@ public class Login extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
                 String s = (String) oi.readUTF();
-                if (s != "") {
-                    System.out.println(s);
-                    new HomePage().setVisible(true);
+                if (s.equals("")) {
+                    
+                    JOptionPane.showMessageDialog(null,"Username or Password entered is Incorrect");
+                }
+                else  {
+                new HomePage(s).setVisible(true);
+                setVisible(false);
                 }
 
             } else if (ae.getSource() == b2) {

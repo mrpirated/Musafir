@@ -1,5 +1,7 @@
 package Classes;
 
-public class Availability {
+import java.io.*;
+
+public class Availability implements Serializable{
 
 }

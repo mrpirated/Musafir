@@ -1,6 +1,8 @@
 package Classes;
 
-public class CancelTicket {
+import java.io.*;
+
+public class CancelTicket implements Serializable{
     private String username;
     private String password;
     private String pnr;
