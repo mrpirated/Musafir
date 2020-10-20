@@ -5,6 +5,7 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import Classes.*;
 import java.io.*;
 
 public class PnrEnquiry extends JFrame implements ActionListener {
@@ -97,7 +98,8 @@ public class PnrEnquiry extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
-
+                String pnr = pnrText.getText();
+                PnrEnquiryInfo ticket = new PnrEnquiryInfo(pnr);
             }
 
         } catch (Exception e) {
