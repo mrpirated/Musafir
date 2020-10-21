@@ -192,6 +192,9 @@ public class HomePage extends JFrame implements ActionListener {
             } else if (ae.getSource() == pnrbt) {
                 new PnrEnquiry(name).setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == bookingbt) {
+                new MyBookings().setVisible(true);
+                setVisible(false);
             }
 
         } catch (Exception e) {
