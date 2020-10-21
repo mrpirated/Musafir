@@ -1,9 +1,9 @@
 package Classes;
 
-public class PnrEnquiry {
+public class PnrEnquiryInfo {
     private String pnr;
 
-    public PnrEnquiry(String pnr) {
+    public PnrEnquiryInfo(String pnr) {
         this.pnr = pnr;
     }
 
