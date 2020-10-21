@@ -2,6 +2,9 @@ package Musafir;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import MusafirServer.Conn;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
@@ -184,7 +187,17 @@ public class HomePage extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == planbt) {
-                new PlanMyJourney(name).setVisible(true);
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    os.writeInt(3);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi =new ObjectInputStream(Connect.socket.getInputStream());
+                String[][] cities= (String[][])oi.readObject();
+                new PlanMyJourney(name,cities).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == logout) {
                 new Login().setVisible(true);

@@ -82,11 +82,6 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         setLocation(400, 50);
         setVisible(true);
     }
-
-    public static void main(String[] args) {
-        new PnrEnquiry().setVisible(true);
-    }
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
@@ -104,4 +99,11 @@ public class PnrEnquiry extends JFrame implements ActionListener {
             e.printStackTrace();
         }
     }
+
+    public static void main(String[] args) {
+        new PnrEnquiry("deepesh").setVisible(true);
+    }
+
+    
+    
 }

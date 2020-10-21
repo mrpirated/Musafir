@@ -46,6 +46,29 @@ public class HandleClient implements Runnable{
 
         return true;
     }
+    private String[][] GetCities(){
+        String[][] cities=new String[2][];
+        String query="SELECT COUNT(*) FROM Cities";
+
+        try{
+            ResultSet rs=c1.s.executeQuery(query);
+            rs.next();
+            int n=rs.getInt(1);
+            cities[0]= new String[n];
+            cities[1]= new String[n];
+            query="SELECT * FROM Cities";
+            rs=c1.s.executeQuery(query);
+            for(int i=0;i<n;i++){
+                rs.next();
+                cities[0][i]=(String)rs.getString("stations");
+                cities[1][i]=(String)rs.getString("short");
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return cities;
+    }
     @Override
     public void run() {
         while(true){
@@ -70,6 +93,14 @@ public class HandleClient implements Runnable{
                     os.writeBoolean(b);
                     os.flush();
                     break;
+
+                    case 3:
+                    String [][] cities=GetCities();
+                    os.writeObject(cities);
+                    os.flush();
+                    break;
+                     
+
 
                 }
                 

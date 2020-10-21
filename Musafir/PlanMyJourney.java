@@ -13,11 +13,11 @@ import org.jdesktop.swingx.JXDatePicker;
 public class PlanMyJourney extends JFrame implements ActionListener {
     JPanel p1, p2, panel;
     JButton back, b1, b2, b3, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20, submit;
-    JTextField from, to;
+    JComboBox from, to;
     JPasswordField pf2;
     private String name;
 
-    PlanMyJourney(String name) {
+    PlanMyJourney(String name,String[][] cities) {
         this.name = name;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -28,7 +28,6 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         int z = getWidth() - x;
         int w = z / y;
         String pad = "";
-        // for (int i=0; i!=w; i++) pad +=" ";
         pad = String.format("%" + w * 2.5 + "s", pad);
         setTitle(pad + "PLAN MY JOURNEY");
 
@@ -72,18 +71,18 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         l4.setBounds(520, 170, 100, 30);
         add(l4);
 
-        from = new JTextField(30);
+        from = new JComboBox(cities[0]);
         from.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
         from.setForeground(Color.BLACK);
-        from.setBounds(110, 220, 150, 30);
+        from.setBounds(110, 220, 200, 30);
         add(from);
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
 
-        to = new JTextField(30);
+        to = new JComboBox(cities[0]);
         to.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
         to.setForeground(Color.BLACK);
-        to.setBounds(470, 220, 150, 30);
+        to.setBounds(470, 220, 200, 30);
         add(to);
 
         JLabel l6 = new JLabel("Date");
@@ -128,8 +127,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
-                new HomePage(name).setVisible(true);
-                setVisible(false);
+                
+                
             }
 
         } catch (Exception e) {
@@ -137,7 +136,5 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        new PlanMyJourney().setVisible(true);
-    }
+    
 }

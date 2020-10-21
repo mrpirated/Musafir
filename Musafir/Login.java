@@ -119,6 +119,7 @@ public class Login extends JFrame implements ActionListener {
                     new HomePage(s).setVisible(true);
                     setVisible(false);
                 }
+            
 
             } else if (ae.getSource() == b2) {
                 tf1.setText("");
@@ -131,6 +132,7 @@ public class Login extends JFrame implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
     }
 
     public static void main(String[] args) {
