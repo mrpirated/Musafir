@@ -11,6 +11,7 @@ public class LoginAdmin extends JFrame implements ActionListener {
     JTextField tf1;
     JPasswordField pf2;
     JButton b1, b2;
+    static boolean flag = false;
 
     LoginAdmin() {
 
@@ -126,6 +127,10 @@ public class LoginAdmin extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         new LoginAdmin().setVisible(true);
+        if (flag == false) {
+            Connect.ConnectServer();
+            flag = true;
+        }
     }
 
 }
