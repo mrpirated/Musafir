@@ -2,8 +2,11 @@ package Musafir;
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
+import Classes.*;
 
-public class LoginAdmin extends JFrame {
+public class LoginAdmin extends JFrame implements ActionListener {
     JLabel l1, l2, l3;
     JTextField tf1;
     JPasswordField pf2;
@@ -22,7 +25,7 @@ public class LoginAdmin extends JFrame {
         int w = z / y;
         String pad = "";
         // for (int i=0; i!=w; i++) pad +=" ";
-        pad = String.format("%" + w*0.8 + "s", pad);
+        pad = String.format("%" + w * 0.8 + "s", pad);
         setTitle(pad + "ADMIN LOGIN DIALOG BOX");
 
         l1 = new JLabel("ADMIN LOGIN");
@@ -73,11 +76,51 @@ public class LoginAdmin extends JFrame {
         b2.setBounds(275, 225, 200, 30);
         add(b2);
 
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+
         getContentPane().setBackground(Color.WHITE);
 
         setSize(500, 400);
         setLocation(500, 250);
         setVisible(true);
+
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        try {
+
+            if (ae.getSource() == b1) {
+                String username = tf1.getText();
+                char[] password = pf2.getPassword();
+                LoginInfo admin = new LoginInfo(username, password);
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    os.writeInt(4);
+                    os.writeObject(admin);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                String s = (String) oi.readUTF();
+                if (s.equals("")) {
+
+                    JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");
+                } else {
+                    new AdminHome().setVisible(true);
+                    setVisible(false);
+                }
+
+            } else if (ae.getSource() == b2) {
+                tf1.setText("");
+                pf2.setText("");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
