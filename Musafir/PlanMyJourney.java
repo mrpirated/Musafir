@@ -15,10 +15,11 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     JButton back, b1, b2, b3, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20, submit;
     JComboBox from, to;
     JPasswordField pf2;
-    private String name;
+    private String name, Username;
 
-    PlanMyJourney(String name,String[][] cities) {
+    PlanMyJourney(String name, String[][] cities, String Username) {
         this.name = name;
+        this.Username = Username;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -122,13 +123,12 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(name).setVisible(true);
+                new HomePage(name, Username).setVisible(true);
                 setVisible(false);
             }
 
             else if (ae.getSource() == submit) {
-                
-                
+
             }
 
         } catch (Exception e) {
@@ -136,5 +136,4 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         }
     }
 
-    
 }

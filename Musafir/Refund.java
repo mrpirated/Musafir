@@ -8,7 +8,7 @@ import java.net.*;
 import Classes.*;
 import java.io.*;
 
-public class MyBookings extends JFrame implements ActionListener {
+public class Refund extends JFrame implements ActionListener {
 
     JLabel headLabel, pnrLabel;
     JPanel p1, p2, panel;
@@ -16,7 +16,7 @@ public class MyBookings extends JFrame implements ActionListener {
     JTextField pnrText;
     private String name, Username;
 
-    public MyBookings(String name, String Username) {
+    public Refund(String name, String Username) {
         this.name = name;
         this.Username = Username;
 
@@ -29,7 +29,7 @@ public class MyBookings extends JFrame implements ActionListener {
         int w = z / y;
         String pad = "";
         pad = String.format("%" + w * 2.5 + "s", pad);
-        setTitle(pad + "MY BOOKINGS");
+        setTitle(pad + "REFUND HISTORY");
 
         p1 = new JPanel();
         p1.setLayout(null);
@@ -47,7 +47,7 @@ public class MyBookings extends JFrame implements ActionListener {
         back.setBounds(5, 8, 30, 30);
         p1.add(back);
 
-        headLabel = new JLabel("MY BOOKINGS");
+        headLabel = new JLabel("REFUND HISTORY");
         headLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 30));
         headLabel.setForeground(Color.WHITE);
         headLabel.setBounds(250, 10, 400, 30);

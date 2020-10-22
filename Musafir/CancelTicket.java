@@ -8,15 +8,16 @@ import java.net.*;
 import Classes.*;
 import java.io.*;
 
-public class MyBookings extends JFrame implements ActionListener {
+public class CancelTicket extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel;
+    JLabel headLabel, pnrLabel, l2, l3, l4;
     JPanel p1, p2, panel;
-    JButton back, submit;
-    JTextField pnrText;
+    JButton back, submit, b1;
+    JTextField pnrText, tf1, tf2;
+    JPasswordField pf2;
     private String name, Username;
 
-    public MyBookings(String name, String Username) {
+    public CancelTicket(String name, String Username) {
         this.name = name;
         this.Username = Username;
 
@@ -29,7 +30,7 @@ public class MyBookings extends JFrame implements ActionListener {
         int w = z / y;
         String pad = "";
         pad = String.format("%" + w * 2.5 + "s", pad);
-        setTitle(pad + "MY BOOKINGS");
+        setTitle(pad + "CANCEL TICKET");
 
         p1 = new JPanel();
         p1.setLayout(null);
@@ -47,11 +48,48 @@ public class MyBookings extends JFrame implements ActionListener {
         back.setBounds(5, 8, 30, 30);
         p1.add(back);
 
-        headLabel = new JLabel("MY BOOKINGS");
+        headLabel = new JLabel("CANCEL TICKET");
         headLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 30));
         headLabel.setForeground(Color.WHITE);
         headLabel.setBounds(250, 10, 400, 30);
         p1.add(headLabel);
+
+        l2 = new JLabel("USER ID:");
+        l2.setFont(new Font("Times new roman", Font.BOLD, 28));
+        l2.setBounds(100, 100, 150, 32);
+        add(l2);
+
+        l3 = new JLabel("PASSWORD:");
+        l3.setFont(new Font("Times new roman", Font.BOLD, 28));
+        l3.setBounds(100, 250, 200, 32);
+        add(l3);
+
+        l4 = new JLabel("PNR NO.:");
+        l4.setFont(new Font("Times new roman", Font.BOLD, 28));
+        l4.setBounds(100, 400, 150, 32);
+        add(l4);
+
+        tf1 = new JTextField(15);
+        tf1.setFont(new Font("Times new roman", Font.BOLD, 14));
+        tf1.setBounds(300, 100, 230, 30);
+        add(tf1);
+
+        pf2 = new JPasswordField(15);
+        pf2.setFont(new Font("Times new roman", Font.BOLD, 14));
+        pf2.setBounds(300, 250, 230, 30);
+        add(pf2);
+
+        tf2 = new JTextField(15);
+        tf2.setFont(new Font("Times new roman", Font.BOLD, 14));
+        tf2.setBounds(300, 400, 230, 30);
+        add(tf2);
+
+        b1 = new JButton("SUBMIT");
+        b1.setBackground(Color.BLACK);
+        b1.setForeground(Color.WHITE);
+        b1.setFont(new Font("Times new roman", Font.BOLD, 14));
+        b1.setBounds(300, 500, 200, 30);
+        add(b1);
 
         back.addActionListener(this);
 
@@ -64,13 +102,12 @@ public class MyBookings extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new MyBookings("Deepesh", "a@gmail.com").setVisible(true);
+        new CancelTicket("s", "a@gmail.com").setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
-
             if (ae.getSource() == back) {
                 new HomePage(name, Username).setVisible(true);
                 setVisible(false);

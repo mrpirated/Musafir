@@ -14,10 +14,12 @@ public class PnrEnquiry extends JFrame implements ActionListener {
     JPanel p1, p2, panel;
     JButton back, submit;
     JTextField pnrText;
-    private String name;
+    private String name, Username;
 
-    public PnrEnquiry(String name) {
+    public PnrEnquiry(String name, String Username) {
         this.name = name;
+        this.Username = Username;
+
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -83,12 +85,13 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         setLocation(400, 50);
         setVisible(true);
     }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(name).setVisible(true);
+                new HomePage(name, Username).setVisible(true);
                 setVisible(false);
             }
 
@@ -103,9 +106,7 @@ public class PnrEnquiry extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new PnrEnquiry("deepesh").setVisible(true);
+        new PnrEnquiry("Deepesh", "a@gmail.com").setVisible(true);
     }
 
-    
-    
 }

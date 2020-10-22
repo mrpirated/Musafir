@@ -2,12 +2,12 @@ package Classes;
 
 import java.io.*;
 
-public class CancelTicket implements Serializable{
+public class CancelTicketInfo implements Serializable {
     private String username;
     private String password;
     private String pnr;
 
-    public CancelTicket(String username, String password, String pnr) {
+    public CancelTicketInfo(String username, String password, String pnr) {
         this.password = password;
         this.pnr = pnr;
         this.username = username;

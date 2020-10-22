@@ -116,10 +116,9 @@ public class Login extends JFrame implements ActionListener {
 
                     JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");
                 } else {
-                    new HomePage(s).setVisible(true);
+                    new HomePage(s, username).setVisible(true);
                     setVisible(false);
                 }
-            
 
             } else if (ae.getSource() == b2) {
                 tf1.setText("");
@@ -132,7 +131,7 @@ public class Login extends JFrame implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     public static void main(String[] args) {

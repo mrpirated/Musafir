@@ -12,15 +12,16 @@ import java.io.*;
 
 public class HomePage extends JFrame implements ActionListener {
 
-    private String name;
+    private String name, Username;
     JLabel home, plan, booking, pnr, cancel, refund, traincancel, reroute, meal, query;
     JButton planbt, bookingbt, pnrbt, cancelbt, refundbt, traincancelbt, reroutebt, mealbt, querybt, logout;
 
     ImageIcon i1, i3;
     Image i2;
 
-    HomePage(String name) {
+    HomePage(String name, String Username) {
         this.name = name;
+        this.Username = Username;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -195,18 +196,24 @@ public class HomePage extends JFrame implements ActionListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ObjectInputStream oi =new ObjectInputStream(Connect.socket.getInputStream());
-                String[][] cities= (String[][])oi.readObject();
-                new PlanMyJourney(name,cities).setVisible(true);
+                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                String[][] cities = (String[][]) oi.readObject();
+                new PlanMyJourney(name, cities, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == logout) {
                 new Login().setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == pnrbt) {
-                new PnrEnquiry(name).setVisible(true);
+                new PnrEnquiry(name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == bookingbt) {
-                new MyBookings().setVisible(true);
+                new MyBookings(name, Username).setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == cancelbt) {
+                new CancelTicket(name, Username).setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == refundbt) {
+                new Refund(name, Username).setVisible(true);
                 setVisible(false);
             }
 
@@ -216,7 +223,7 @@ public class HomePage extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new HomePage("Deepesh").setVisible(true);
+        new HomePage("Deepesh", "a@gmail.com").setVisible(true);
     }
 
 }

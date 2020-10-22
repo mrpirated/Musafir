@@ -7,11 +7,11 @@ import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 
-public class AdminHome extends JFrame {
+public class AdminHome extends JFrame implements ActionListener {
 
     JLabel passenger, home, train, book, cancel, add, reroute, l10, l11, l12, l13, l14;
-    JButton passengerbt, trainbt, bookbt,cancelbt,addbt,reroutebt;
-    ImageIcon i1,i3;
+    JButton passengerbt, trainbt, bookbt, cancelbt, addbt, reroutebt, logout;
+    ImageIcon i1, i3;
     Image i2;
 
     AdminHome() {
@@ -24,7 +24,7 @@ public class AdminHome extends JFrame {
         int z = getWidth() - x;
         int w = z / y;
         String pad = "";
-        pad = String.format("%" + w *2.5 + "s", pad);
+        pad = String.format("%" + w * 2.5 + "s", pad);
         setTitle(pad + "ADMIN HOME PAGE");
 
         home = new JLabel("ADMIN HOME PAGE");
@@ -32,14 +32,22 @@ public class AdminHome extends JFrame {
         home.setBackground(Color.WHITE);
         home.setBounds(220, 10, 400, 30);
         add(home);
-        
+
+        logout = new JButton("LogOut");
+        Border emptyBorder = BorderFactory.createEmptyBorder();
+        logout.setBorder(emptyBorder);
+        logout.setBackground(Color.BLACK);
+        logout.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        logout.setForeground(Color.WHITE);
+        logout.setBounds(600, 10, 100, 30);
+        add(logout);
+
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/passengers.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         passengerbt = new JButton(i3);
         passengerbt.setBounds(75, 75, 100, 100);
         add(passengerbt);
-        
 
         passenger = new JLabel("Passengers Information");
         passenger.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
@@ -73,8 +81,6 @@ public class AdminHome extends JFrame {
         book.setBounds(550, 180, 200, 24);
         add(book);
 
-        
-
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/cancel.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
@@ -87,7 +93,6 @@ public class AdminHome extends JFrame {
         cancel.setForeground(Color.BLACK);
         cancel.setBounds(75, 355, 200, 24);
         add(cancel);
-
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/add.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
@@ -115,9 +120,7 @@ public class AdminHome extends JFrame {
         reroute.setBounds(545, 355, 200, 24);
         add(reroute);
 
-
-
-        
+        logout.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -125,6 +128,19 @@ public class AdminHome extends JFrame {
         setSize(750, 750);
         setLocation(400, 50);
         setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        try {
+
+            if (ae.getSource() == logout) {
+                new LoginAdmin().setVisible(true);
+                setVisible(false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
