@@ -9,8 +9,8 @@ import java.io.*;
 
 public class AdminHome extends JFrame implements ActionListener {
 
-    JLabel passenger, home, train, book, cancel, add, reroute, l10, l11, l12, l13, l14;
-    JButton passengerbt, trainbt, bookbt, cancelbt, addbt, reroutebt, logout;
+    JLabel passenger, home, train, book, cancel, add, reroute, l10, l11, l12, l13, l14, remove, addCoach;
+    JButton passengerbt, trainbt, bookbt, cancelbt, addbt, reroutebt, logout, removebt, addCoachbt;
     ImageIcon i1, i3;
     Image i2;
 
@@ -62,10 +62,10 @@ public class AdminHome extends JFrame implements ActionListener {
         trainbt.setBounds(315, 75, 100, 100);
         add(trainbt);
 
-        train = new JLabel("Trains");
+        train = new JLabel("Trains Info");
         train.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         train.setForeground(Color.BLACK);
-        train.setBounds(340, 180, 200, 24);
+        train.setBounds(320, 180, 200, 24);
         add(train);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/ticket.png"));
@@ -75,7 +75,7 @@ public class AdminHome extends JFrame implements ActionListener {
         bookbt.setBounds(555, 75, 100, 100);
         add(bookbt);
 
-        book = new JLabel("Book Tickets");
+        book = new JLabel("Book Ticket");
         book.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         book.setForeground(Color.BLACK);
         book.setBounds(550, 180, 200, 24);
@@ -88,7 +88,7 @@ public class AdminHome extends JFrame implements ActionListener {
         cancelbt.setBounds(75, 250, 100, 100);
         add(cancelbt);
 
-        cancel = new JLabel("Cancel Trains");
+        cancel = new JLabel("Cancel Train");
         cancel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         cancel.setForeground(Color.BLACK);
         cancel.setBounds(75, 355, 200, 24);
@@ -101,7 +101,7 @@ public class AdminHome extends JFrame implements ActionListener {
         addbt.setBounds(315, 250, 100, 100);
         add(addbt);
 
-        add = new JLabel("Add Trains");
+        add = new JLabel("Add Train");
         add.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         add.setForeground(Color.BLACK);
         add.setBounds(315, 355, 200, 24);
@@ -114,13 +114,47 @@ public class AdminHome extends JFrame implements ActionListener {
         reroutebt.setBounds(555, 250, 100, 100);
         add(reroutebt);
 
-        reroute = new JLabel("Reroute Trains");
+        reroute = new JLabel("Reroute Train");
         reroute.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         reroute.setForeground(Color.BLACK);
         reroute.setBounds(545, 355, 200, 24);
         add(reroute);
 
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/remove.png"));
+        i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        i3 = new ImageIcon(i2);
+        removebt = new JButton(i3);
+        removebt.setBounds(75, 425, 100, 100);
+        add(removebt);
+
+        remove = new JLabel("Remove Train");
+        remove.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
+        remove.setForeground(Color.BLACK);
+        remove.setBounds(75, 530, 200, 24);
+        add(remove);
+
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/addCoach.png"));
+        i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        i3 = new ImageIcon(i2);
+        addCoachbt = new JButton(i3);
+        addCoachbt.setBounds(315, 425, 100, 100);
+        add(addCoachbt);
+
+        addCoach = new JLabel("Add / Remove Coach");
+        addCoach.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
+        addCoach.setForeground(Color.BLACK);
+        addCoach.setBounds(285, 530, 250, 24);
+        add(addCoach);
+
         logout.addActionListener(this);
+        passengerbt.addActionListener(this);
+        trainbt.addActionListener(this);
+        bookbt.addActionListener(this);
+        cancelbt.addActionListener(this);
+        addbt.addActionListener(this);
+        reroutebt.addActionListener(this);
+        removebt.addActionListener(this);
+        addCoachbt.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -135,6 +169,27 @@ public class AdminHome extends JFrame implements ActionListener {
 
             if (ae.getSource() == logout) {
                 new LoginAdmin().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == cancelbt) {
+                new CancelTrainAdmin().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == removebt) {
+                new RemoveTrainAdmin().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == passengerbt) {
+                new PassengerInfoAdmin().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == reroutebt) {
+                new RerouteTrainAdmin().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == addbt) {
+                new AddTrainAdmin().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == addCoachbt) {
+                new AddRemoveCoach().setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == trainbt) {
+                new TrainInfoAdmin().setVisible(true);
                 setVisible(false);
             }
 
