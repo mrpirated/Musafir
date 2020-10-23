@@ -1,0 +1,77 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-AdminHome<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "Musafir.AdminHome",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-HomePage<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "Musafir.HomePage",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Login<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "Musafir.Login",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-LoginAdmin<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "Musafir.LoginAdmin",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-MyBookings<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "Musafir.MyBookings",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-PnrEnquiry<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "Musafir.PnrEnquiry",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-date<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "Musafir.date",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-HandleDatabase<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "MusafirServer.HandleDatabase",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Server<Deathly-Hallows_7f098522>",
+            "request": "launch",
+            "mainClass": "MusafirServer.Server",
+            "projectName": "Deathly-Hallows_7f098522"
+        }
+    ]
+}
