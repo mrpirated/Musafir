@@ -2,12 +2,12 @@ package Classes;
 
 import java.io.*;
 
-public class Schedule implements Serializable {
+public class ScheduleInfo implements Serializable {
     private String source;
     private String dest;
     private String date;
 
-    public Schedule(String source, String dest, String date) {
+    public ScheduleInfo(String source, String dest, String date) {
         this.source = source;
         this.dest = dest;
         this.date = date;

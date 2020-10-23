@@ -1,9 +1,9 @@
 package Classes;
 
-public class MyBookings {
+public class MyBookingsInfo {
     private String username;
 
-    public MyBookings(String username) {
+    public MyBookingsInfo(String username) {
         this.username = username;
     }
 

@@ -1,10 +1,10 @@
 package Classes;
 
-public class HaveAQuery {
+public class HaveAQueryInfo {
     private Integer choice;
     private String otherQuery;
 
-    public HaveAQuery(Integer choice, String otherQuery) {
+    public HaveAQueryInfo(Integer choice, String otherQuery) {
         this.choice = choice;
         this.otherQuery = otherQuery;
     }

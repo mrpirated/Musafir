@@ -1,10 +1,10 @@
 package Classes;
 
-public class RefundHistory {
+public class RefundHistoryInfo {
     private String username;
     private String pnr;
 
-    public RefundHistory(String username, String pnr) {
+    public RefundHistoryInfo(String username, String pnr) {
         this.pnr = pnr;
         this.username = username;
     }

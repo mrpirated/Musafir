@@ -215,6 +215,15 @@ public class HomePage extends JFrame implements ActionListener {
             } else if (ae.getSource() == refundbt) {
                 new Refund(name, Username).setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == traincancelbt) {
+                new CancelledTrains(name, Username).setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == reroutebt) {
+                new ReroutedTrains(name, Username).setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == mealbt) {
+                new BookAMeal(name, Username).setVisible(true);
+                setVisible(false);
             }
 
         } catch (Exception e) {
