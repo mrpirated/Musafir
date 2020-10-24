@@ -1,21 +1,23 @@
 package Classes;
 
+import java.util.Date;
+
 public class CancelTrainAdminInfo {
     private String trainNo;
-    private String from;
-    private String to;
+    private Date from;
+    private Date to;
 
-    public CancelTrainAdminInfo(String trainNo, String from, String to) {
+    public CancelTrainAdminInfo(String trainNo, Date from, Date to) {
         this.trainNo = trainNo;
         this.from = from;
         this.to = to;
     }
 
-    public String getFrom() {
+    public Date getFrom() {
         return from;
     }
 
-    public String getTo() {
+    public Date getTo() {
         return to;
     }
 
