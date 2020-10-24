@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - HandleDatabase",
+            "request": "launch",
+            "mainClass": "MusafirServer.HandleDatabase",
+            "projectName": "Deathly-Hallows_338bae52"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - CancelTrainAdmin",
             "request": "launch",
             "mainClass": "Musafir.CancelTrainAdmin",

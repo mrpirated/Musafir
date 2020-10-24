@@ -10,6 +10,8 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.jdesktop.swingx.JXDatePicker;
+import java.text.ParseException;
+import java.util.Date;
 
 public class CancelTrainAdmin extends JFrame implements ActionListener {
 
@@ -125,7 +127,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         try {
 
-            SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
 
             if (ae.getSource() == back) {
                 new AdminHome().setVisible(true);
@@ -134,8 +136,10 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
                 String trainNo = tf1.getText();
                 String from = formater.format(picker.getDate());
                 String to = formater.format(picker1.getDate());
+                Date dateFrom = formater.parse(from);
+                Date dateTo = formater.parse(to);
 
-                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, from, to);
+                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, dateFrom, dateTo);
 
                 try {
 
