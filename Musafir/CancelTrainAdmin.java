@@ -17,6 +17,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
     JPanel p1, p2, panel, startDatePanel, endDatePanel;
     JButton back, submit;
     JTextField pnrText, tf1;
+    JXDatePicker picker, picker1;
 
     public CancelTrainAdmin() {
 
@@ -75,7 +76,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         add(startDate);
 
         startDatePanel = new JPanel();
-        JXDatePicker picker = new JXDatePicker();
+        picker = new JXDatePicker();
         picker.setDate(Calendar.getInstance().getTime());
         picker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         startDatePanel.setBackground(Color.white);
@@ -89,7 +90,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         add(endDate);
 
         endDatePanel = new JPanel();
-        JXDatePicker picker1 = new JXDatePicker();
+        picker1 = new JXDatePicker();
         picker1.setDate(Calendar.getInstance().getTime());
         picker1.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         endDatePanel.setBackground(Color.white);
@@ -106,6 +107,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         add(submit);
 
         back.addActionListener(this);
+        submit.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -123,9 +125,34 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         try {
 
+            SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+
             if (ae.getSource() == back) {
                 new AdminHome().setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == submit) {
+                String trainNo = tf1.getText();
+                String from = formater.format(picker.getDate());
+                String to = formater.format(picker1.getDate());
+
+                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, from, to);
+
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    os.writeInt(5);
+                    os.writeObject(cancelRequest);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                String s = (String) oi.readUTF();
+                if (s.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");
+                } else {
+
+                }
             }
 
         } catch (Exception e) {

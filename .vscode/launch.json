@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - CancelTrainAdmin",
+            "request": "launch",
+            "mainClass": "Musafir.CancelTrainAdmin",
+            "projectName": "Deathly-Hallows_338bae52"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - AdminHome",
+            "request": "launch",
+            "mainClass": "Musafir.AdminHome",
+            "projectName": "Deathly-Hallows_338bae52"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"
