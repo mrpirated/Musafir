@@ -6,15 +6,24 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.time.*;
+import java.util.Date;
+import java.util.Vector;
+
 import org.jdesktop.swingx.JXDatePicker;
+
+import Classes.AvailabilityInfo;
+import Classes.ScheduleEnq;
 
 public class PlanMyJourney extends JFrame implements ActionListener {
     JPanel p1, p2, panel;
     JButton back, b1, b2, b3, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20, submit;
     JComboBox from, to;
     JPasswordField pf2;
+    JXDatePicker picker;
     private String name, Username;
 
     PlanMyJourney(String name, String[][] cities, String Username) {
@@ -93,9 +102,9 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         add(l6);
 
         panel = new JPanel();
-        JXDatePicker picker = new JXDatePicker();
+        picker = new JXDatePicker();
         picker.setDate(Calendar.getInstance().getTime());
-        picker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
+        picker.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
         panel.setBackground(Color.white);
         panel.setBounds(300, 350, 150, 30);
         panel.add(picker);
@@ -110,6 +119,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         add(submit);
 
         back.addActionListener(this);
+        submit.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -128,7 +138,19 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
+                String source = (String)from.getSelectedItem();
+                String dest =(String)to.getSelectedItem();
+                Date date= (Date)picker.getDate();
+                ScheduleEnq scheduleEnq = new ScheduleEnq(source,dest,date);
+                ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                os.writeInt(5);
+                os.writeObject(scheduleEnq);
+                os.flush();
+                //ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                //Vector<AvailabilityInfo> availabilityInfo = (Vector<AvailabilityInfo>) oi.readObject();
 
+                System.out.println(date);
+                
             }
 
         } catch (Exception e) {
