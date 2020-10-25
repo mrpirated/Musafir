@@ -7,13 +7,14 @@ import java.io.*;
 import Classes.*;
 
 public class Login extends JFrame implements ActionListener {
-    JLabel l1, l2, l3;
-    JTextField tf1;
-    JPasswordField pf2;
-    JButton b1, b2, b3;
-    static boolean flag = false;
+    private JLabel l1, l2, l3;
+    private JTextField tf1;
+    private JPasswordField pf2;
+    private JButton b1, b2, b3;
+    private Connect connection;
 
-    Login() {
+    Login(Connect connection) {
+        this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -103,20 +104,20 @@ public class Login extends JFrame implements ActionListener {
                 LoginInfo user = new LoginInfo(username, password);
                 try {
 
-                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(1);
                     os.writeObject(user);
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
                 if (s.equals("")) {
 
                     JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");
                 } else {
-                    new HomePage(s, username).setVisible(true);
+                    new HomePage(connection,s, username).setVisible(true);
                     setVisible(false);
                 }
 
@@ -124,7 +125,7 @@ public class Login extends JFrame implements ActionListener {
                 tf1.setText("");
                 pf2.setText("");
             } else if (ae.getSource() == b3) {
-                new SignUp().setVisible(true);
+                new SignUp(connection).setVisible(true);
                 setVisible(false);
             }
 
@@ -135,12 +136,12 @@ public class Login extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Login().setVisible(true);
-        if (flag == false) {
-            Connect.ConnectServer();
-            flag = true;
-        }
+        
+        Connect connection = new Connect();
+        
 
+        new Login(connection).setVisible(true);
+        
     }
 
 }

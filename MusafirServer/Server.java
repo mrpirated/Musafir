@@ -31,11 +31,7 @@ public class Server {
                 e.printStackTrace();
                 return;
             }
-            try{
-                serverSocket.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            
 
         }
         

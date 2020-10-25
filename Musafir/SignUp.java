@@ -40,14 +40,15 @@ public class SignUp extends JFrame implements ActionListener{
         
     }
 
-    JLabel head, name, date, phone, dob, month, year, gender, email, pass, cnfpass, cnfpass2;
-    JTextField namet, emailt, phonet;
-    JPasswordField passt,cnfpasst;
-    JRadioButton m, o, fl;
-    JComboBox dd, mm, yy;
-    JButton done,back;
-
-    SignUp() {
+    private JLabel head, name, date, phone, dob, month, year, gender, email, pass, cnfpass, cnfpass2;
+    private JTextField namet, emailt, phonet;
+    private JPasswordField passt,cnfpasst;
+    private JRadioButton m, o, fl;
+    private JComboBox dd, mm, yy;
+    private JButton done,back;
+    private Connect connection;
+    SignUp(Connect connection) {
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -251,14 +252,14 @@ public class SignUp extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(null, "Fill all fields");
                 }
                 UserInfo user=new UserInfo(name,email,phone,gender,password,date,month,year);
-                ObjectOutputStream os =new ObjectOutputStream(Connect.socket.getOutputStream());
+                ObjectOutputStream os =new ObjectOutputStream(connection.socket.getOutputStream());
                 os.writeInt(2);
                 os.writeObject(user);
                 os.flush();
-                ObjectInputStream oi =new ObjectInputStream(Connect.socket.getInputStream());
+                ObjectInputStream oi =new ObjectInputStream(connection.socket.getInputStream());
                 Boolean b=(Boolean)oi.readBoolean();
                 if(b){
-                new Login().setVisible(true);
+                new Login(connection).setVisible(true);
                 setVisible(false);
                 }
                 else{
@@ -270,7 +271,7 @@ public class SignUp extends JFrame implements ActionListener{
             if(ae.getSource()==back)
             {
                 setVisible(false);
-                new Login().setVisible(true);
+                new Login(connection).setVisible(true);
             }
         }
         catch(Exception e){

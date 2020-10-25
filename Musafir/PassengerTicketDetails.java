@@ -11,19 +11,19 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 public class PassengerTicketDetails extends JFrame implements ActionListener {
-    JLabel headLabel, pnrLabel, l1, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14;
-    JPanel p1, p2, panel;
-    JButton back, submit;
-    JTextField pnrText;
+    private JLabel headLabel, pnrLabel, l1, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14;
+    private JPanel p1, p2, panel;
+    private JButton back, submit;
+    private JTextField pnrText;
     private String Username, trainNo, type, name, src, dest;
     private Integer noOfPassenger;
     private Date date;
-    JComboBox cb;
-    JTextField[] nameOfPassenger, age;
-    JComboBox[] gender, preference;
-    JLabel[] number;
-
-    public PassengerTicketDetails(String name, String Username, String trainNo, String type, String src, String dest,
+    private JComboBox cb;
+    private JTextField[] nameOfPassenger, age;
+    private JComboBox[] gender, preference;
+    private JLabel[] number;
+    private Connect connection;
+    public PassengerTicketDetails(Connect connection,String name, String Username, String trainNo, String type, String src, String dest,
             Date date, Integer noOfPassenger) {
         this.name = name;
         this.Username = Username;
@@ -33,7 +33,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         this.dest = dest;
         this.date = date;
         this.noOfPassenger = noOfPassenger;
-
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -201,20 +201,14 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        String str = "2020-11-01";
-        Date startDate = Date.valueOf(str);
-        System.out.println(startDate);
-        new PassengerTicketDetails("Deepesh", "a@gmail.com", "00000", "slr", "Surat", "Mumbai Central", startDate, 1)
-                .setVisible(true);
-    }
+    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new BasicTicketDetails(name, Username, trainNo, type, src, dest, date).setVisible(true);
+                new BasicTicketDetails(connection,name, Username, trainNo, type, src, dest, date).setVisible(true);
                 setVisible(false);
             }
             if (ae.getSource() == submit) {
@@ -234,7 +228,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
 
                 try {
 
-                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(8);
                     os.writeObject(passengerDetailForm);
                     for (int i = 0; i < noOfPassenger; i++) {
@@ -244,7 +238,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
                 if (s.equals("ok")) {
 

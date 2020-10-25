@@ -10,15 +10,16 @@ import java.io.*;
 
 public class PnrEnquiry extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel;
-    JPanel p1, p2, panel;
-    JButton back, submit;
-    JTextField pnrText;
+    private JLabel headLabel, pnrLabel;
+    private JPanel p1, p2, panel;
+    private JButton back, submit;
+    private JTextField pnrText;
     private String name, Username;
-
-    public PnrEnquiry(String name, String Username) {
+    private Connect connection;
+    public PnrEnquiry(Connect connection,String name, String Username) {
         this.name = name;
         this.Username = Username;
+        this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -91,7 +92,7 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(name, Username).setVisible(true);
+                new HomePage(connection,name, Username).setVisible(true);
                 setVisible(false);
             }
 
@@ -105,8 +106,6 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        new PnrEnquiry("Deepesh", "a@gmail.com").setVisible(true);
-    }
+    
 
 }

@@ -7,15 +7,14 @@ import java.io.*;
 import Classes.*;
 
 public class LoginAdmin extends JFrame implements ActionListener {
-    JLabel l1, l2, l3;
-    JTextField tf1;
-    JPasswordField pf2;
-    JButton b1, b2;
-    static boolean flag = false;
-
-    LoginAdmin() {
-
-        // Move the text to the center
+    private JLabel l1, l2, l3;
+    private JTextField tf1;
+    private JPasswordField pf2;
+    private JButton b1, b2;
+    private Connect connection;
+    LoginAdmin(Connect connection) {
+        this.connection = connection;
+        
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -25,7 +24,7 @@ public class LoginAdmin extends JFrame implements ActionListener {
         int z = getWidth() - x;
         int w = z / y;
         String pad = "";
-        // for (int i=0; i!=w; i++) pad +=" ";
+
         pad = String.format("%" + w * 0.8 + "s", pad);
         setTitle(pad + "ADMIN LOGIN DIALOG BOX");
 
@@ -97,20 +96,20 @@ public class LoginAdmin extends JFrame implements ActionListener {
                 LoginInfo admin = new LoginInfo(username, password);
                 try {
 
-                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(4);
                     os.writeObject(admin);
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
                 if (s.equals("")) {
 
                     JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");
                 } else {
-                    new AdminHome().setVisible(true);
+                    new AdminHome(connection).setVisible(true);
                     setVisible(false);
                 }
 
@@ -126,11 +125,9 @@ public class LoginAdmin extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new LoginAdmin().setVisible(true);
-        if (flag == false) {
-            Connect.ConnectServer();
-            flag = true;
-        }
+        Connect connection = new Connect();
+        new LoginAdmin(connection).setVisible(true);
+        
     }
 
 }

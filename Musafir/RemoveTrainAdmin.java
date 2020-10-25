@@ -10,14 +10,14 @@ import java.io.*;
 
 public class RemoveTrainAdmin extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel, trainNo, infoLabel;
-    JPanel p1, p2, panel;
-    JButton back, submit;
-    JTextField pnrText, tf1;
+    private JLabel headLabel, pnrLabel, trainNo, infoLabel;
+    private JPanel p1, p2, panel;
+    private JButton back, submit;
+    private JTextField pnrText, tf1;
     private String name, Username;
-
-    public RemoveTrainAdmin() {
-
+    private Connect connection;
+    public RemoveTrainAdmin(Connect connection) {
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -85,16 +85,13 @@ public class RemoveTrainAdmin extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new RemoveTrainAdmin().setVisible(true);
-    }
-
+    
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new AdminHome().setVisible(true);
+                new AdminHome(connection).setVisible(true);
                 setVisible(false);
             }
 

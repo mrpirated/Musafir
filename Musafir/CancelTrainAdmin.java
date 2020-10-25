@@ -15,14 +15,14 @@ import java.util.Date;
 
 public class CancelTrainAdmin extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel, infoLabel, startDate, endDate, trainNo;
-    JPanel p1, p2, panel, startDatePanel, endDatePanel;
-    JButton back, submit;
-    JTextField pnrText, tf1;
-    JXDatePicker picker, picker1;
-
-    public CancelTrainAdmin() {
-
+    private JLabel headLabel, pnrLabel, infoLabel, startDate, endDate, trainNo;
+    private JPanel p1, p2, panel, startDatePanel, endDatePanel;
+    private JButton back, submit;
+    private JTextField pnrText, tf1;
+    private JXDatePicker picker, picker1;
+    private Connect connection;
+    public CancelTrainAdmin(Connect connection) {
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -119,9 +119,6 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new CancelTrainAdmin().setVisible(true);
-    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -130,7 +127,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
             SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
 
             if (ae.getSource() == back) {
-                new AdminHome().setVisible(true);
+                new AdminHome(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == submit) {
                 String trainNo = tf1.getText();
@@ -143,14 +140,14 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
 
                 try {
 
-                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(5);
                     os.writeObject(cancelRequest);
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
                 if (s.equals("")) {
                     JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");

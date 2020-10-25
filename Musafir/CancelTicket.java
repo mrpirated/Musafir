@@ -10,16 +10,17 @@ import java.io.*;
 
 public class CancelTicket extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel, l2, l3, l4;
-    JPanel p1, p2, panel;
-    JButton back, submit, b1;
-    JTextField pnrText, tf1, tf2;
-    JPasswordField pf2;
+    private JLabel headLabel, pnrLabel, l2, l3, l4;
+    private JPanel p1, p2, panel;
+    private JButton back, submit, b1;
+    private JTextField pnrText, tf1, tf2;
+    private JPasswordField pf2;
     private String name, Username;
-
-    public CancelTicket(String name, String Username) {
+    private Connect connection;
+    public CancelTicket(Connect connection,String name, String Username) {
         this.name = name;
         this.Username = Username;
+        this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -101,15 +102,11 @@ public class CancelTicket extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new CancelTicket("s", "a@gmail.com").setVisible(true);
-    }
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
             if (ae.getSource() == back) {
-                new HomePage(name, Username).setVisible(true);
+                new HomePage(connection,name, Username).setVisible(true);
                 setVisible(false);
             }
 

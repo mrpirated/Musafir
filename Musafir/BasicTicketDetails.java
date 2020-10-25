@@ -12,15 +12,15 @@ import java.text.SimpleDateFormat;
 
 public class BasicTicketDetails extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel, l1;
-    JPanel p1, p2, panel;
-    JButton back, submit;
-    JTextField pnrText;
+    private JLabel headLabel, pnrLabel, l1;
+    private JPanel p1, p2, panel;
+    private JButton back, submit;
+    private JTextField pnrText;
     private String Username, trainNo, type, name, src, dest;
     private Date date;
-    JComboBox cb;
-
-    public BasicTicketDetails(String name, String Username, String trainNo, String type, String src, String dest,
+    private JComboBox cb;
+    private Connect connection;
+    public BasicTicketDetails(Connect connection,String name, String Username, String trainNo, String type, String src, String dest,
             Date date) {
         this.name = name;
         this.Username = Username;
@@ -29,7 +29,7 @@ public class BasicTicketDetails extends JFrame implements ActionListener {
         this.src = src;
         this.dest = dest;
         this.date = date;
-
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -94,26 +94,19 @@ public class BasicTicketDetails extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        String str = "2020-11-01";
-        Date startDate = Date.valueOf(str);
-        System.out.println(startDate);
-        new BasicTicketDetails("Deepesh", "a@gmail.com", "00000", "slr", "Surat", "Mumbai Central", startDate)
-                .setVisible(true);
-    }
-
+    
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(name, Username).setVisible(true);
+                new HomePage(connection,name, Username).setVisible(true);
                 setVisible(false);
             }
             if (ae.getSource() == submit) {
                 String str = (String) cb.getSelectedItem();
                 Integer noOfPassenger = Integer.parseInt(str);
-                new PassengerTicketDetails(name, Username, trainNo, type, src, dest, date, noOfPassenger)
+                new PassengerTicketDetails(connection,name, Username, trainNo, type, src, dest, date, noOfPassenger)
                         .setVisible(true);
                 setVisible(false);
             }

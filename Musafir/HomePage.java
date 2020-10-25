@@ -13,13 +13,14 @@ import java.io.*;
 public class HomePage extends JFrame implements ActionListener {
 
     private String name, Username;
-    JLabel home, plan, booking, pnr, cancel, refund, traincancel, reroute, meal, query;
-    JButton planbt, bookingbt, pnrbt, cancelbt, refundbt, traincancelbt, reroutebt, mealbt, querybt, logout;
+    private JLabel home, plan, booking, pnr, cancel, refund, traincancel, reroute, meal, query;
+    private JButton planbt, bookingbt, pnrbt, cancelbt, refundbt, traincancelbt, reroutebt, mealbt, querybt, logout;
 
-    ImageIcon i1, i3;
-    Image i2;
-
-    HomePage(String name, String Username) {
+    private ImageIcon i1, i3;
+    private Image i2;
+    private Connect connection;
+    HomePage(Connect connection,String name, String Username) {
+        this.connection = connection;
         this.name = name;
         this.Username = Username;
         setFont(new Font("System", Font.BOLD, 22));
@@ -190,39 +191,39 @@ public class HomePage extends JFrame implements ActionListener {
             if (ae.getSource() == planbt) {
                 try {
 
-                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(3);
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String[][] cities = (String[][]) oi.readObject();
-                new PlanMyJourney(name, cities, Username).setVisible(true);
+                new PlanMyJourney(connection,name, cities, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == logout) {
-                new Login().setVisible(true);
+                new Login(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == pnrbt) {
-                new PnrEnquiry(name, Username).setVisible(true);
+                new PnrEnquiry(connection,name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == bookingbt) {
-                new MyBookings(name, Username).setVisible(true);
+                new MyBookings(connection,name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == cancelbt) {
-                new CancelTicket(name, Username).setVisible(true);
+                new CancelTicket(connection,name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == refundbt) {
-                new Refund(name, Username).setVisible(true);
+                new Refund(connection,name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == traincancelbt) {
-                new CancelledTrains(name, Username).setVisible(true);
+                new CancelledTrains(connection,name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == reroutebt) {
-                new ReroutedTrains(name, Username).setVisible(true);
+                new ReroutedTrains(connection,name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == mealbt) {
-                new BookAMeal(name, Username).setVisible(true);
+                new BookAMeal(connection,name, Username).setVisible(true);
                 setVisible(false);
             }
 
@@ -231,8 +232,6 @@ public class HomePage extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        new HomePage("Deepesh", "a@gmail.com").setVisible(true);
-    }
+    
 
 }

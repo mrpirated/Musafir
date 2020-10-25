@@ -19,17 +19,17 @@ import Classes.AvailabilityInfo;
 import Classes.ScheduleEnq;
 
 public class PlanMyJourney extends JFrame implements ActionListener {
-    JPanel p1, p2, panel;
-    JButton back, b1, b2, b3, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20, submit;
-    JComboBox from, to;
-    JPasswordField pf2;
-    JXDatePicker picker;
+    private JPanel p1, p2, panel;
+    private JButton back, b1, b2, b3, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20, submit;
+    private JComboBox from, to;
+    private JPasswordField pf2;
+    private JXDatePicker picker;
     private String name, Username;
-
-    PlanMyJourney(String name, String[][] cities, String Username) {
+    private Connect connection;
+    PlanMyJourney(Connect connection,String name, String[][] cities, String Username) {
         this.name = name;
         this.Username = Username;
-
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -133,7 +133,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(name, Username).setVisible(true);
+                new HomePage(connection,name, Username).setVisible(true);
                 setVisible(false);
             }
 
@@ -146,7 +146,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 String d = df.format(dt);
                 Date date = Date.valueOf(d);
                 ScheduleEnq scheduleEnq = new ScheduleEnq(source,dest,date);
-                ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                 os.writeInt(5);
                 os.writeObject(scheduleEnq);
                 os.flush();

@@ -10,15 +10,16 @@ import java.io.*;
 
 public class MyBookings extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel;
-    JPanel p1, p2, panel;
-    JButton back, submit;
-    JTextField pnrText;
+    private JLabel headLabel, pnrLabel;
+    private JPanel p1, p2, panel;
+    private JButton back, submit;
+    private JTextField pnrText;
     private String name, Username;
-
-    public MyBookings(String name, String Username) {
+    private Connect connection;
+    public MyBookings(Connect connection,String name, String Username) {
         this.name = name;
         this.Username = Username;
+        this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -63,16 +64,13 @@ public class MyBookings extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new MyBookings("Deepesh", "a@gmail.com").setVisible(true);
-    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(name, Username).setVisible(true);
+                new HomePage(connection,name, Username).setVisible(true);
                 setVisible(false);
             }
 

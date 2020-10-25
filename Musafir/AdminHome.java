@@ -9,13 +9,13 @@ import java.io.*;
 
 public class AdminHome extends JFrame implements ActionListener {
 
-    JLabel passenger, home, train, book, cancel, add, reroute, l10, l11, l12, l13, l14, remove, addCoach;
-    JButton passengerbt, trainbt, bookbt, cancelbt, addbt, reroutebt, logout, removebt, addCoachbt;
-    ImageIcon i1, i3;
-    Image i2;
-
-    AdminHome() {
-
+    private JLabel passenger, home, train, book, cancel, add, reroute, l10, l11, l12, l13, l14, remove, addCoach;
+    private JButton passengerbt, trainbt, bookbt, cancelbt, addbt, reroutebt, logout, removebt, addCoachbt;
+    private ImageIcon i1, i3;
+    private Image i2;
+    private Connect connection;
+    AdminHome(Connect connection) {
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -168,28 +168,28 @@ public class AdminHome extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == logout) {
-                new LoginAdmin().setVisible(true);
+                new LoginAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == cancelbt) {
-                new CancelTrainAdmin().setVisible(true);
+                new CancelTrainAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == removebt) {
-                new RemoveTrainAdmin().setVisible(true);
+                new RemoveTrainAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == passengerbt) {
-                new PassengerInfoAdmin().setVisible(true);
+                new PassengerInfoAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == reroutebt) {
-                new RerouteTrainAdmin().setVisible(true);
+                new RerouteTrainAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addbt) {
-                new AddTrainAdmin().setVisible(true);
+                new AddTrainAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addCoachbt) {
-                new AddRemoveCoach().setVisible(true);
+                new AddRemoveCoach(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == trainbt) {
-                new TrainInfoAdmin().setVisible(true);
+                new TrainInfoAdmin(connection).setVisible(true);
                 setVisible(false);
             }
 
@@ -198,7 +198,5 @@ public class AdminHome extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        new AdminHome().setVisible(true);
-    }
+   
 }

@@ -10,13 +10,13 @@ import java.io.*;
 
 public class AddTrainAdmin extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel, l2, l3, l4, l5, l6, l7, l8, l9;
-    JPanel p1, p2, panel;
-    JButton back, next;
-    JTextField pnrText, trainNo, trainName, tsSlr, tsAc, src, dest, runningDays, noOfStations;
-
-    public AddTrainAdmin() {
-
+    private JLabel headLabel, pnrLabel, l2, l3, l4, l5, l6, l7, l8, l9;
+    private JPanel p1, p2, panel;
+    private JButton back, next;
+    private JTextField pnrText, trainNo, trainName, tsSlr, tsAc, src, dest, runningDays, noOfStations;
+    private Connect connection;
+    public AddTrainAdmin(Connect connection) {
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -149,16 +149,12 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new AddTrainAdmin().setVisible(true);
-    }
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new AdminHome().setVisible(true);
+                new AdminHome(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == next) {
                 String trainNox = trainNo.getText();
@@ -174,22 +170,22 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
 
                 try {
 
-                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(6);
                     os.writeObject(addTrain);
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
                 if (s.equals("ok")) {
                     JOptionPane.showMessageDialog(null, "Train Basic Details Added. Complete the next form.");
-                    new AddTrainAdminNext(trainNox, noOfHaltx).setVisible(true);
+                    new AddTrainAdminNext(connection,trainNox, noOfHaltx).setVisible(true);
                     setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Request Not Processed");
-                    new AdminHome().setVisible(true);
+                    new AdminHome(connection).setVisible(true);
                     setVisible(false);
                 }
             }

@@ -3,9 +3,9 @@ package Musafir;
 import java.net.Socket;
 
 public class Connect {
-    static Socket socket;
+    public Socket socket;
 
-    public static void ConnectServer(){
+    public Connect(){
         try{
             socket=new Socket("localhost",5000);
         }

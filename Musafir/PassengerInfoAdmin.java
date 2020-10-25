@@ -10,13 +10,13 @@ import java.io.*;
 
 public class PassengerInfoAdmin extends JFrame implements ActionListener {
 
-    JLabel headLabel, pnrLabel;
-    JPanel p1, p2, panel;
-    JButton back, submit;
-    JTextField pnrText;
-
-    public PassengerInfoAdmin() {
-
+    private JLabel headLabel, pnrLabel;
+    private JPanel p1, p2, panel;
+    private JButton back, submit;
+    private JTextField pnrText;
+    private Connect connection;
+    public PassengerInfoAdmin(Connect connection) {
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -60,16 +60,14 @@ public class PassengerInfoAdmin extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new PassengerInfoAdmin().setVisible(true);
-    }
+    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new AdminHome().setVisible(true);
+                new AdminHome(connection).setVisible(true);
                 setVisible(false);
             }
 
