@@ -69,8 +69,8 @@ public class BasicTicketDetails extends JFrame implements ActionListener {
         l1.setBounds(80, 100, 400, 30);
         add(l1);
 
-        String country[] = { "1", "2", "3", "4", "5", "6" };
-        cb = new JComboBox(country);
+        String number[] = { "1", "2", "3", "4", "5", "6" };
+        cb = new JComboBox(number);
         cb.setFont(new Font("TIMES NEW ROMAN", Font.PLAIN, 25));
         cb.setBounds(280, 100, 90, 30);
         add(cb);

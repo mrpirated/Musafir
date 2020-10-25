@@ -1,31 +1,27 @@
 package Classes;
 
 import java.io.*;
+import java.sql.Date;
 
 public class PassengersDetailForm implements Serializable {
-    private String username;
-    private String trainNo;
-    private String date;
-    private String src;
-    private String dest;
-    private String quota;
-    private String mobile;
-    private Integer noOfPassengers;
-    PassengerInfo[] passengers = new PassengerInfo[noOfPassengers];
+    // PassengerTicketDetails()
+    private String name, Username, trainNo, type, src, dest;
+    private Date date;
+    private Integer noOfPassenger;
 
-    public PassengersDetailForm(String username, String trainNo, String date, String src, String dest, String quota,
-            String mobile, Integer noOfPassengers) {
-        this.username = username;
-        this.date = date;
-        this.dest = dest;
-        this.mobile = mobile;
-        this.noOfPassengers = noOfPassengers;
-        this.quota = quota;
-        this.src = src;
+    public PassengersDetailForm(String name, String Username, String trainNo, String type, String src, String dest,
+            Date date, Integer noOfPassenger) {
+        this.name = name;
+        this.Username = Username;
         this.trainNo = trainNo;
+        this.type = type;
+        this.src = src;
+        this.dest = dest;
+        this.date = date;
+        this.noOfPassenger = noOfPassenger;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -33,20 +29,8 @@ public class PassengersDetailForm implements Serializable {
         return dest;
     }
 
-    public String getMobile() {
-        return mobile;
-    }
-
-    public Integer getNoOfPassengers() {
-        return noOfPassengers;
-    }
-
-    public PassengerInfo[] getPassengers() {
-        return passengers;
-    }
-
-    public String getQuota() {
-        return quota;
+    public Integer getNoOfPassenger() {
+        return noOfPassenger;
     }
 
     public String getSrc() {
@@ -57,7 +41,15 @@ public class PassengersDetailForm implements Serializable {
         return trainNo;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
     public String getUsername() {
-        return username;
+        return Username;
     }
 }

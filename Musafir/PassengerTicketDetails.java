@@ -115,17 +115,17 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         l14.setBounds(620, 100, 400, 30);
         add(l14);
 
-        l3 = new JLabel("Name Of Passenger     |");
+        l3 = new JLabel("Name Of Passenger");
         l3.setFont(new Font("Times new roman", Font.BOLD, 20));
         l3.setBounds(55, 150, 400, 32);
         add(l3);
 
-        l4 = new JLabel("Age       |");
+        l4 = new JLabel("Age");
         l4.setFont(new Font("Times new roman", Font.BOLD, 20));
         l4.setBounds(295, 150, 400, 32);
         add(l4);
 
-        l5 = new JLabel("Gender        |");
+        l5 = new JLabel("Gender");
         l5.setFont(new Font("Times new roman", Font.BOLD, 20));
         l5.setBounds(410, 150, 400, 32);
         add(l5);
@@ -134,6 +134,53 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         l6.setFont(new Font("Times new roman", Font.BOLD, 20));
         l6.setBounds(560, 150, 400, 32);
         add(l6);
+
+        nameOfPassenger = new JTextField[noOfPassenger];
+        age = new JTextField[noOfPassenger];
+        gender = new JComboBox[noOfPassenger];
+        preference = new JComboBox[noOfPassenger];
+
+        number = new JLabel[noOfPassenger];
+
+        Integer i = 0, y1 = 200;
+
+        for (i = 0; i < noOfPassenger; i++) {
+            String str = String.valueOf(i + 1);
+            number[i] = new JLabel(str + ".");
+            number[i].setFont(new Font("Times new roman", Font.BOLD, 25));
+            number[i].setBounds(20, y1 - 8, 400, 32);
+            add(number[i]);
+
+            Integer x1 = 55;
+
+            nameOfPassenger[i] = new JTextField(50);
+            nameOfPassenger[i].setBounds(x1, y1, 200, 25);
+            nameOfPassenger[i].setFont(new Font("Times new roman", Font.BOLD, 20));
+            add(nameOfPassenger[i]);
+
+            x1 = 295;
+            age[i] = new JTextField(51);
+            age[i].setBounds(x1, y1, 80, 25);
+            age[i].setFont(new Font("Times new roman", Font.BOLD, 20));
+            add(age[i]);
+
+            x1 = 410;
+            String genderx[] = { "F", "M", "O" };
+            gender[i] = new JComboBox(genderx);
+            gender[i].setBounds(x1, y1, 80, 25);
+            gender[i].setFont(new Font("Times new roman", Font.BOLD, 20));
+            add(gender[i]);
+
+            x1 = 560;
+            String preferencex[] = { "LB", "MB", "UB", "SLB", "SUB" };
+            preference[i] = new JComboBox(preferencex);
+            preference[i].setBounds(x1, y1, 80, 25);
+            preference[i].setFont(new Font("Times new roman", Font.BOLD, 20));
+            add(preference[i]);
+
+            y1 = y1 + 50;
+            System.out.println(i + "\n");
+        }
 
         submit = new JButton("Submit");
         submit.setBackground(Color.BLACK);
@@ -158,7 +205,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         String str = "2020-11-01";
         Date startDate = Date.valueOf(str);
         System.out.println(startDate);
-        new PassengerTicketDetails("Deppesh", "a@gmail.com", "00000", "slr", "Surat", "Mumbai Central", startDate, 1)
+        new PassengerTicketDetails("Deepesh", "a@gmail.com", "00000", "slr", "Surat", "Mumbai Central", startDate, 1)
                 .setVisible(true);
     }
 
@@ -171,7 +218,39 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 setVisible(false);
             }
             if (ae.getSource() == submit) {
+                PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, Username, trainNo, type, src,
+                        dest, date, noOfPassenger);
+                PassengerInfo[] passengerInfo = new PassengerInfo[noOfPassenger];
 
+                for (int i = 0; i < noOfPassenger; i++) {
+                    String passengerNameSend = nameOfPassenger[i].getText();
+                    String agex = age[i].getText();
+                    Integer ageSend = Integer.parseInt(agex);
+                    String genderx = (String) gender[i].getSelectedItem();
+                    Character genderSend = genderx.charAt(0);
+                    String berthPrefSend = (String) preference[i].getSelectedItem();
+                    passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend);
+                }
+
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
+                    os.writeInt(8);
+                    os.writeObject(passengerDetailForm);
+                    for (int i = 0; i < noOfPassenger; i++) {
+                        os.writeObject(passengerInfo[i]);
+                    }
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(Connect.socket.getInputStream());
+                String s = (String) oi.readUTF();
+                if (s.equals("ok")) {
+
+                } else {
+
+                }
             }
 
         } catch (Exception e) {

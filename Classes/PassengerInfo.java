@@ -1,18 +1,18 @@
 package Classes;
 
 public class PassengerInfo {
-    private String name, age, nationality, berthPreference;
+    private String name, berthPreference;
+    private Integer age;
     private Character gender;
 
-    public PassengerInfo(String name, String age, String nationality, Character gender, String berthPreference) {
+    public PassengerInfo(String name, Integer age, Character gender, String berthPreference) {
         this.name = name;
         this.age = age;
-        this.nationality = nationality;
         this.berthPreference = berthPreference;
         this.gender = gender;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -26,9 +26,5 @@ public class PassengerInfo {
 
     public String getName() {
         return name;
-    }
-
-    public String getNationality() {
-        return nationality;
     }
 }
