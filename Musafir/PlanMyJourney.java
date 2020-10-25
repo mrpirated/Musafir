@@ -10,7 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.time.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Vector;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -140,7 +140,11 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             else if (ae.getSource() == submit) {
                 String source = (String)from.getSelectedItem();
                 String dest =(String)to.getSelectedItem();
-                Date date= (Date)picker.getDate();
+                java.util.Date dt = picker.getDate();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                
+                String d = df.format(dt);
+                Date date = Date.valueOf(d);
                 ScheduleEnq scheduleEnq = new ScheduleEnq(source,dest,date);
                 ObjectOutputStream os = new ObjectOutputStream(Connect.socket.getOutputStream());
                 os.writeInt(5);

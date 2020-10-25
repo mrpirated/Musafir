@@ -167,7 +167,7 @@ public class AddTrainAdminNext extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new AddTrainAdminNext("00000", 12).setVisible(true);
+        new AddTrainAdminNext("00000", 50).setVisible(true);
     }
 
     @Override
