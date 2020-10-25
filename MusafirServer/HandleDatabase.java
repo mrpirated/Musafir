@@ -34,28 +34,29 @@ public class HandleDatabase {
             DayOfWeek weekday;
             int val;
             String runningdays;
-
-            while (start.compareTo(end) <= 0) {
-                weekday = DayOfWeek.from(start);
-                val = weekday.getValue() - 1;
-                rs = c1.s.executeQuery(query);
-                while (rs.next()) {
-                    runningdays = (String) rs.getString("runningDays");
-                    if (runningdays.charAt(val) == '1') {
-                        String trainno = rs.getString("train_no");
-                        int sl = rs.getInt("ts_slr");
-                        int ac = rs.getInt("ts_ac");
-                        query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
-                                + start + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '" + ac
-                                + "')";
-                        Conn c2 = new Conn();
-                        c2.s.executeUpdate(query2);
-                        System.out.println(start + " inserted");
+            if (start.compareTo(end) != 0) {
+                while (start.compareTo(end) <= 0) {
+                    weekday = DayOfWeek.from(start);
+                    val = weekday.getValue() - 1;
+                    rs = c1.s.executeQuery(query);
+                    while (rs.next()) {
+                        runningdays = (String) rs.getString("runningDays");
+                        if (runningdays.charAt(val) == '1') {
+                            String trainno = rs.getString("train_no");
+                            int sl = rs.getInt("ts_slr");
+                            int ac = rs.getInt("ts_ac");
+                            query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
+                                    + start + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '"
+                                    + ac + "')";
+                            Conn c2 = new Conn();
+                            c2.s.executeUpdate(query2);
+                            System.out.println(start + " inserted");
+                        }
                     }
+
+                    start = start.plusDays(1);
+
                 }
-
-                start = start.plusDays(1);
-
             }
 
             System.out.println(count);
