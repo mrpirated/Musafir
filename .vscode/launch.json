@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - AddTrainAdminNext",
+            "request": "launch",
+            "mainClass": "Musafir.AddTrainAdminNext",
+            "projectName": "Deathly-Hallows_338bae52"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - AddTrainAdmin",
             "request": "launch",
             "mainClass": "Musafir.AddTrainAdmin",

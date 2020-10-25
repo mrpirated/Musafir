@@ -185,6 +185,8 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                 String s = (String) oi.readUTF();
                 if (s.equals("ok")) {
                     JOptionPane.showMessageDialog(null, "Train Basic Details Added. Complete the next form.");
+                    new AddTrainAdminNext(trainNox, noOfHaltx).setVisible(true);
+                    setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Request Not Processed");
                     new AdminHome().setVisible(true);
