@@ -3,6 +3,7 @@ package MusafirServer;
 import java.io.*;
 import java.net.*;
 import java.sql.*;
+import java.util.*;
 
 import Classes.*;
 
@@ -93,6 +94,40 @@ public class HandleClient implements Runnable {
         return "";
     }
 
+    private Vector<AvailabilityInfo> ScheduleEnq(ScheduleEnq scheduleEnq) {
+        Vector<AvailabilityInfo> availabilityInfo = new Vector<AvailabilityInfo>();
+        AvailabilityInfo temp;
+        int train;
+        String query = "SELECT * FROM `month` WHERE `date` = '" + scheduleEnq.getDate() + "'", query2;
+        try {
+            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3;
+            while (rs1.next()) {
+                train = (int) rs1.getInt("train");
+                query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = " + train + " ORDER BY `station_no` ASC";
+                Conn c2 = new Conn();
+                rs2 = c2.s.executeQuery(query2);
+
+                while (rs2.next()) {
+
+                    if (rs2.getString("station").equals(scheduleEnq.getSource())) {
+                        rs3 = rs2;
+                        while (rs3.next()) {
+                            if (rs3.getString("station").equals(scheduleEnq.getDest())) {
+                                temp = new AvailabilityInfo(true, train, rs1.getInt("Avail_S"), rs1.getInt("Avail_AC"),
+                                        rs2.getTimestamp("departure"), rs3.getTimestamp("arrival"));
+                                availabilityInfo.add(temp);
+                            }
+                        }
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return availabilityInfo;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -128,6 +163,14 @@ public class HandleClient implements Runnable {
                         String s1 = AdminLogin(adminLogin);
                         os.writeUTF(s1);
                         os.flush();
+                        break;
+                    case 5:
+                        ScheduleEnq scheduleEnq = (ScheduleEnq) oi.readObject();
+                        Vector<AvailabilityInfo> availabilityInfo = ScheduleEnq(scheduleEnq);
+                        os.writeObject(availabilityInfo);
+                        os.flush();
+                        System.out.println(availabilityInfo.get(0).getTrain());
+
                         break;
 
                 }

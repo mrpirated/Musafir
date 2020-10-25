@@ -1,13 +1,14 @@
 package Classes;
 
 import java.io.*;
+import java.util.*;
 
-public class ScheduleInfo implements Serializable {
+public class ScheduleEnq implements Serializable {
     private String source;
     private String dest;
-    private String date;
+    private Date date;
 
-    public ScheduleInfo(String source, String dest, String date) {
+    public ScheduleEnq(String source, String dest, Date date) {
         this.source = source;
         this.dest = dest;
         this.date = date;
@@ -21,7 +22,7 @@ public class ScheduleInfo implements Serializable {
         return dest;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 }
