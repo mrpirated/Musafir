@@ -30,6 +30,20 @@
             "name": "CodeLens (Launch) - AddTrainAdminNext",
             "request": "launch",
             "mainClass": "Musafir.AddTrainAdminNext",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - AddTrainAdmin",
+            "request": "launch",
+            "mainClass": "Musafir.AddTrainAdmin",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - AddTrainAdminNext",
+            "request": "launch",
+            "mainClass": "Musafir.AddTrainAdminNext",
             "projectName": "Deathly-Hallows_338bae52"
         },
         {

@@ -99,6 +99,10 @@ public class HandleClient implements Runnable {
         AvailabilityInfo temp;
         int train;
         String query = "SELECT * FROM `month` WHERE `date` = '" + scheduleEnq.getDate() + "'", query2;
+        String st1,st2;
+        String source = scheduleEnq.getSource();
+        String dest = scheduleEnq.getDest();
+        System.out.println("in the function");
         try {
             ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3;
             while (rs1.next()) {
@@ -108,14 +112,21 @@ public class HandleClient implements Runnable {
                 rs2 = c2.s.executeQuery(query2);
 
                 while (rs2.next()) {
-
-                    if (rs2.getString("station").equals(scheduleEnq.getSource())) {
+                    
+                    st1=(String)rs2.getString("station");
+                    System.out.println(st1);
+                    if (source.equals(st1)) {
                         rs3 = rs2;
+                        System.out.println("equals");
                         while (rs3.next()) {
-                            if (rs3.getString("station").equals(scheduleEnq.getDest())) {
+                            System.out.println("rs3");
+                            st2=(String)rs3.getString("station");
+                            if (dest.equals(st2)) {
                                 temp = new AvailabilityInfo(true, train, rs1.getInt("Avail_S"), rs1.getInt("Avail_AC"),
                                         rs2.getTimestamp("departure"), rs3.getTimestamp("arrival"));
+                                        
                                 availabilityInfo.add(temp);
+                                System.out.println("added");
                             }
                         }
                     }
@@ -167,7 +178,7 @@ public class HandleClient implements Runnable {
                     case 5:
                         ScheduleEnq scheduleEnq = (ScheduleEnq) oi.readObject();
                         Vector<AvailabilityInfo> availabilityInfo = ScheduleEnq(scheduleEnq);
-                        os.writeObject(availabilityInfo);
+                        //os.writeObject(availabilityInfo);
                         os.flush();
                         System.out.println(availabilityInfo.get(0).getTrain());
 
