@@ -11,12 +11,13 @@ public class Server {
         System.out.println("Server Started");
         try{
             serverSocket=new ServerSocket(5000);
-            Conn c=new Conn();
+            
         }catch (IOException e)
         {
             e.printStackTrace();
             return;
         }
+        new HandleDatabase();
         while(true){
             try{
                 socket=serverSocket.accept();
@@ -30,7 +31,13 @@ public class Server {
                 e.printStackTrace();
                 return;
             }
+            try{
+                serverSocket.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
 
         }
+        
     }
 }
