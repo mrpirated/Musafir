@@ -36,7 +36,7 @@ public class HandleDatabase {
             String runningdays;
 
             while (start.compareTo(end) <= 0) {
-                weekday = DayOfWeek.from(date);
+                weekday = DayOfWeek.from(start);
                 val = weekday.getValue() - 1;
                 rs = c1.s.executeQuery(query);
                 while (rs.next()) {
@@ -46,11 +46,11 @@ public class HandleDatabase {
                         int sl = rs.getInt("ts_slr");
                         int ac = rs.getInt("ts_ac");
                         query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
-                                + date + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '" + ac
+                                + start + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '" + ac
                                 + "')";
                         Conn c2 = new Conn();
                         c2.s.executeUpdate(query2);
-                        System.out.println(date + " inserted");
+                        System.out.println(start + " inserted");
                     }
                 }
 
