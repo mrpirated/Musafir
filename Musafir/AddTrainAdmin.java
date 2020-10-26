@@ -13,10 +13,14 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
     private JLabel headLabel, pnrLabel, l2, l3, l4, l5, l6, l7, l8, l9;
     private JPanel p1, p2, panel;
     private JButton back, next;
-    private JTextField pnrText, trainNo, trainName, tsSlr, tsAc, src, dest, runningDays, noOfStations;
+    private JComboBox src, dest;
+    private JTextField pnrText, trainNo, trainName, tsSlr, tsAc, runningDays, noOfStations;
     private Connect connection;
-    public AddTrainAdmin(Connect connection) {
+    private String[][] cities;
+
+    public AddTrainAdmin(Connect connection, String[][] cities) {
         this.connection = connection;
+        this.cities = cities;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -95,7 +99,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
         l6.setBounds(100, 230, 400, 32);
         add(l6);
 
-        src = new JTextField(50);
+        src = new JComboBox(cities[0]);
         src.setBounds(450, 230, 230, 30);
         src.setFont(new Font("Times new roman", Font.BOLD, 14));
         add(src);
@@ -105,7 +109,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
         l7.setBounds(100, 290, 400, 32);
         add(l7);
 
-        dest = new JTextField(50);
+        dest = new JComboBox(cities[0]);
         dest.setBounds(450, 290, 230, 30);
         dest.setFont(new Font("Times new roman", Font.BOLD, 14));
         add(dest);
@@ -159,9 +163,9 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
             } else if (ae.getSource() == next) {
                 String trainNox = trainNo.getText();
                 String trainNamex = trainName.getText();
-                String srcx = src.getText();
-                String destx = dest.getText();
-                Integer runningDaysx = Integer.parseInt(runningDays.getText());
+                String srcx = (String) src.getSelectedItem();
+                String destx = (String) dest.getSelectedItem();
+                String runningDaysx = runningDays.getText();
                 Integer noOfHaltx = Integer.parseInt(noOfStations.getText());
                 Integer ts_slr = Integer.parseInt(tsSlr.getText()) * 72;
                 Integer ts_ac = Integer.parseInt(tsAc.getText()) * 50;
@@ -181,7 +185,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                 String s = (String) oi.readUTF();
                 if (s.equals("ok")) {
                     JOptionPane.showMessageDialog(null, "Train Basic Details Added. Complete the next form.");
-                    new AddTrainAdminNext(connection,trainNox, noOfHaltx).setVisible(true);
+                    new AddTrainAdminNext(connection, trainNox, noOfHaltx, cities).setVisible(true);
                     setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Request Not Processed");

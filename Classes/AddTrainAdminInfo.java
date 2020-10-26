@@ -1,16 +1,18 @@
 package Classes;
 
-public class AddTrainAdminInfo {
+import java.io.*;
+
+public class AddTrainAdminInfo implements Serializable {
     private String trainNo;
     private String trainName;
     private String src;
     private String dest;
-    private Integer runningDays;
+    private String runningDays;
     private Integer noOfHalts;
     private Integer ts_slr;
     private Integer ts_ac;
 
-    public AddTrainAdminInfo(String trainNo, String trainName, String src, String dest, Integer runningDays,
+    public AddTrainAdminInfo(String trainNo, String trainName, String src, String dest, String runningDays,
             Integer noOfHalts, Integer ts_slr, Integer ts_ac) {
         this.trainNo = trainNo;
         this.trainName = trainName;
@@ -30,7 +32,7 @@ public class AddTrainAdminInfo {
         return noOfHalts;
     }
 
-    public Integer getRunningDays() {
+    public String getRunningDays() {
         return runningDays;
     }
 

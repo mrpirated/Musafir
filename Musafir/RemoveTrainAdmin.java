@@ -16,6 +16,7 @@ public class RemoveTrainAdmin extends JFrame implements ActionListener {
     private JTextField pnrText, tf1;
     private String name, Username;
     private Connect connection;
+
     public RemoveTrainAdmin(Connect connection) {
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
@@ -76,6 +77,7 @@ public class RemoveTrainAdmin extends JFrame implements ActionListener {
         add(submit);
 
         back.addActionListener(this);
+        submit.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -85,7 +87,6 @@ public class RemoveTrainAdmin extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
@@ -93,6 +94,29 @@ public class RemoveTrainAdmin extends JFrame implements ActionListener {
             if (ae.getSource() == back) {
                 new AdminHome(connection).setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == submit) {
+                String trainNoSend = trainNo.getText();
+
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(9);
+                    os.writeUTF(trainNoSend);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                String s = (String) oi.readUTF();
+
+                if (s.equals("ok")) {
+                    JOptionPane.showMessageDialog(null, "Train Removed Successfully.");
+                    new AdminHome(connection).setVisible(true);
+                    setVisible(false);
+                } else {
+
+                }
             }
 
         } catch (Exception e) {

@@ -7,23 +7,17 @@ import java.awt.event.*;
 import java.net.*;
 import Classes.*;
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import org.jdesktop.swingx.JXDatePicker;
-import java.text.ParseException;
-import java.sql.*;
-import java.util.*;
 
-public class CancelTrainAdmin extends JFrame implements ActionListener {
+public class AddCityAdmin extends JFrame implements ActionListener {
 
-    private JLabel headLabel, pnrLabel, infoLabel, startDate, endDate, trainNo;
-    private JPanel p1, p2, panel, startDatePanel, endDatePanel;
+    private JLabel headLabel, pnrLabel, trainNo, infoLabel, cityName, stationCode;
+    private JPanel p1, p2, panel;
     private JButton back, submit;
-    private JTextField pnrText, tf1;
-    private JXDatePicker picker, picker1;
+    private JTextField pnrText, tf1, tf2;
+    private String name, Username;
     private Connect connection;
 
-    public CancelTrainAdmin(Connect connection) {
+    public AddCityAdmin(Connect connection) {
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -34,7 +28,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         int w = z / y;
         String pad = "";
         pad = String.format("%" + w * 2.5 + "s", pad);
-        setTitle(pad + "CANCEL TRAIN");
+        setTitle(pad + "ADD CITY");
 
         p1 = new JPanel();
         p1.setLayout(null);
@@ -52,55 +46,31 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         back.setBounds(5, 8, 30, 30);
         p1.add(back);
 
-        headLabel = new JLabel("CANCEL TRAIN");
+        headLabel = new JLabel("ADD CITY");
         headLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 30));
         headLabel.setForeground(Color.WHITE);
         headLabel.setBounds(250, 10, 400, 30);
         p1.add(headLabel);
 
-        infoLabel = new JLabel("Fill Following Information");
-        infoLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 27));
-        infoLabel.setForeground(Color.BLACK);
-        infoLabel.setBounds(220, 90, 400, 30);
-        add(infoLabel);
-
-        trainNo = new JLabel("Train No:");
-        trainNo.setFont(new Font("Times new roman", Font.BOLD, 20));
-        trainNo.setBounds(200, 180, 150, 32);
-        add(trainNo);
+        cityName = new JLabel("City Name:");
+        cityName.setFont(new Font("Times new roman", Font.BOLD, 20));
+        cityName.setBounds(200, 180, 150, 32);
+        add(cityName);
 
         tf1 = new JTextField(7);
         tf1.setFont(new Font("Times new roman", Font.BOLD, 14));
-        tf1.setBounds(300, 180, 150, 30);
+        tf1.setBounds(340, 180, 150, 30);
         add(tf1);
 
-        startDate = new JLabel("From:");
-        startDate.setFont(new Font("Times new roman", Font.BOLD, 20));
-        startDate.setBounds(70, 250, 200, 32);
-        add(startDate);
+        stationCode = new JLabel("Station Code:");
+        stationCode.setFont(new Font("Times new roman", Font.BOLD, 20));
+        stationCode.setBounds(200, 250, 150, 32);
+        add(stationCode);
 
-        startDatePanel = new JPanel();
-        picker = new JXDatePicker();
-        picker.setDate(Calendar.getInstance().getTime());
-        picker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
-        startDatePanel.setBackground(Color.white);
-        startDatePanel.setBounds(40, 290, 150, 30);
-        startDatePanel.add(picker);
-        add(startDatePanel);
-
-        endDate = new JLabel("To:");
-        endDate.setFont(new Font("Times new roman", Font.BOLD, 20));
-        endDate.setBounds(500, 250, 200, 32);
-        add(endDate);
-
-        endDatePanel = new JPanel();
-        picker1 = new JXDatePicker();
-        picker1.setDate(Calendar.getInstance().getTime());
-        picker1.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
-        endDatePanel.setBackground(Color.white);
-        endDatePanel.setBounds(470, 290, 150, 30);
-        endDatePanel.add(picker1);
-        add(endDatePanel);
+        tf2 = new JTextField(7);
+        tf2.setFont(new Font("Times new roman", Font.BOLD, 14));
+        tf2.setBounds(340, 250, 150, 30);
+        add(tf2);
 
         submit = new JButton("Submit");
         submit.setBackground(Color.BLACK);
@@ -129,34 +99,29 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
                 new AdminHome(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == submit) {
-                String trainNo = tf1.getText();
-                java.util.Date dateFrom = picker.getDate();
-                java.util.Date dateTo = picker1.getDate();
-                String dFrom = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);
-                String dTo = new SimpleDateFormat("yyyy-MM-dd").format(dateTo);
-                java.sql.Date dateFromSend = java.sql.Date.valueOf(dFrom);
-                java.sql.Date dateToSend = java.sql.Date.valueOf(dTo);
-                System.out.println(dateFromSend);
-                System.out.println(dateToSend);
-                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, dateFromSend, dateToSend);
+                String cityNameSend = tf1.getText();
+                String stationCodeSend = tf2.getText();
+                AddCityAdminInfo addCityInfo = new AddCityAdminInfo(cityNameSend, stationCodeSend);
 
                 try {
 
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
-                    os.writeInt(8);
-                    os.writeObject(cancelRequest);
+                    os.writeInt(9);
+                    os.writeObject(addCityInfo);
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
+
                 if (s.equals("ok")) {
-                    JOptionPane.showMessageDialog(null, "Train Cancelled Successfully.");
+                    JOptionPane.showMessageDialog(null, "City Added Successfully.");
                     new AdminHome(connection).setVisible(true);
                     setVisible(false);
                 } else {
-
+                    JOptionPane.showMessageDialog(null, "Failure, try again.");
                 }
             }
 

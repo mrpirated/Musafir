@@ -150,6 +150,54 @@ public class HandleClient implements Runnable {
         return availabilityInfo;
     }
 
+    private String AddTrain(AddTrainAdminInfo trainInfo) {
+
+        String query = "INSERT INTO `trains_basic_details`(`train_no`, `train_name`, `ts_slr`, `ts_ac`, `src`, `dest`, `runningDays`) VALUES ( '"
+                + trainInfo.getTrainNo() + "', '" + trainInfo.getTrainName() + "', " + trainInfo.getTs_slr() + ", "
+                + trainInfo.getTs_ac() + ", '" + trainInfo.getSrc() + "', '" + trainInfo.getDest() + "', '"
+                + trainInfo.getRunningDays() + "' )";
+
+        try {
+            c1.s.executeUpdate(query);
+            return "ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return " ";
+        }
+
+    }
+
+    private String AddStationInfo(String trainNo7, Integer noOfHalt7, AddTrainAdminNextInfo[] stationInfo) {
+        for (int i = 0; i < noOfHalt7; i++) {
+
+            String query = "INSERT INTO `src_dest_table`(`train_no`, `station_no`, `station`, `arrival`, `departure`, `distance`, `day`, `platform`, `fare`) VALUES ("
+                    + Integer.parseInt(trainNo7) + ", " + (i + 1) + ", '" + stationInfo[i].getStation() + "', '"
+                    + stationInfo[i].getArrival() + "', '" + stationInfo[i].getDeparture() + "', "
+                    + stationInfo[i].getDistance() + ", " + stationInfo[i].getDay() + ", "
+                    + stationInfo[i].getDistance() + ", " + stationInfo[i].getFare() + ")";
+            try {
+                c1.s.executeUpdate(query);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "ok";
+    }
+
+    private String AddCity(AddCityAdminInfo addCity) {
+
+        String query = "INSERT INTO `cities`(`stations`, `short`) VALUES ( '" + addCity.getCityName() + "', '"
+                + addCity.getStationCode() + "' )";
+        try {
+            c1.s.executeUpdate(query);
+            return "ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return " ";
+        }
+
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -194,7 +242,30 @@ public class HandleClient implements Runnable {
                         os.flush();
 
                         break;
+                    case 6:
+                        AddTrainAdminInfo addTrain = (AddTrainAdminInfo) oi.readObject();
+                        String reply = AddTrain(addTrain);
+                        os.writeUTF(reply);
+                        os.flush();
+                        break;
+                    case 7:
+                        String trainNo7 = (String) oi.readUTF();
+                        Integer noOfHalt7 = (Integer) oi.readInt();
+                        AddTrainAdminNextInfo[] stationInfo = new AddTrainAdminNextInfo[noOfHalt7];
+                        for (int i = 0; i < noOfHalt7; i++) {
+                            stationInfo[i] = (AddTrainAdminNextInfo) oi.readObject();
+                        }
+                        String reply1 = AddStationInfo(trainNo7, noOfHalt7, stationInfo);
+                        os.writeUTF(reply1);
+                        os.flush();
+                        break;
+                    case 9:
+                        AddCityAdminInfo addCity = (AddCityAdminInfo) oi.readObject();
 
+                        String reply2 = AddCity(addCity);
+                        os.writeUTF(reply2);
+                        os.flush();
+                        break;
                 }
 
             } catch (Exception e) {
