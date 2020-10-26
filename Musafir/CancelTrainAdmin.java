@@ -11,7 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.jdesktop.swingx.JXDatePicker;
 import java.text.ParseException;
-import java.util.Date;
+import java.sql.*;
+import java.util.*;
 
 public class CancelTrainAdmin extends JFrame implements ActionListener {
 
@@ -21,6 +22,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
     private JTextField pnrText, tf1;
     private JXDatePicker picker, picker1;
     private Connect connection;
+
     public CancelTrainAdmin(Connect connection) {
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
@@ -119,29 +121,29 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
-
-            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
 
             if (ae.getSource() == back) {
                 new AdminHome(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == submit) {
                 String trainNo = tf1.getText();
-                String from = formater.format(picker.getDate());
-                String to = formater.format(picker1.getDate());
-                Date dateFrom = formater.parse(from);
-                Date dateTo = formater.parse(to);
-
-                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, dateFrom, dateTo);
+                java.util.Date dateFrom = picker.getDate();
+                java.util.Date dateTo = picker1.getDate();
+                String dFrom = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);
+                String dTo = new SimpleDateFormat("yyyy-MM-dd").format(dateTo);
+                java.sql.Date dateFromSend = java.sql.Date.valueOf(dFrom);
+                java.sql.Date dateToSend = java.sql.Date.valueOf(dTo);
+                System.out.println(dateFromSend);
+                System.out.println(dateToSend);
+                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, dateFromSend, dateToSend);
 
                 try {
 
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
-                    os.writeInt(5);
+                    os.writeInt(8);
                     os.writeObject(cancelRequest);
                     os.flush();
                 } catch (Exception e) {
@@ -149,8 +151,10 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
-                if (s.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");
+                if (s.equals("ok")) {
+                    JOptionPane.showMessageDialog(null, "Train Cancelled Successfully.");
+                    new AdminHome(connection).setVisible(true);
+                    setVisible(false);
                 } else {
 
                 }

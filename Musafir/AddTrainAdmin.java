@@ -15,6 +15,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
     private JButton back, next;
     private JTextField pnrText, trainNo, trainName, tsSlr, tsAc, src, dest, runningDays, noOfStations;
     private Connect connection;
+
     public AddTrainAdmin(Connect connection) {
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
@@ -161,7 +162,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                 String trainNamex = trainName.getText();
                 String srcx = src.getText();
                 String destx = dest.getText();
-                Integer runningDaysx = Integer.parseInt(runningDays.getText());
+                String runningDaysx = runningDays.getText();
                 Integer noOfHaltx = Integer.parseInt(noOfStations.getText());
                 Integer ts_slr = Integer.parseInt(tsSlr.getText()) * 72;
                 Integer ts_ac = Integer.parseInt(tsAc.getText()) * 50;
@@ -181,7 +182,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                 String s = (String) oi.readUTF();
                 if (s.equals("ok")) {
                     JOptionPane.showMessageDialog(null, "Train Basic Details Added. Complete the next form.");
-                    new AddTrainAdminNext(connection,trainNox, noOfHaltx).setVisible(true);
+                    new AddTrainAdminNext(connection, trainNox, noOfHaltx).setVisible(true);
                     setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Request Not Processed");

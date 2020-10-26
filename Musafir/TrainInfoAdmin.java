@@ -10,11 +10,12 @@ import java.io.*;
 
 public class TrainInfoAdmin extends JFrame implements ActionListener {
 
-    private JLabel headLabel, pnrLabel;
+    private JLabel headLabel, pnrLabel, trainNoLabel;
     private JPanel p1, p2, panel;
-    private JButton back, submit;
-    private JTextField pnrText;
+    private JButton back, submit, b1;
+    private JTextField pnrText, tf1;
     private Connect connection;
+
     public TrainInfoAdmin(Connect connection) {
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
@@ -50,7 +51,26 @@ public class TrainInfoAdmin extends JFrame implements ActionListener {
         headLabel.setBounds(210, 10, 600, 30);
         p1.add(headLabel);
 
+        trainNoLabel = new JLabel("Enter Train No:");
+        trainNoLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 25));
+        trainNoLabel.setForeground(Color.BLACK);
+        trainNoLabel.setBounds(100, 60, 600, 30);
+        add(trainNoLabel);
+
+        tf1 = new JTextField(15);
+        tf1.setFont(new Font("Times new roman", Font.PLAIN, 20));
+        tf1.setBounds(300, 60, 230, 30);
+        add(tf1);
+
+        b1 = new JButton("Get Details");
+        b1.setBackground(Color.BLACK);
+        b1.setForeground(Color.WHITE);
+        b1.setFont(new Font("Times new roman", Font.BOLD, 14));
+        b1.setBounds(300, 105, 150, 30);
+        add(b1);
+
         back.addActionListener(this);
+        b1.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -60,8 +80,6 @@ public class TrainInfoAdmin extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
@@ -69,6 +87,8 @@ public class TrainInfoAdmin extends JFrame implements ActionListener {
             if (ae.getSource() == back) {
                 new AdminHome(connection).setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == b1) {
+
             }
 
         } catch (Exception e) {

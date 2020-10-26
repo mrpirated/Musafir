@@ -1,8 +1,9 @@
 package Classes;
 
 import java.sql.*;
+import java.io.*;
 
-public class AddTrainAdminNextInfo {
+public class AddTrainAdminNextInfo implements Serializable {
     private String station;
     private java.sql.Time arrival, departure;
     private Integer distance, day, platform, fare, number;

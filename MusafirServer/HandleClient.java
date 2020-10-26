@@ -99,7 +99,7 @@ public class HandleClient implements Runnable {
         AvailabilityInfo temp;
         int train;
         String query = "SELECT * FROM `month` WHERE `date` = '" + scheduleEnq.getDate() + "'", query2;
-        String st1,st2;
+        String st1, st2;
         String source = scheduleEnq.getSource();
         String dest = scheduleEnq.getDest();
         System.out.println("in the function");
@@ -112,19 +112,19 @@ public class HandleClient implements Runnable {
                 rs2 = c2.s.executeQuery(query2);
 
                 while (rs2.next()) {
-                    
-                    st1=(String)rs2.getString("station");
+
+                    st1 = (String) rs2.getString("station");
                     System.out.println(st1);
                     if (source.equals(st1)) {
                         rs3 = rs2;
                         System.out.println("equals");
                         while (rs3.next()) {
                             System.out.println("rs3");
-                            st2=(String)rs3.getString("station");
+                            st2 = (String) rs3.getString("station");
                             if (dest.equals(st2)) {
                                 temp = new AvailabilityInfo(true, train, rs1.getInt("Avail_S"), rs1.getInt("Avail_AC"),
                                         rs2.getTimestamp("departure"), rs3.getTimestamp("arrival"));
-                                        
+
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
                             }
@@ -137,6 +137,48 @@ public class HandleClient implements Runnable {
             e.printStackTrace();
         }
         return availabilityInfo;
+    }
+
+    private String AddTrain(AddTrainAdminInfo trainInfo) {
+
+        String query = "INSERT INTO `trains_basic_details`(`train_no`, `train_name`, `ts_slr`, `ts_ac`, `src`, `dest`, `runningDays`) VALUES ( '"
+                + trainInfo.getTrainNo() + "', '" + trainInfo.getTrainName() + "', " + trainInfo.getTs_slr() + ", "
+                + trainInfo.getTs_ac() + ", '" + trainInfo.getSrc() + "', '" + trainInfo.getDest() + "', '"
+                + trainInfo.getRunningDays() + "' )";
+
+        try {
+            c1.s.executeUpdate(query);
+            return "ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return " ";
+        }
+
+    }
+
+    private String AddStationInfo(String trainNo7, Integer noOfHalt7, AddTrainAdminNextInfo[] stationInfo) {
+
+        // String query = "INSERT INTO `trains_basic_details`(`train_no`, `train_name`,
+        // `ts_slr`, `ts_ac`, `src`, `dest`, `runningDays`) VALUES ( '"
+        // + trainInfo.getTrainNo() + "', '" + trainInfo.getTrainName() + "', " +
+        // trainInfo.getTs_slr() + ", "
+        // + trainInfo.getTs_ac() + ", '" + trainInfo.getSrc() + "', '" +
+        // trainInfo.getDest() + "', '"
+        // + trainInfo.getRunningDays() + "' )";
+        for (int i = 0; i < noOfHalt7; i++) {
+
+            String query = "INSERT INTO `src_dest_table`(`train_no`, `station_no`, `station`, `arrival`, `departure`, `distance`, `day`, `platform`, `fare`) VALUES ("
+                    + Integer.parseInt(trainNo7) + ", " + (i + 1) + ", '" + stationInfo[i].getStation() + "', '"
+                    + stationInfo[i].getArrival() + "', '" + stationInfo[i].getDeparture() + "', "
+                    + stationInfo[i].getDistance() + ", " + stationInfo[i].getDay() + ", "
+                    + stationInfo[i].getDistance() + ", " + stationInfo[i].getFare() + ")";
+            try {
+                c1.s.executeUpdate(query);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "ok";
     }
 
     @Override
@@ -178,12 +220,27 @@ public class HandleClient implements Runnable {
                     case 5:
                         ScheduleEnq scheduleEnq = (ScheduleEnq) oi.readObject();
                         Vector<AvailabilityInfo> availabilityInfo = ScheduleEnq(scheduleEnq);
-                        //os.writeObject(availabilityInfo);
+                        // os.writeObject(availabilityInfo);
                         os.flush();
                         System.out.println(availabilityInfo.get(0).getTrain());
-
                         break;
-
+                    case 6:
+                        AddTrainAdminInfo addTrain = (AddTrainAdminInfo) oi.readObject();
+                        String reply = AddTrain(addTrain);
+                        os.writeUTF(reply);
+                        os.flush();
+                        break;
+                    case 7:
+                        String trainNo7 = (String) oi.readUTF();
+                        Integer noOfHalt7 = (Integer) oi.readInt();
+                        AddTrainAdminNextInfo[] stationInfo = new AddTrainAdminNextInfo[noOfHalt7];
+                        for (int i = 0; i < noOfHalt7; i++) {
+                            stationInfo[i] = (AddTrainAdminNextInfo) oi.readObject();
+                        }
+                        String reply1 = AddStationInfo(trainNo7, noOfHalt7, stationInfo);
+                        os.writeUTF(reply1);
+                        os.flush();
+                        break;
                 }
 
             } catch (Exception e) {

@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - LoginAdmin",
+            "request": "launch",
+            "mainClass": "Musafir.LoginAdmin",
+            "projectName": "Deathly-Hallows_338bae52"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Login",
+            "request": "launch",
+            "mainClass": "Musafir.Login",
+            "projectName": "Deathly-Hallows_338bae52"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Server",
+            "request": "launch",
+            "mainClass": "MusafirServer.Server",
+            "projectName": "Deathly-Hallows_338bae52"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - PassengerTicketDetails",
             "request": "launch",
             "mainClass": "Musafir.PassengerTicketDetails",
