@@ -157,14 +157,6 @@ public class HandleClient implements Runnable {
     }
 
     private String AddStationInfo(String trainNo7, Integer noOfHalt7, AddTrainAdminNextInfo[] stationInfo) {
-
-        // String query = "INSERT INTO `trains_basic_details`(`train_no`, `train_name`,
-        // `ts_slr`, `ts_ac`, `src`, `dest`, `runningDays`) VALUES ( '"
-        // + trainInfo.getTrainNo() + "', '" + trainInfo.getTrainName() + "', " +
-        // trainInfo.getTs_slr() + ", "
-        // + trainInfo.getTs_ac() + ", '" + trainInfo.getSrc() + "', '" +
-        // trainInfo.getDest() + "', '"
-        // + trainInfo.getRunningDays() + "' )";
         for (int i = 0; i < noOfHalt7; i++) {
 
             String query = "INSERT INTO `src_dest_table`(`train_no`, `station_no`, `station`, `arrival`, `departure`, `distance`, `day`, `platform`, `fare`) VALUES ("
@@ -179,6 +171,20 @@ public class HandleClient implements Runnable {
             }
         }
         return "ok";
+    }
+
+    private String AddCity(AddCityAdminInfo addCity) {
+
+        String query = "INSERT INTO `cities`(`stations`, `short`) VALUES ( '" + addCity.getCityName() + "', '"
+                + addCity.getStationCode() + "' )";
+        try {
+            c1.s.executeUpdate(query);
+            return "ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return " ";
+        }
+
     }
 
     @Override
@@ -239,6 +245,13 @@ public class HandleClient implements Runnable {
                         }
                         String reply1 = AddStationInfo(trainNo7, noOfHalt7, stationInfo);
                         os.writeUTF(reply1);
+                        os.flush();
+                        break;
+                    case 9:
+                        AddCityAdminInfo addCity = (AddCityAdminInfo) oi.readObject();
+
+                        String reply2 = AddCity(addCity);
+                        os.writeUTF(reply2);
                         os.flush();
                         break;
                 }

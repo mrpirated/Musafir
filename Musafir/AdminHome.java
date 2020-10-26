@@ -9,8 +9,9 @@ import java.io.*;
 
 public class AdminHome extends JFrame implements ActionListener {
 
-    private JLabel passenger, home, train, book, cancel, add, reroute, l10, l11, l12, l13, l14, remove, addCoach;
-    private JButton passengerbt, trainbt, bookbt, cancelbt, addbt, reroutebt, logout, removebt, addCoachbt;
+    private JLabel passenger, home, train, book, cancel, add, reroute, l10, l11, l12, l13, l14, remove, addCoach,
+            addCity;
+    private JButton passengerbt, trainbt, bookbt, cancelbt, addbt, reroutebt, logout, removebt, addCoachbt, addCitybt;
     private ImageIcon i1, i3;
     private Image i2;
     private Connect connection;
@@ -147,6 +148,19 @@ public class AdminHome extends JFrame implements ActionListener {
         addCoach.setBounds(285, 530, 250, 24);
         add(addCoach);
 
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/addCity.png"));
+        i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        i3 = new ImageIcon(i2);
+        addCitybt = new JButton(i3);
+        addCitybt.setBounds(555, 425, 100, 100);
+        add(addCitybt);
+
+        addCity = new JLabel("Add City");
+        addCity.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
+        addCity.setForeground(Color.BLACK);
+        addCity.setBounds(555, 530, 250, 24);
+        add(addCity);
+
         logout.addActionListener(this);
         passengerbt.addActionListener(this);
         trainbt.addActionListener(this);
@@ -156,6 +170,7 @@ public class AdminHome extends JFrame implements ActionListener {
         reroutebt.addActionListener(this);
         removebt.addActionListener(this);
         addCoachbt.addActionListener(this);
+        addCitybt.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -201,6 +216,9 @@ public class AdminHome extends JFrame implements ActionListener {
                 setVisible(false);
             } else if (ae.getSource() == trainbt) {
                 new TrainInfoAdmin(connection).setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == addCitybt) {
+                new AddCityAdmin(connection).setVisible(true);
                 setVisible(false);
             }
 
