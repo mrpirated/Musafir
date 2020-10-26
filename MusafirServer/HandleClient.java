@@ -3,6 +3,7 @@ package MusafirServer;
 import java.io.*;
 import java.net.*;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 import Classes.*;
@@ -98,33 +99,43 @@ public class HandleClient implements Runnable {
         Vector<AvailabilityInfo> availabilityInfo = new Vector<AvailabilityInfo>();
         AvailabilityInfo temp;
         int train;
-        String query = "SELECT * FROM `month` WHERE `date` = '" + scheduleEnq.getDate() + "'", query2;
-        String st1,st2;
+        String query = "SELECT * FROM `month` WHERE `date` = '" + scheduleEnq.getDate() + "'", query2, query3;
+        String st1, st2;
         String source = scheduleEnq.getSource();
         String dest = scheduleEnq.getDest();
+        String trainName;
         System.out.println("in the function");
         try {
-            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3;
+            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4;
             while (rs1.next()) {
                 train = (int) rs1.getInt("train");
                 query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = " + train + " ORDER BY `station_no` ASC";
+                query3 = "SELECT * FROM `trains_basic_details` WHERE `train_no` = " + train + "";
                 Conn c2 = new Conn();
+                Conn c3 = new Conn();
+                rs4 = c3.s.executeQuery(query3);
+                rs4.next();
+                trainName = rs4.getString("train_name");
+
                 rs2 = c2.s.executeQuery(query2);
 
                 while (rs2.next()) {
-                    
-                    st1=(String)rs2.getString("station");
-                    System.out.println(st1);
+
+                    st1 = (String) rs2.getString("station");
                     if (source.equals(st1)) {
                         rs3 = rs2;
                         System.out.println("equals");
                         while (rs3.next()) {
                             System.out.println("rs3");
-                            st2=(String)rs3.getString("station");
+                            st2 = (String) rs3.getString("station");
                             if (dest.equals(st2)) {
-                                temp = new AvailabilityInfo(true, train, rs1.getInt("Avail_S"), rs1.getInt("Avail_AC"),
-                                        rs2.getTimestamp("departure"), rs3.getTimestamp("arrival"));
-                                        
+
+                                
+                                temp = new AvailabilityInfo(true, train, trainName,
+                                        rs1.getInt("Avail_S"), rs1.getInt("Avail_AC"),
+                                        rs3.getTimestamp("arrival"), rs2.getTimestamp("departure"), (Date)scheduleEnq.getDate(), rs2.getInt("day"),
+                                        rs3.getInt("day"));
+
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
                             }
@@ -178,9 +189,9 @@ public class HandleClient implements Runnable {
                     case 5:
                         ScheduleEnq scheduleEnq = (ScheduleEnq) oi.readObject();
                         Vector<AvailabilityInfo> availabilityInfo = ScheduleEnq(scheduleEnq);
-                        //os.writeObject(availabilityInfo);
+                        os.writeObject(availabilityInfo);
+                        System.out.println(availabilityInfo.get(0).getArrival() + " " + availabilityInfo.get(0).getDeparture());
                         os.flush();
-                        System.out.println(availabilityInfo.get(0).getTrain());
 
                         break;
 

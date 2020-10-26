@@ -1,14 +1,18 @@
 package Classes;
 
 import java.io.*;
+import java.time.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 
 public class AvailabilityInfo implements Serializable {
     private boolean available=false;
-    private int train, sl, ac;
+    private int train, sl, ac, day1,day2;
     private Timestamp arrival,departure;
-    public AvailabilityInfo(boolean available,int train,int sl,int ac,Timestamp arrival, Timestamp departure){
+    private String trainName;
+    private Date date;
+    public AvailabilityInfo(boolean available,int train,String trainName,int sl,int ac,Timestamp arrival, Timestamp departure,Date date,int day1,int day2){
         this.ac=ac;
         this.available = available;
         this.train = train;
@@ -16,6 +20,10 @@ public class AvailabilityInfo implements Serializable {
         this.ac=ac;
         this.arrival= arrival;
         this.departure = departure;
+        this.trainName = trainName;
+        this.date = date;
+        this.day1 = day1;
+        this.day2 = day2;
     }
     public int getAc() {
         return ac;
@@ -34,5 +42,17 @@ public class AvailabilityInfo implements Serializable {
     }
     public boolean getAvailable(){
         return available;
+    }
+    public String getTrainName() {
+        return trainName;
+    }
+    public LocalDate getDate() {
+        return date.toLocalDate();
+    }
+    public int getDay1() {
+        return day1;
+    }
+    public int getDay2() {
+        return day2;
     }
 }

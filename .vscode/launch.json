@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - PlanMyJourney",
+            "request": "launch",
+            "mainClass": "Musafir.PlanMyJourney",
+            "projectName": "Deathly-Hallows_7f098522"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - PassengerTicketDetails",
             "request": "launch",
             "mainClass": "Musafir.PassengerTicketDetails",
