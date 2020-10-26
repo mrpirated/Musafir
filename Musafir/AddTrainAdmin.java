@@ -168,7 +168,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                 AddTrainAdminInfo addTrain = new AddTrainAdminInfo(trainNox, trainNamex, srcx, destx, runningDaysx,
                         noOfHaltx, ts_slr, ts_ac);
 
-                /*try {
+                try {
 
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(6);
@@ -176,10 +176,10 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
-                }*/
-                /*ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
-                if (true) {
+                if (s.equals("ok")) {
                     JOptionPane.showMessageDialog(null, "Train Basic Details Added. Complete the next form.");
                     new AddTrainAdminNext(connection,trainNox, noOfHaltx).setVisible(true);
                     setVisible(false);
@@ -187,7 +187,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Request Not Processed");
                     new AdminHome(connection).setVisible(true);
                     setVisible(false);
-                }*/
+                }
             }
 
         } catch (Exception e) {
