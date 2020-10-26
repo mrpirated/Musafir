@@ -22,6 +22,8 @@ public class AddTrainAdminNext extends JFrame implements ActionListener {
     private String trainNo;
     private Integer noOfHalts;
     private Connect connection;
+    private Panel details;
+    private JScrollPane scroll;
     public AddTrainAdminNext(Connect connection,String trainNo, Integer noOfHalts) {
         this.trainNo = trainNo;
         this.noOfHalts = noOfHalts;
@@ -94,66 +96,76 @@ public class AddTrainAdminNext extends JFrame implements ActionListener {
 
         number = new JLabel[noOfHalts];
 
-        Integer i = 0, y1 = 90;
+        details = new Panel();
+        
+
+        Integer i = 0, y1 = 10;
 
         for (i = 0; i < noOfHalts; i++) {
             String str = String.valueOf(i + 1);
             number[i] = new JLabel("S" + str + ".");
             number[i].setFont(new Font("Times new roman", Font.BOLD, 15));
-            number[i].setBounds(20, y1 - 8, 400, 32);
-            add(number[i]);
+            number[i].setBounds(10, y1 - 8, 400, 32);
+            details.add(number[i]);
 
-            Integer x1 = 55;
+            Integer x1 = 45;
 
             stationFields[i] = new JTextField(50);
-            stationFields[i].setBounds(x1, y1, 90, 20);
+            stationFields[i].setBounds(x1, y1, 80, 20);
             stationFields[i].setFont(new Font("Times new roman", Font.BOLD, 14));
-            add(stationFields[i]);
+            details.add(stationFields[i]);
 
-            x1 = 165;
+            x1 = 145;
             arrival[i] = new JTextField(51);
             arrival[i].setBounds(x1, y1, 70, 20);
             arrival[i].setFont(new Font("Times new roman", Font.BOLD, 14));
-            add(arrival[i]);
+            details.add(arrival[i]);
 
-            x1 = 255;
+            x1 = 245;
             departure[i] = new JTextField(50);
-            departure[i].setBounds(x1, y1, 80, 20);
+            departure[i].setBounds(x1, y1, 70, 20);
             departure[i].setFont(new Font("Times new roman", Font.BOLD, 14));
-            add(departure[i]);
+            details.add(departure[i]);
 
-            x1 = 360;
+            x1 = 340;
             distance[i] = new JTextField(50);
             distance[i].setBounds(x1, y1, 80, 20);
             distance[i].setFont(new Font("Times new roman", Font.BOLD, 14));
-            add(distance[i]);
+            details.add(distance[i]);
 
-            x1 = 460;
+            x1 = 440;
             day[i] = new JTextField(50);
             day[i].setBounds(x1, y1, 50, 20);
             day[i].setFont(new Font("Times new roman", Font.BOLD, 14));
-            add(day[i]);
+            details.add(day[i]);
 
-            x1 = 525;
+            x1 = 505;
             platform[i] = new JTextField(50);
             platform[i].setBounds(x1, y1, 80, 20);
             platform[i].setFont(new Font("Times new roman", Font.BOLD, 14));
-            add(platform[i]);
+            details.add(platform[i]);
 
-            x1 = 620;
+            x1 = 600;
             fare[i] = new JTextField(50);
-            fare[i].setBounds(x1, y1, 80, 20);
+            fare[i].setBounds(x1, y1, 60, 20);
             fare[i].setFont(new Font("Times new roman", Font.BOLD, 14));
-            add(fare[i]);
+            details.add(fare[i]);
             y1 = y1 + 30;
             System.out.println(i + "\n");
         }
+        details.setLayout(null);
+        scroll = new JScrollPane(details);
+        scroll.setBounds(20,90, 700, 600);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+        getContentPane().add(scroll);
 
         next = new JButton("Submit");
         next.setBackground(Color.BLACK);
         next.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
         next.setForeground(Color.WHITE);
-        next.setBounds(300, 600, 100, 25);
+        next.setBounds(300, 700, 100, 25);
         add(next);
 
         next.addActionListener(this);
@@ -165,6 +177,15 @@ public class AddTrainAdminNext extends JFrame implements ActionListener {
         setLocation(400, 50);
         setVisible(true);
     }
+    class Panel extends JPanel{
+        @Override
+        public Dimension getPreferredSize() {
+            if(noOfHalts>20)
+            return new Dimension(650,610+30*(noOfHalts-20));
+            else return new Dimension(700,610);
+        }
+    }
+    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
