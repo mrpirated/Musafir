@@ -104,6 +104,8 @@ public class HandleClient implements Runnable {
         String source = scheduleEnq.getSource();
         String dest = scheduleEnq.getDest();
         String trainName;
+        Timestamp dep;
+        int day1;
         System.out.println("in the function");
         try {
             ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4;
@@ -111,12 +113,12 @@ public class HandleClient implements Runnable {
                 train = (int) rs1.getInt("train");
                 query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = " + train + " ORDER BY `station_no` ASC";
                 query3 = "SELECT * FROM `trains_basic_details` WHERE `train_no` = " + train + "";
-                Conn c2 = new Conn();
+                
                 Conn c3 = new Conn();
                 rs4 = c3.s.executeQuery(query3);
                 rs4.next();
                 trainName = rs4.getString("train_name");
-
+                Conn c2 = new Conn();
                 rs2 = c2.s.executeQuery(query2);
 
                 while (rs2.next()) {
@@ -124,20 +126,22 @@ public class HandleClient implements Runnable {
                     st1 = (String) rs2.getString("station");
                     if (source.equals(st1)) {
                         rs3 = rs2;
+                        dep = rs2.getTimestamp("departure");
+                        day1 = rs2.getInt("day");
                         System.out.println("equals");
                         while (rs3.next()) {
                             System.out.println("rs3");
                             st2 = (String) rs3.getString("station");
                             if (dest.equals(st2)) {
 
-                                
-                                temp = new AvailabilityInfo(true, train, trainName,
-                                        rs1.getInt("Avail_S"), rs1.getInt("Avail_AC"),
-                                        rs3.getTimestamp("arrival"), rs2.getTimestamp("departure"), (Date)scheduleEnq.getDate(), rs2.getInt("day"),
+                                temp = new AvailabilityInfo(true, train, trainName, rs1.getInt("Avail_S"),
+                                        rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"),
+                                        dep, (Date) scheduleEnq.getDate(), day1,
                                         rs3.getInt("day"));
 
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
+                                break;
                             }
                         }
                     }
@@ -238,7 +242,7 @@ public class HandleClient implements Runnable {
                         ScheduleEnq scheduleEnq = (ScheduleEnq) oi.readObject();
                         Vector<AvailabilityInfo> availabilityInfo = ScheduleEnq(scheduleEnq);
                         os.writeObject(availabilityInfo);
-                        System.out.println(availabilityInfo.get(0).getArrival() + " " + availabilityInfo.get(0).getDeparture());
+                        
                         os.flush();
 
                         break;
