@@ -23,8 +23,9 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private JComboBox[] gender, preference;
     private JLabel[] number;
     private Connect connection;
-    public PassengerTicketDetails(Connect connection,String name, String Username, String trainNo, String type, String src, String dest,
-            Date date, Integer noOfPassenger) {
+
+    public PassengerTicketDetails(Connect connection, String name, String Username, String trainNo, String type,
+            String src, String dest, Date date, Integer noOfPassenger) {
         this.name = name;
         this.Username = Username;
         this.trainNo = trainNo;
@@ -172,7 +173,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
             add(gender[i]);
 
             x1 = 560;
-            String preferencex[] = { "LB", "MB", "UB", "SLB", "SUB" };
+            String preferencex[] = { "NONE", "LB", "MB", "UB", "SLB", "SUB" };
             preference[i] = new JComboBox(preferencex);
             preference[i].setBounds(x1, y1, 80, 25);
             preference[i].setFont(new Font("Times new roman", Font.BOLD, 20));
@@ -201,14 +202,12 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new BasicTicketDetails(connection,name, Username, trainNo, type, src, dest, date).setVisible(true);
+                new BasicTicketDetails(connection, name, Username, trainNo, type, src, dest, date).setVisible(true);
                 setVisible(false);
             }
             if (ae.getSource() == submit) {

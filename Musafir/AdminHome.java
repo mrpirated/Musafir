@@ -14,6 +14,7 @@ public class AdminHome extends JFrame implements ActionListener {
     private ImageIcon i1, i3;
     private Image i2;
     private Connect connection;
+
     AdminHome(Connect connection) {
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
@@ -183,7 +184,17 @@ public class AdminHome extends JFrame implements ActionListener {
                 new RerouteTrainAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addbt) {
-                new AddTrainAdmin(connection).setVisible(true);
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(3);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                String[][] cities = (String[][]) oi.readObject();
+                new AddTrainAdmin(connection, cities).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addCoachbt) {
                 new AddRemoveCoach(connection).setVisible(true);
@@ -198,5 +209,4 @@ public class AdminHome extends JFrame implements ActionListener {
         }
     }
 
-   
 }
