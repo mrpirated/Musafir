@@ -12,9 +12,9 @@ public class LoginAdmin extends JFrame implements ActionListener {
     private JPasswordField pf2;
     private JButton b1, b2;
     private Connect connection;
+
     LoginAdmin(Connect connection) {
         this.connection = connection;
-        
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -127,7 +127,7 @@ public class LoginAdmin extends JFrame implements ActionListener {
     public static void main(String[] args) {
         Connect connection = new Connect();
         new LoginAdmin(connection).setVisible(true);
-        
+
     }
 
 }
