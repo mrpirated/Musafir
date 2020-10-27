@@ -22,21 +22,18 @@ import org.jdesktop.swingx.JXDatePicker;
 import Classes.AvailabilityInfo;
 import Classes.ScheduleEnq;
 
-
 public class PlanMyJourney extends JFrame implements ActionListener {
-    private JPanel p1,  panel;
+    private JPanel p1, panel;
     private JButton back, submit;
     private JComboBox from, to;
     private JXDatePicker picker;
     private String name, Username;
     private Connect connection;
-    private int trains=0;
+    private int trains = 0;
     private Panel availability;
     private JScrollPane scroll;
-    
-    
 
-    PlanMyJourney(Connect connection,String name, String[][] cities, String Username) {
+    PlanMyJourney(Connect connection, String name, String[][] cities, String Username) {
         this.name = name;
         this.Username = Username;
         this.connection = connection;
@@ -120,7 +117,6 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         panel.add(picker);
         add(panel);
 
-        
         submit = new JButton("Submit");
         submit.setBackground(Color.BLACK);
         submit.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
@@ -131,13 +127,13 @@ public class PlanMyJourney extends JFrame implements ActionListener {
 
         availability = new Panel();
         availability.setLayout(null);
-        
+
         scroll = new JScrollPane(availability);
         scroll.setBounds(30, 175, 690, 450);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
-        
+
         back.addActionListener(this);
         submit.addActionListener(this);
 
@@ -148,18 +144,19 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         setLocation(400, 50);
         setVisible(true);
     }
+
     public void showTrains(Vector<AvailabilityInfo> availabilityInfo) {
         trains = availabilityInfo.size();
-        int diff ;
-        if(trains==0){
+        int diff;
+        if (trains == 0) {
             JLabel notrains = new JLabel("SORRY!! NO TRAINS AVAILABLE");
             notrains.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
             notrains.setForeground(Color.gray);
-            notrains.setBounds(150,200,400,30);
+            notrains.setBounds(150, 200, 400, 30);
             availability.add(notrains);
             return;
         }
-        
+
         JLabel srnoLabel = new JLabel("| Sr No  |");
         srnoLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
         srnoLabel.setBounds(5, 5, 100, 30);
@@ -170,7 +167,6 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         trainLable.setBounds(80, 5, 100, 30);
         availability.add(trainLable);
 
-        
         JLabel trainNameLable = new JLabel("Train Name        |");
         trainNameLable.setFont(new Font("Times new roman", Font.BOLD, 18));
         trainNameLable.setBounds(210, 5, 200, 30);
@@ -186,8 +182,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         departLabel.setBounds(440, 5, 100, 30);
         availability.add(departLabel);
 
-        
-        JLabel SLseats = new JLabel ("SL      |");
+        JLabel SLseats = new JLabel("SL      |");
         SLseats.setFont(new Font("Times new roman", Font.BOLD, 18));
         SLseats.setBounds(530, 5, 100, 30);
         availability.add(SLseats);
@@ -197,12 +192,11 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         ACseats.setBounds(620, 5, 100, 30);
         availability.add(ACseats);
 
-
-        JLabel[] arrival=new JLabel[trains];
-        JLabel[] departure=new JLabel[trains];
-        JLabel[] trainName=new JLabel[trains];
-        JLabel[] train=new JLabel[trains];
-        JLabel[] srno=new JLabel[trains];
+        JLabel[] arrival = new JLabel[trains];
+        JLabel[] departure = new JLabel[trains];
+        JLabel[] trainName = new JLabel[trains];
+        JLabel[] train = new JLabel[trains];
+        JLabel[] srno = new JLabel[trains];
         JLabel[] day1 = new JLabel[trains];
         JLabel[] day2 = new JLabel[trains];
         JLabel[] duration = new JLabel[trains];
@@ -211,9 +205,9 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         String str;
         int seats;
 
-        int x ,y = 50;
+        int x, y = 50;
         for (int i = 0; i < trains; i++) {
-            diff =availabilityInfo.get(i).getDay2()-availabilityInfo.get(i).getDay1();
+            diff = availabilityInfo.get(i).getDay2() - availabilityInfo.get(i).getDay1();
             x = 35;
             str = String.valueOf(i + 1);
             srno[i] = new JLabel(str);
@@ -228,8 +222,6 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             train[i].setBounds(x, y, 50, 30);
             availability.add(train[i]);
 
-            
-            
             x = 180;
             str = String.valueOf(availabilityInfo.get(i).getTrainName());
             trainName[i] = new JLabel(str);
@@ -243,20 +235,18 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             departure[i].setFont(new Font("Times new roman", Font.BOLD, 15));
             departure[i].setBounds(x, y, 150, 30);
             availability.add(departure[i]);
-            
 
             str = String.valueOf(availabilityInfo.get(i).getDate());
             day1[i] = new JLabel(str);
             day1[i].setFont(new Font("Times new roman", Font.BOLD, 12));
-            day1[i].setBounds(x-20, y-20, 150, 30);
+            day1[i].setBounds(x - 20, y - 20, 150, 30);
             availability.add(day1[i]);
 
-            str = durationofjourney(availabilityInfo.get(i).getArrival(),availabilityInfo.get(i).getDeparture(),diff);
+            str = durationofjourney(availabilityInfo.get(i).getArrival(), availabilityInfo.get(i).getDeparture(), diff);
             day1[i] = new JLabel(str);
             day1[i].setFont(new Font("Times new roman", Font.BOLD, 12));
-            day1[i].setBounds(380, y+20, 150, 30);
+            day1[i].setBounds(380, y + 20, 150, 30);
             availability.add(day1[i]);
-
 
             x = 440;
             str = timestr(availabilityInfo.get(i).getArrival());
@@ -268,20 +258,20 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             str = String.valueOf((availabilityInfo.get(i).getDate()).plusDays(diff));
             day1[i] = new JLabel(str);
             day1[i].setFont(new Font("Times new roman", Font.BOLD, 12));
-            day1[i].setBounds(x-20, y-20, 150, 30);
+            day1[i].setBounds(x - 20, y - 20, 150, 30);
             availability.add(day1[i]);
 
-
             x = 500;
-            seats = availabilityInfo.get(i).getSl();            
+            seats = availabilityInfo.get(i).getSl();
             str = String.valueOf(Math.abs(seats));
             sl[i] = new JButton(str);
             sl[i].setFont(new Font("Times new roman", Font.BOLD, 18));
             sl[i].setBounds(x, y, 70, 25);
-            if(seats < 0){
+            if (seats < 0) {
                 sl[i].setBackground(Color.RED);
                 sl[i].setForeground(Color.white);
-            }else sl[i].setBackground(Color.GREEN);
+            } else
+                sl[i].setBackground(Color.GREEN);
             availability.add(sl[i]);
 
             x = 600;
@@ -290,66 +280,70 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             ac[i] = new JButton(str);
             ac[i].setFont(new Font("Times new roman", Font.BOLD, 18));
             ac[i].setBounds(x, y, 70, 25);
-            if(seats < 0){
+            if (seats < 0) {
                 ac[i].setBackground(Color.RED);
                 ac[i].setForeground(Color.white);
-            }else ac[i].setBackground(Color.GREEN);
+            } else
+                ac[i].setBackground(Color.GREEN);
             availability.add(ac[i]);
 
             y = y + 50;
 
-
         }
-        
-        
+
     }
-    public String durationofjourney(Timestamp arr,Timestamp dep,int days){
-        long time = days*86400 + (arr.getTime() - dep.getTime())/1000;
-        time = time/60;
-        int hrs = (int)time/60;
-        int min = (int)time%60;
-        String s = hrs +" hrs "+min +" min";
+
+    public String durationofjourney(Timestamp arr, Timestamp dep, int days) {
+        long time = days * 86400 + (arr.getTime() - dep.getTime()) / 1000;
+        time = time / 60;
+        int hrs = (int) time / 60;
+        int min = (int) time % 60;
+        String s = hrs + " hrs " + min + " min";
         return s;
     }
-    public String timestr(Timestamp t){
+
+    public String timestr(Timestamp t) {
         String s;
-        if(t.getMinutes()<10)
-        s = t.getHours() +":0" +t.getMinutes();
-        else s =t.getHours() +":" +t.getMinutes();
-        
+        if (t.getMinutes() < 10)
+            s = t.getHours() + ":0" + t.getMinutes();
+        else
+            s = t.getHours() + ":" + t.getMinutes();
+
         return s;
     }
-    
-    class Panel extends JPanel{
+
+    class Panel extends JPanel {
         @Override
         public Dimension getPreferredSize() {
-            if(trains>8)
-            return new Dimension(670,440+50*(trains-8));
-            else return new Dimension(670,430);
+            if (trains > 8)
+                return new Dimension(670, 440 + 50 * (trains - 8));
+            else
+                return new Dimension(670, 430);
         }
     }
-    /*public static void main(String[] args) {
-        String[][] s= {{"as","cs"},{"dfs","dsfs"}};
-        new PlanMyJourney("asa",s,"adas");
-    }*/
+
+    /*
+     * public static void main(String[] args) { String[][] s=
+     * {{"as","cs"},{"dfs","dsfs"}}; new PlanMyJourney("asa",s,"adas"); }
+     */
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection,name, Username).setVisible(true);
+                new HomePage(connection, name, Username).setVisible(true);
                 setVisible(false);
             }
 
             else if (ae.getSource() == submit) {
                 availability.removeAll();
-                String source = (String)from.getSelectedItem();
-                String dest =(String)to.getSelectedItem();
+                String source = (String) from.getSelectedItem();
+                String dest = (String) to.getSelectedItem();
                 java.util.Date dt = picker.getDate();
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                
+
                 String d = df.format(dt);
                 Date date = Date.valueOf(d);
-                ScheduleEnq scheduleEnq = new ScheduleEnq(source,dest,date);
+                ScheduleEnq scheduleEnq = new ScheduleEnq(source, dest, date);
                 ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                 os.writeInt(5);
                 os.writeObject(scheduleEnq);
@@ -360,7 +354,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 availability.revalidate();
                 availability.repaint();
                 System.out.println(date);
-                
+
             }
 
         } catch (Exception e) {

@@ -88,6 +88,12 @@ public class HandleClient implements Runnable {
             if (rs.next()) {
                 return rs.getString("name");
             }
+            query = "SELECT * FROM `admin_info` WHERE phone='" + loginInfo.getUsername() + "' AND password='"
+                    + String.valueOf(loginInfo.getPassword()) + "'";
+            rs = c1.s.executeQuery(query);
+            if (rs.next()) {
+                return rs.getString("name");
+            }
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -113,7 +119,7 @@ public class HandleClient implements Runnable {
                 train = (int) rs1.getInt("train");
                 query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = " + train + " ORDER BY `station_no` ASC";
                 query3 = "SELECT * FROM `trains_basic_details` WHERE `train_no` = " + train + "";
-                
+
                 Conn c3 = new Conn();
                 rs4 = c3.s.executeQuery(query3);
                 rs4.next();
@@ -136,9 +142,14 @@ public class HandleClient implements Runnable {
                             if (dest.equals(st2)) {
 
                                 temp = new AvailabilityInfo(true, train, trainName, rs1.getInt("Avail_S"),
+<<<<<<< HEAD
                                         rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"),
                                         dep, (Date) scheduleEnq.getDate(), day1,
                                         rs3.getInt("day"),rs3.getInt("fare")-fare1);
+=======
+                                        rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"), dep,
+                                        (Date) scheduleEnq.getDate(), day1, rs3.getInt("day"));
+>>>>>>> 378ef19033df02c7d3cd9637710aaa077d4d29a4
 
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
@@ -203,6 +214,64 @@ public class HandleClient implements Runnable {
 
     }
 
+    private TrainBasicInfoAdminInfo TrainBasicInfo(String trainNo) {
+        TrainBasicInfoAdminInfo trainBasicInfo;
+        try {
+            String train_name, src, dest, runningDays;
+            Integer train_no, ts_slr, ts_ac;
+            String query = "SELECT * FROM `trains_basic_details` WHERE train_no=" + Integer.parseInt(trainNo) + "";
+            ResultSet rs = c1.s.executeQuery(query);
+            if (rs.next()) {
+                train_no = rs.getInt("train_no");
+                train_name = rs.getString("train_name");
+                ts_slr = rs.getInt("ts_slr");
+                ts_ac = rs.getInt("ts_ac");
+                src = rs.getString("src");
+                dest = rs.getString("dest");
+                runningDays = rs.getString("runningDays");
+                trainBasicInfo = new TrainBasicInfoAdminInfo(train_no, train_name, ts_slr, ts_ac, src, dest,
+                        runningDays);
+            } else {
+                trainBasicInfo = new TrainBasicInfoAdminInfo(0, "train_name", 0, 0, "src", "dest", "runningDays");
+            }
+        } catch (Exception e) {
+            trainBasicInfo = new TrainBasicInfoAdminInfo(0, "train_name", 0, 0, "src", "dest", "runningDays");
+            e.printStackTrace();
+        }
+        return trainBasicInfo;
+    }
+
+    public Vector<AddTrainAdminNextInfo> TrainStationsInfo(String trainNo8) {
+        Vector<AddTrainAdminNextInfo> stationsInfo = new Vector<AddTrainAdminNextInfo>();
+        AddTrainAdminNextInfo temp;
+        String query = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + Integer.parseInt(trainNo8) + "'";
+        String station;
+        java.sql.Time arrival, departure;
+        Integer distance, day, platform, fare, number;
+        try {
+            ResultSet rs1 = c1.s.executeQuery(query);
+            while (rs1.next()) {
+                number = rs1.getInt("station_no");
+                station = rs1.getString("station");
+                arrival = rs1.getTime("arrival");
+                departure = rs1.getTime("departure");
+                distance = rs1.getInt("distance");
+                day = rs1.getInt("day");
+                platform = rs1.getInt("platform");
+                fare = rs1.getInt("fare");
+
+                temp = new AddTrainAdminNextInfo(number, station, arrival, departure, distance, day, platform, fare);
+
+                stationsInfo.add(temp);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stationsInfo;
+
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -243,9 +312,7 @@ public class HandleClient implements Runnable {
                         ScheduleEnq scheduleEnq = (ScheduleEnq) oi.readObject();
                         Vector<AvailabilityInfo> availabilityInfo = ScheduleEnq(scheduleEnq);
                         os.writeObject(availabilityInfo);
-                        
                         os.flush();
-
                         break;
                     case 6:
                         AddTrainAdminInfo addTrain = (AddTrainAdminInfo) oi.readObject();
@@ -260,15 +327,24 @@ public class HandleClient implements Runnable {
                         for (int i = 0; i < noOfHalt7; i++) {
                             stationInfo[i] = (AddTrainAdminNextInfo) oi.readObject();
                         }
-                        String reply1 = AddStationInfo(trainNo7, noOfHalt7, stationInfo);
-                        os.writeUTF(reply1);
+                        String reply7 = AddStationInfo(trainNo7, noOfHalt7, stationInfo);
+                        os.writeUTF(reply7);
+                        os.flush();
+                        break;
+                    case 8:
+                        String trainNo8 = (String) oi.readUTF();
+                        TrainBasicInfoAdminInfo trainBasicInfo = TrainBasicInfo(trainNo8);
+                        os.writeObject(trainBasicInfo);
+                        if (trainBasicInfo.getTrain_no() != 0) {
+                            Vector<AddTrainAdminNextInfo> stationsInfo = TrainStationsInfo(trainNo8);
+                            os.writeObject(stationsInfo);
+                        }
                         os.flush();
                         break;
                     case 9:
                         AddCityAdminInfo addCity = (AddCityAdminInfo) oi.readObject();
-
-                        String reply2 = AddCity(addCity);
-                        os.writeUTF(reply2);
+                        String reply9 = AddCity(addCity);
+                        os.writeUTF(reply9);
                         os.flush();
                         break;
                 }

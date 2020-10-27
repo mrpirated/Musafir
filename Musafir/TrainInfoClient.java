@@ -9,7 +9,7 @@ import Classes.*;
 import java.io.*;
 import java.util.Vector;
 
-public class TrainInfoAdmin extends JFrame implements ActionListener {
+public class TrainInfoClient extends JFrame implements ActionListener {
 
     private JLabel headLabel, pnrLabel, trainNoLabel;
     private JPanel p1, p2, panel;
@@ -18,9 +18,13 @@ public class TrainInfoAdmin extends JFrame implements ActionListener {
     private Connect connection;
     private JScrollPane scroll;
     private int noOfHalts = 0;
+    private String name, Username;
 
-    public TrainInfoAdmin(Connect connection) {
+    public TrainInfoClient(Connect connection, String name, String Username) {
         this.connection = connection;
+        this.name = name;
+        this.Username = Username;
+
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -322,7 +326,7 @@ public class TrainInfoAdmin extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new AdminHome(connection).setVisible(true);
+                new HomePage(connection, name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == b1) {
                 p2.removeAll();
