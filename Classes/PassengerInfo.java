@@ -1,6 +1,8 @@
 package Classes;
 
-public class PassengerInfo {
+import java.io.Serializable;
+
+public class PassengerInfo implements Serializable{
     private String name, berthPreference;
     private Integer age;
     private Character gender;

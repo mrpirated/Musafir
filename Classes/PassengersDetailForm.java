@@ -9,17 +9,19 @@ public class PassengersDetailForm implements Serializable {
     private String name, Username, trainNo, src, dest,trainName;
     private LocalDate date;
     private Integer noOfPassenger;
+    private PassengerInfo[] passengerInfo = new PassengerInfo[noOfPassenger];
 
-    public PassengersDetailForm(String name, String Username, String trainNo,String trainName, String src, String dest,
-            LocalDate date, Integer noOfPassenger) {
+
+    public PassengersDetailForm(String name, String trainNo,String trainName, String src, String dest,
+            LocalDate date, Integer noOfPassenger,PassengerInfo[] passengerInfo) {
         this.name = name;
-        this.Username = Username;
         this.trainNo = trainNo;
         this.trainName = trainName;
         this.src = src;
         this.dest = dest;
         this.date = date;
         this.noOfPassenger = noOfPassenger;
+        this.passengerInfo = passengerInfo;
     }
 
     public LocalDate getDate() {
@@ -51,5 +53,8 @@ public class PassengersDetailForm implements Serializable {
     }
     public String getTrainName() {
         return trainName;
+    }
+    public PassengerInfo[] getPassengerInfo() {
+        return passengerInfo;
     }
 }

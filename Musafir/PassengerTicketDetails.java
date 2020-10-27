@@ -18,7 +18,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private JButton back, submit, form,getfare;
     private JTextField pnrText;
     private String Username, trainname, name, src, dest, datetime1, datetime2, trainNo, duration;
-    private int noOfPassenger = 1,fare;
+    private int noOfPassenger = 1,type;
+    private float fare;
     private JComboBox noOfPassengers;
     private JTextField[] nameOfPassenger, age;
     private JComboBox[] gender, preference;
@@ -26,8 +27,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private Connect connection;
     private LocalDate date;
 
-    public PassengerTicketDetails(/* Connect connection, */ String name, String trainNo, String trainname, String src,
-            String dest, String datetime1, String datetime2, String duration, LocalDate date,int fare) {
+    public PassengerTicketDetails( Connect connection,  String name, String trainNo, String trainname,int type, String src,
+            String dest, String datetime1, String datetime2, String duration, LocalDate date,float fare) {
         this.name = name;
         this.trainNo = trainNo;
         this.trainname = trainname;
@@ -38,7 +39,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         this.duration = duration;
         this.date = date;
         this.fare = fare;
-        // this.connection = connection;
+        this.type = type;
+        this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -80,7 +82,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         back.setBounds(5, 8, 30, 30);
         add(back);
 
-        headLabel = new JLabel("Add " + noOfPassenger + " Passengers Details");
+        headLabel = new JLabel("Add Passengers Details");
         headLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 28));
         headLabel.setForeground(Color.WHITE);
         headLabel.setBounds(220, 10, 400, 30);
@@ -248,12 +250,12 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         LocalDate d = LocalDate.now();
         new PassengerTicketDetails("Deepesh", "00000", "Rajdhani", "Mumbai", "Delhi", "27-10-2020 8:30",
                 "28-10-2020 9:45", "8 hrs 32 min", d,1150);
-    }
+    }*/
 
     public void formelements() {
         nameOfPassenger = new JTextField[noOfPassenger];
@@ -306,13 +308,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         }
 
     }
-    public String PNR(){
-        String s = "";
-        for(int i=0;i<10;i++){
-            s = s + (int)Math.random()*10;
-        }
-        return s;
-    }
+    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -373,9 +369,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 p2.revalidate();
                 p2.repaint();
             }
-            /*if (ae.getSource() == submit) {
-                PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, Username, trainNo, type, src,
-                        dest, date, noOfPassenger);
+            if (ae.getSource() == submit) {
+                
                 PassengerInfo[] passengerInfo = new PassengerInfo[noOfPassenger];
 
                 for (int i = 0; i < noOfPassenger; i++) {
@@ -387,15 +382,14 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     String berthPrefSend = (String) preference[i].getSelectedItem();
                     passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend);
                 }
+                PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo,trainname, src,
+                        dest, date, noOfPassenger,passengerInfo);
 
                 try {
 
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
-                    os.writeInt(8);
+                    os.writeInt(10);
                     os.writeObject(passengerDetailForm);
-                    for (int i = 0; i < noOfPassenger; i++) {
-                        os.writeObject(passengerInfo[i]);
-                    }
                     os.flush();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -407,7 +401,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 } else {
 
                 }
-            }*/
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

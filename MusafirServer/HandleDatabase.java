@@ -35,7 +35,7 @@ public class HandleDatabase {
             int val;
             String runningdays;
             if (start.compareTo(end) != 0) {
-                start.plusDays(1);
+                start = start.plusDays(1);
                 while (start.compareTo(end) <= 0) {
                     weekday = DayOfWeek.from(start);
                     val = weekday.getValue() - 1;

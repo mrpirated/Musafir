@@ -104,19 +104,19 @@ public class HandleClient implements Runnable {
     private Vector<AvailabilityInfo> ScheduleEnq(ScheduleEnq scheduleEnq) {
         Vector<AvailabilityInfo> availabilityInfo = new Vector<AvailabilityInfo>();
         AvailabilityInfo temp;
-        int train;
+        String train;
         String query = "SELECT * FROM `month` WHERE `date` = '" + scheduleEnq.getDate() + "'", query2, query3;
         String st1, st2;
         String source = scheduleEnq.getSource();
         String dest = scheduleEnq.getDest();
         String trainName;
         Timestamp dep;
-        int day1,fare1;
+        int day1, fare1;
         System.out.println("in the function");
         try {
             ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4;
             while (rs1.next()) {
-                train = (int) rs1.getInt("train");
+                train = (String) rs1.getString("train");
                 query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = " + train + " ORDER BY `station_no` ASC";
                 query3 = "SELECT * FROM `trains_basic_details` WHERE `train_no` = " + train + "";
 
@@ -142,9 +142,9 @@ public class HandleClient implements Runnable {
                             if (dest.equals(st2)) {
 
                                 temp = new AvailabilityInfo(true, train, trainName, rs1.getInt("Avail_S"),
-                                        rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"),
-                                        dep, (Date) scheduleEnq.getDate(), day1,
-                                        rs3.getInt("day"),rs3.getInt("fare")-fare1);
+                                        rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"), dep,
+                                        (Date) scheduleEnq.getDate(), day1, rs3.getInt("day"),
+                                        rs3.getInt("fare") - fare1);
 
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
@@ -182,7 +182,7 @@ public class HandleClient implements Runnable {
         for (int i = 0; i < noOfHalt7; i++) {
 
             String query = "INSERT INTO `src_dest_table`(`train_no`, `station_no`, `station`, `arrival`, `departure`, `distance`, `day`, `platform`, `fare`) VALUES ("
-                    + Integer.parseInt(trainNo7) + ", " + (i + 1) + ", '" + stationInfo[i].getStation() + "', '"
+                    + trainNo7 + ", " + (i + 1) + ", '" + stationInfo[i].getStation() + "', '"
                     + stationInfo[i].getArrival() + "', '" + stationInfo[i].getDeparture() + "', "
                     + stationInfo[i].getDistance() + ", " + stationInfo[i].getDay() + ", "
                     + stationInfo[i].getDistance() + ", " + stationInfo[i].getFare() + ")";
@@ -236,7 +236,7 @@ public class HandleClient implements Runnable {
         return trainBasicInfo;
     }
 
-    public Vector<AddTrainAdminNextInfo> TrainStationsInfo(String trainNo8) {
+    private Vector<AddTrainAdminNextInfo> TrainStationsInfo(String trainNo8) {
         Vector<AddTrainAdminNextInfo> stationsInfo = new Vector<AddTrainAdminNextInfo>();
         AddTrainAdminNextInfo temp;
         String query = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + Integer.parseInt(trainNo8) + "'";
@@ -264,6 +264,39 @@ public class HandleClient implements Runnable {
             e.printStackTrace();
         }
         return stationsInfo;
+
+    }
+
+    private String PNR() {
+        String s = "";
+        for (int i = 0; i < 10; i++) {
+            s = s + (int) (Math.random() * 10);
+        }
+        return s;
+    }
+
+    private BookedTicket Book(PassengersDetailForm passengersDetailForm) {
+        String PNR = PNR();
+        int noofpassengers = passengersDetailForm.getNoOfPassenger();
+        BookedTicket bookedTicket = new BookedTicket(noofpassengers);
+        bookedTicket.setPNR(PNR);
+        int index;
+        Conn c1 = new Conn();
+        String query = "SELECT * FROM `month` WHERE `date` = '" + passengersDetailForm.getDate() + "' AND `train` = '"
+                + passengersDetailForm.getTrainNo() + "' ORDER BY `date` ASC";
+        try{
+            ResultSet rs = c1.s.executeQuery(query);
+            rs.next();
+            index = rs.getInt("index_no");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        for (int i = 0; i < noofpassengers; i++) {
+
+        }
+
+        return bookedTicket;
 
     }
 
@@ -342,6 +375,13 @@ public class HandleClient implements Runnable {
                         os.writeUTF(reply9);
                         os.flush();
                         break;
+                    case 10:
+                        PassengersDetailForm passengersDetailForm = (PassengersDetailForm) oi.readObject();
+                        BookedTicket bookedTicket = Book(passengersDetailForm);
+                        os.writeObject(bookedTicket);
+                        os.flush();
+                        break;
+
                 }
 
             } catch (Exception e) {
