@@ -8,11 +8,11 @@ import java.sql.Timestamp;
 
 public class AvailabilityInfo implements Serializable {
     private boolean available=false;
-    private int train, sl, ac, day1,day2;
+    private int train, sl, ac, day1,day2,fare;
     private Timestamp arrival,departure;
     private String trainName;
     private Date date;
-    public AvailabilityInfo(boolean available,int train,String trainName,int sl,int ac,Timestamp arrival, Timestamp departure,Date date,int day1,int day2){
+    public AvailabilityInfo(boolean available,int train,String trainName,int sl,int ac,Timestamp arrival, Timestamp departure,Date date,int day1,int day2,int fare){
         this.ac=ac;
         this.available = available;
         this.train = train;
@@ -24,6 +24,7 @@ public class AvailabilityInfo implements Serializable {
         this.date = date;
         this.day1 = day1;
         this.day2 = day2;
+        this.fare = fare;
     }
     public int getAc() {
         return ac;
@@ -54,5 +55,8 @@ public class AvailabilityInfo implements Serializable {
     }
     public int getDay2() {
         return day2;
+    }
+    public int getFare() {
+        return fare;
     }
 }

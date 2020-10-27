@@ -105,7 +105,7 @@ public class HandleClient implements Runnable {
         String dest = scheduleEnq.getDest();
         String trainName;
         Timestamp dep;
-        int day1;
+        int day1,fare1;
         System.out.println("in the function");
         try {
             ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4;
@@ -128,6 +128,7 @@ public class HandleClient implements Runnable {
                         rs3 = rs2;
                         dep = rs2.getTimestamp("departure");
                         day1 = rs2.getInt("day");
+                        fare1 = rs2.getInt("fare");
                         System.out.println("equals");
                         while (rs3.next()) {
                             System.out.println("rs3");
@@ -137,7 +138,7 @@ public class HandleClient implements Runnable {
                                 temp = new AvailabilityInfo(true, train, trainName, rs1.getInt("Avail_S"),
                                         rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"),
                                         dep, (Date) scheduleEnq.getDate(), day1,
-                                        rs3.getInt("day"));
+                                        rs3.getInt("day"),rs3.getInt("fare")-fare1);
 
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
