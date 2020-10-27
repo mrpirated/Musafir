@@ -88,6 +88,12 @@ public class HandleClient implements Runnable {
             if (rs.next()) {
                 return rs.getString("name");
             }
+            query = "SELECT * FROM `admin_info` WHERE phone='" + loginInfo.getUsername() + "' AND password='"
+                    + String.valueOf(loginInfo.getPassword()) + "'";
+            rs = c1.s.executeQuery(query);
+            if (rs.next()) {
+                return rs.getString("name");
+            }
         } catch (Exception e) {
             e.printStackTrace();
 
