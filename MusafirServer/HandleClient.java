@@ -142,14 +142,9 @@ public class HandleClient implements Runnable {
                             if (dest.equals(st2)) {
 
                                 temp = new AvailabilityInfo(true, train, trainName, rs1.getInt("Avail_S"),
-<<<<<<< HEAD
                                         rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"),
                                         dep, (Date) scheduleEnq.getDate(), day1,
                                         rs3.getInt("day"),rs3.getInt("fare")-fare1);
-=======
-                                        rs1.getInt("Avail_AC"), rs3.getTimestamp("arrival"), dep,
-                                        (Date) scheduleEnq.getDate(), day1, rs3.getInt("day"));
->>>>>>> 378ef19033df02c7d3cd9637710aaa077d4d29a4
 
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
