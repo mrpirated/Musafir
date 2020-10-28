@@ -60,6 +60,7 @@ public class HomePage extends JFrame implements ActionListener {
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/planMyJourney.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);

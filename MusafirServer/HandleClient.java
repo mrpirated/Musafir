@@ -327,6 +327,25 @@ public class HandleClient implements Runnable {
 
     }
 
+    private Vector<String> GetTrain() {
+        Vector<String> trainInfo = new Vector<String>();
+        String query = "SELECT train_no, train_name FROM `trains_basic_details`";
+        String temp;
+        int i = 0;
+        trainInfo.add("None");
+        try {
+            ResultSet rs = c1.s.executeQuery(query);
+            while (rs.next()) {
+                temp = rs.getString("train_no") + " - " + rs.getString("train_name");
+                trainInfo.add(temp);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return trainInfo;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -411,6 +430,11 @@ public class HandleClient implements Runnable {
                     case 11:
                         Vector<TrainBasicInfoAdminInfo> allTrainInfo = AllTrainInfo();
                         os.writeObject(allTrainInfo);
+                        os.flush();
+                        break;
+                    case 12:
+                        Vector<String> train12 = GetTrain();
+                        os.writeObject(train12);
                         os.flush();
                         break;
                 }

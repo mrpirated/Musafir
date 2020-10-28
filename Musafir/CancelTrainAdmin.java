@@ -19,12 +19,15 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
     private JLabel headLabel, pnrLabel, infoLabel, startDate, endDate, trainNo;
     private JPanel p1, p2, panel, startDatePanel, endDatePanel;
     private JButton back, submit;
-    private JTextField pnrText, tf1;
+    private JTextField pnrText;
+    private JComboBox tf1;
     private JXDatePicker picker, picker1;
     private Connect connection;
+    private Vector<String> trainList;
 
-    public CancelTrainAdmin(Connect connection) {
+    public CancelTrainAdmin(Connect connection, Vector<String> trainList) {
         this.connection = connection;
+        this.trainList = trainList;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -69,9 +72,9 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
         trainNo.setBounds(200, 180, 150, 32);
         add(trainNo);
 
-        tf1 = new JTextField(7);
+        tf1 = new JComboBox(trainList);
         tf1.setFont(new Font("Times new roman", Font.BOLD, 14));
-        tf1.setBounds(300, 180, 150, 30);
+        tf1.setBounds(300, 180, 300, 30);
         add(tf1);
 
         startDate = new JLabel("From:");
@@ -129,7 +132,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
                 new AdminHome(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == submit) {
-                String trainNo = tf1.getText();
+                String trainNo = (String) tf1.getSelectedItem();
                 java.util.Date dateFrom = picker.getDate();
                 java.util.Date dateTo = picker1.getDate();
                 String dFrom = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);

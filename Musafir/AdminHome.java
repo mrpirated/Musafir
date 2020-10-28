@@ -5,6 +5,7 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import java.util.Vector;
 import java.io.*;
 
 public class AdminHome extends JFrame implements ActionListener {
@@ -55,6 +56,7 @@ public class AdminHome extends JFrame implements ActionListener {
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/passengers.png"));
         i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
@@ -220,10 +222,28 @@ public class AdminHome extends JFrame implements ActionListener {
                 new LoginAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == cancelbt) {
-                new CancelTrainAdmin(connection).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(12);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<String> trainList = (Vector<String>) oi.readObject();
+                new CancelTrainAdmin(connection, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == removebt) {
-                new RemoveTrainAdmin(connection).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(12);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<String> trainList = (Vector<String>) oi.readObject();
+                new RemoveTrainAdmin(connection, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == passengerbt) {
                 new PassengerInfoAdmin(connection).setVisible(true);

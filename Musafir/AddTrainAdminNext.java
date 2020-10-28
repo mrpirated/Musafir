@@ -160,6 +160,7 @@ public class AddTrainAdminNext extends JFrame implements ActionListener {
         scroll.setBounds(20, 90, 700, 600);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         getContentPane().add(scroll);
 
@@ -232,7 +233,7 @@ public class AddTrainAdminNext extends JFrame implements ActionListener {
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String s = (String) oi.readUTF();
                 if (s.equals("ok")) {
-                    JOptionPane.showMessageDialog(null, "Train Basic Details Added. Complete the next form.");
+                    JOptionPane.showMessageDialog(null, "Train Details Added Successfully.");
                     new AdminHome(connection).setVisible(true);
                     setVisible(false);
                 } else {

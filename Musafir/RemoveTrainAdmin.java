@@ -7,18 +7,23 @@ import java.awt.event.*;
 import java.net.*;
 import Classes.*;
 import java.io.*;
+import java.util.*;
 
 public class RemoveTrainAdmin extends JFrame implements ActionListener {
 
     private JLabel headLabel, pnrLabel, trainNo, infoLabel;
     private JPanel p1, p2, panel;
     private JButton back, submit;
-    private JTextField pnrText, tf1;
+    private JTextField pnrText;
     private String name, Username;
     private Connect connection;
+    private Vector<String> trainList;
+    private JComboBox tf1;
 
-    public RemoveTrainAdmin(Connect connection) {
+    public RemoveTrainAdmin(Connect connection, Vector<String> trainList) {
         this.connection = connection;
+        this.trainList = trainList;
+
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -63,9 +68,9 @@ public class RemoveTrainAdmin extends JFrame implements ActionListener {
         trainNo.setBounds(200, 180, 150, 32);
         add(trainNo);
 
-        tf1 = new JTextField(7);
+        tf1 = new JComboBox(trainList);
         tf1.setFont(new Font("Times new roman", Font.BOLD, 14));
-        tf1.setBounds(300, 180, 150, 30);
+        tf1.setBounds(300, 180, 300, 30);
         add(tf1);
 
         submit = new JButton("Submit");

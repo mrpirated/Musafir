@@ -84,6 +84,7 @@ public class TrainInfoClient extends JFrame implements ActionListener {
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         back.addActionListener(this);
         b1.addActionListener(this);

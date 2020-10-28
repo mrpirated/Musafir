@@ -23,7 +23,6 @@ import org.jdesktop.swingx.JXDatePicker;
 import Classes.AvailabilityInfo;
 import Classes.ScheduleEnq;
 
-
 public class PlanMyJourney extends JFrame implements ActionListener {
     private JPanel p1, panel;
     private JButton back, submit;
@@ -34,9 +33,10 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private int trains = 0;
     private Panel availability;
     private JScrollPane scroll;
-    private JLabel[] arrival,departure,trainName,train,srno,day1,day2,duration;
-    private JButton[] sl,ac;
+    private JLabel[] arrival, departure, trainName, train, srno, day1, day2, duration;
+    private JButton[] sl, ac;
     private float[] fare;
+
     PlanMyJourney(Connect connection, String name, String[][] cities, String Username) {
         this.name = name;
         this.Username = Username;
@@ -137,6 +137,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         back.addActionListener(this);
         submit.addActionListener(this);
@@ -337,8 +338,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         java.util.Date dt = new java.util.Date();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        
-        
+
         try {
 
             if (ae.getSource() == back) {
@@ -351,7 +351,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 String source = (String) from.getSelectedItem();
                 String dest = (String) to.getSelectedItem();
                 dt = picker.getDate();
-                
+
                 String d = df.format(dt);
                 Date date = Date.valueOf(d);
                 ScheduleEnq scheduleEnq = new ScheduleEnq(source, dest, date);
@@ -361,29 +361,31 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 os.flush();
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 Vector<AvailabilityInfo> availabilityInfo = (Vector<AvailabilityInfo>) oi.readObject();
-                
+
                 showTrains(availabilityInfo);
                 availability.revalidate();
                 availability.repaint();
                 System.out.println(date);
 
-            }else{
-            for (int i = 0; i < trains; i++) {
-                if(ae.getSource()==sl[i]){
-                    new PassengerTicketDetails(connection,name,train[i].getText(),trainName[i].getText(),1,(String)from.getSelectedItem(),(String)to.getSelectedItem(),
-                    day1[i].getText()+" "+departure[i].getText(),day2[i].getText()+" "+arrival[i].getText(),duration[i].getText(),
-                    Date.valueOf(df.format(dt)).toLocalDate(),fare[i]).setVisible(true);
-                }
-                else if(ae.getSource()==ac[i]){
-                    new PassengerTicketDetails(connection,name,train[i].getText(),trainName[i].getText(),2,(String)from.getSelectedItem(),(String)to.getSelectedItem(),
-                    day1[i].getText()+" "+departure[i].getText(),day2[i].getText()+" "+arrival[i].getText(),duration[i].getText(),
-                    Date.valueOf(df.format(dt)).toLocalDate(),fare[i]).setVisible(true);
+            } else {
+                for (int i = 0; i < trains; i++) {
+                    if (ae.getSource() == sl[i]) {
+                        new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 1,
+                                (String) from.getSelectedItem(), (String) to.getSelectedItem(),
+                                day1[i].getText() + " " + departure[i].getText(),
+                                day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
+                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i]).setVisible(true);
+                    } else if (ae.getSource() == ac[i]) {
+                        new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
+                                (String) from.getSelectedItem(), (String) to.getSelectedItem(),
+                                day1[i].getText() + " " + departure[i].getText(),
+                                day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
+                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i]).setVisible(true);
+                    }
                 }
             }
-        }
-        
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
