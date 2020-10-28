@@ -195,18 +195,22 @@ public class HandleClient implements Runnable {
         return "ok";
     }
 
-    private String AddCity(AddCityAdminInfo addCity) {
+    private String AddCity(AddCityAdminInfo[] addCity) {
+        int n = addCity.length;
+        
+        for(int i=0;i<n;i++){
 
-        String query = "INSERT INTO `cities`(`stations`, `short`) VALUES ( '" + addCity.getCityName() + "', '"
-                + addCity.getStationCode() + "' )";
+        String query = "INSERT INTO `cities`(`stations`, `short`) VALUES ( '" + addCity[i].getCityName() + "', '"
+                + addCity[i].getStationCode() + "' )";
         try {
             c1.s.executeUpdate(query);
-            return "ok";
         } catch (Exception e) {
             e.printStackTrace();
-            return " ";
+            return  " ";
         }
-
+        
+    }
+    return "ok";
     }
 
     private TrainBasicInfoAdminInfo TrainBasicInfo(String trainNo) {
@@ -397,7 +401,7 @@ public class HandleClient implements Runnable {
                         os.flush();
                         break;
                     case 9:
-                        AddCityAdminInfo addCity = (AddCityAdminInfo) oi.readObject();
+                        AddCityAdminInfo[] addCity = (AddCityAdminInfo[]) oi.readObject();
                         String reply9 = AddCity(addCity);
                         os.writeUTF(reply9);
                         os.flush();

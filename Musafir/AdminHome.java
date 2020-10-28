@@ -251,7 +251,7 @@ public class AdminHome extends JFrame implements ActionListener {
                 new TrainInfoAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addCitybt) {
-                new AddCityAdmin(connection).setVisible(true);
+                //new AddCityAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == alltrainbt) {
                 new AllTrainsAdmin(connection).setVisible(true);
