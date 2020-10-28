@@ -214,10 +214,10 @@ public class HandleClient implements Runnable {
         try {
             String train_name, src, dest, runningDays;
             Integer train_no, ts_slr, ts_ac;
-            String query = "SELECT * FROM `trains_basic_details` WHERE train_no=" + Integer.parseInt(trainNo) + "";
+            String query = "SELECT * FROM `trains_basic_details` WHERE train_no='" + trainNo + "'";
             ResultSet rs = c1.s.executeQuery(query);
             if (rs.next()) {
-                train_no = rs.getInt("train_no");
+                train_no = Integer.parseInt(rs.getString("train_no"));
                 train_name = rs.getString("train_name");
                 ts_slr = rs.getInt("ts_slr");
                 ts_ac = rs.getInt("ts_ac");
@@ -239,7 +239,7 @@ public class HandleClient implements Runnable {
     private Vector<AddTrainAdminNextInfo> TrainStationsInfo(String trainNo8) {
         Vector<AddTrainAdminNextInfo> stationsInfo = new Vector<AddTrainAdminNextInfo>();
         AddTrainAdminNextInfo temp;
-        String query = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + Integer.parseInt(trainNo8) + "'";
+        String query = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + trainNo8 + "'";
         String station;
         java.sql.Time arrival, departure;
         Integer distance, day, platform, fare, number;
@@ -267,6 +267,33 @@ public class HandleClient implements Runnable {
 
     }
 
+    private Vector<TrainBasicInfoAdminInfo> AllTrainInfo() {
+        Vector<TrainBasicInfoAdminInfo> stationsInfo = new Vector<TrainBasicInfoAdminInfo>();
+        TrainBasicInfoAdminInfo temp;
+        String query = "SELECT * FROM `trains_basic_details`";
+        String train_name, src, dest, runningDays;
+        Integer train_no, ts_slr, ts_ac;
+        try {
+            ResultSet rs = c1.s.executeQuery(query);
+            while (rs.next()) {
+                train_no = Integer.parseInt(rs.getString("train_no"));
+                train_name = rs.getString("train_name");
+                ts_slr = rs.getInt("ts_slr");
+                ts_ac = rs.getInt("ts_ac");
+                src = rs.getString("src");
+                dest = rs.getString("dest");
+                runningDays = rs.getString("runningDays");
+                temp = new TrainBasicInfoAdminInfo(train_no, train_name, ts_slr, ts_ac, src, dest, runningDays);
+                stationsInfo.add(temp);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stationsInfo;
+
+    }
+
     private String PNR() {
         String s = "";
         for (int i = 0; i < 10; i++) {
@@ -284,14 +311,14 @@ public class HandleClient implements Runnable {
         Conn c1 = new Conn();
         String query = "SELECT * FROM `month` WHERE `date` = '" + passengersDetailForm.getDate() + "' AND `train` = '"
                 + passengersDetailForm.getTrainNo() + "' ORDER BY `date` ASC";
-        try{
+        try {
             ResultSet rs = c1.s.executeQuery(query);
             rs.next();
             index = rs.getInt("index_no");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         for (int i = 0; i < noofpassengers; i++) {
 
         }
@@ -381,7 +408,11 @@ public class HandleClient implements Runnable {
                         os.writeObject(bookedTicket);
                         os.flush();
                         break;
-
+                    case 11:
+                        Vector<TrainBasicInfoAdminInfo> allTrainInfo = AllTrainInfo();
+                        os.writeObject(allTrainInfo);
+                        os.flush();
+                        break;
                 }
 
             } catch (Exception e) {
