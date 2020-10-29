@@ -145,7 +145,7 @@ public class HandleClient implements Runnable {
                             st2 = (String) rs3.getString("station");
                             if (dest.equals(st2)) {
                                 availsl = rs1.getInt("Avail_S") - rs1.getInt("Total_S")/3;
-                                availac = rs1.getInt("Avail_S") - rs1.getInt("Total_S")/3;
+                                availac = rs1.getInt("Avail_AC") - rs1.getInt("Total_AC")/3;
                                 temp = new AvailabilityInfo(true, train, trainName, availsl,
                                         availac, rs3.getTimestamp("arrival"), dep,
                                         (Date) scheduleEnq.getDate(), day1, rs3.getInt("day"),
