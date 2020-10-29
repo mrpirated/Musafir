@@ -18,7 +18,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private JButton back, submit, form,getfare;
     private JTextField pnrText;
     private String Username, trainname, name, src, dest, datetime1, datetime2, trainNo, duration;
-    private int noOfPassenger = 1,type,avail,srcint,destint;
+    private int noOfPassenger = 1,type,avail,srcint,destint, userid;
     private float fare;
     private JComboBox noOfPassengers;
     private JTextField[] nameOfPassenger, age;
@@ -28,7 +28,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private LocalDate date;
 
     public PassengerTicketDetails( Connect connection,  String name, String trainNo, String trainname,int type, String src,int srcint,
-            String dest,int destint, String datetime1, String datetime2, String duration, LocalDate date,float fare,int avail) {
+            String dest,int destint, String datetime1, String datetime2, String duration, LocalDate date,float fare,int avail, int userid) {
         this.name = name;
         this.trainNo = trainNo;
         this.trainname = trainname;
@@ -43,6 +43,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         this.avail = avail;
         this.srcint = srcint;
         this.destint = destint;
+        this.userid=userid;
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -385,7 +386,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend);
                 }
                 PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo,trainname, srcint,
-                        destint, date, noOfPassenger,passengerInfo,type);
+                        destint, date, noOfPassenger,passengerInfo,type, userid);
 
                 try {
 

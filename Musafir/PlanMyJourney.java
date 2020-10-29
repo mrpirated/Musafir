@@ -28,7 +28,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private JButton back, submit;
     private JComboBox from, to;
     private JXDatePicker picker;
-    private String name, Username;
+    private String name;
+    private int userid;
     private Connect connection;
     private int trains = 0;
     private Panel availability;
@@ -38,9 +39,9 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private float[] fare;
     private int[] srcint, destint;
     private java.util.Date dt = new java.util.Date();
-    PlanMyJourney(Connect connection, String name, String[][] cities, String Username) {
+    PlanMyJourney(Connect connection, String name, String[][] cities,int userid) {
         this.name = name;
-        this.Username = Username;
+        this.userid = userid;
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -347,7 +348,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection, name, Username).setVisible(true);
+                new HomePage(connection, name, userid).setVisible(true);
                 setVisible(false);
             }
 
@@ -379,14 +380,14 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                                 (String) from.getSelectedItem(),srcint[i], (String) to.getSelectedItem(),destint[i],
                                 day1[i].getText() + " " + departure[i].getText(),
                                 day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(sl[i].getText())).setVisible(true);
+                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(sl[i].getText()), userid).setVisible(true);
                                 
                     } else if (ae.getSource() == ac[i]) {
                         new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
                                 (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(),destint[i],
                                 day1[i].getText() + " " + departure[i].getText(),
                                 day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(ac[i].getText())).setVisible(true);
+                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(ac[i].getText()), userid).setVisible(true);
                     }
                 }
             

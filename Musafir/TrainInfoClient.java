@@ -17,15 +17,16 @@ public class TrainInfoClient extends JFrame implements ActionListener {
     private JTextField pnrText;
     private Connect connection;
     private JScrollPane scroll;
+    private int userid;
     private int noOfHalts = 0;
     private String name, Username, trainNo;
     private Vector<String> trainList;
     private JComboBox tf1;
 
-    public TrainInfoClient(Connect connection, String name, String Username, Vector<String> trainList) {
+    public TrainInfoClient(Connect connection, String name, int userid, Vector<String> trainList) {
         this.connection = connection;
         this.name = name;
-        this.Username = Username;
+        this.userid=userid;
         this.trainList = trainList;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -330,7 +331,7 @@ public class TrainInfoClient extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection, name, Username).setVisible(true);
+                new HomePage(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == b1) {
                 p2.removeAll();
