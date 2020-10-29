@@ -283,7 +283,7 @@ public class HomePage extends JFrame implements ActionListener {
                 new TrainInfoClient(connection, name, userid, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == querybt) {
-                new BotClient(connection, name, Username).setVisible(true);
+                new BotClient(connection, name, userid).setVisible(true);
                 setVisible(false);
             }
 

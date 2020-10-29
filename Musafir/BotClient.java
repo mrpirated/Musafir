@@ -14,13 +14,14 @@ public class BotClient extends JFrame implements ActionListener {
     private JPanel p1, p2, panel;
     private JButton back, submit, send;
     private JTextField pnrText, tf1;
-    private String name, Username;
+    private String name;
     private Connect connection;
     private JScrollPane scroll;
+    private int userid;
 
-    public BotClient(Connect connection, String name, String Username) {
+    public BotClient(Connect connection, String name, int userid) {
         this.name = name;
-        this.Username = Username;
+        this.userid = userid;
         this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -100,7 +101,7 @@ public class BotClient extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection, name, Username).setVisible(true);
+                new HomePage(connection, name, userid).setVisible(true);
                 setVisible(false);
             }
 
