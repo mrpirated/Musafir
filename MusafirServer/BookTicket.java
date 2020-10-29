@@ -97,7 +97,7 @@ public class BookTicket {
                 if(rs3.next()==false){
                     query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
                         + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
-                        + i/72 + "', '" + i%72+1 + "', NULL, '"
+                        + (i/72+1) + "', '" + (i%72+1) + "', NULL, '"
                         + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
                         + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
                         + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";

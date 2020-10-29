@@ -670,7 +670,7 @@ public class HandleClient implements Runnable {
                         break;
                     case 10:
                         PassengersDetailForm passengersDetailForm = (PassengersDetailForm) oi.readObject();
-
+                        System.out.println(passengersDetailForm.getDate());
                         BookedTicket bookedTicket = new BookTicket(passengersDetailForm).getBookedTicket();
                         os.writeObject(bookedTicket);
                         os.flush();

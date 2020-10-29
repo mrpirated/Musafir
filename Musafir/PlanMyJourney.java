@@ -37,6 +37,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private JButton[] sl, ac;
     private float[] fare;
     private int[] srcint, destint;
+    private java.util.Date dt = new java.util.Date();
     PlanMyJourney(Connect connection, String name, String[][] cities, String Username) {
         this.name = name;
         this.Username = Username;
@@ -340,7 +341,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
      * {{"as","cs"},{"dfs","dsfs"}}; new PlanMyJourney("asa",s,"adas"); }
      */
     public void actionPerformed(ActionEvent ae) {
-        java.util.Date dt = new java.util.Date();
+        
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
@@ -355,7 +356,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 String source = (String) from.getSelectedItem();
                 String dest = (String) to.getSelectedItem();
                 dt = picker.getDate();
-
+                System.out.println(dt);
                 String d = df.format(dt);
                 Date date = Date.valueOf(d);
                 ScheduleEnq scheduleEnq = new ScheduleEnq(source, dest, date);
@@ -371,7 +372,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 availability.repaint();
                 System.out.println(date);
 
-            } else {
+            } 
                 for (int i = 0; i < trains; i++) {
                     if (ae.getSource() == sl[i]) {
                         new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 1,
@@ -379,6 +380,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                                 day1[i].getText() + " " + departure[i].getText(),
                                 day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
                                 (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(sl[i].getText())).setVisible(true);
+                                
                     } else if (ae.getSource() == ac[i]) {
                         new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
                                 (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(),destint[i],
@@ -387,7 +389,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                                 (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(ac[i].getText())).setVisible(true);
                     }
                 }
-            }
+            
 
         } catch (Exception e) {
             e.printStackTrace();
