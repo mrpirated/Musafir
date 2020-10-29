@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.net.*;
 import Classes.*;
 import java.io.*;
+import java.util.*;
 
 public class BookAMeal extends JFrame implements ActionListener {
 
@@ -16,10 +17,14 @@ public class BookAMeal extends JFrame implements ActionListener {
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
-    public BookAMeal(Connect connection,String name, String Username) {
+    private JComboBox pnrListBox;
+    private Vector<String> pnrList = new Vector<String>();
+
+    public BookAMeal(Connect connection, String name, String Username, Vector<String> pnrList) {
         this.name = name;
         this.Username = Username;
         this.connection = connection;
+        this.pnrList = pnrList;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -54,6 +59,24 @@ public class BookAMeal extends JFrame implements ActionListener {
         headLabel.setBounds(250, 10, 400, 30);
         p1.add(headLabel);
 
+        pnrLabel = new JLabel("Train No:");
+        pnrLabel.setFont(new Font("Times new roman", Font.BOLD, 20));
+        pnrLabel.setBounds(200, 180, 150, 32);
+        add(pnrLabel);
+
+        pnrListBox = new JComboBox(pnrList);
+        pnrListBox.setFont(new Font("Times new roman", Font.BOLD, 14));
+        pnrListBox.setBounds(320, 180, 300, 30);
+        add(pnrListBox);
+
+        submit = new JButton("Book Meal");
+        submit.setBackground(Color.BLACK);
+        submit.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        submit.setForeground(Color.WHITE);
+        submit.setBorder(emptyBorder);
+        submit.setBounds(300, 500, 200, 30);
+        add(submit);
+
         back.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
@@ -64,14 +87,33 @@ public class BookAMeal extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
-
+            String selectedPNR = (String) pnrListBox.getSelectedItem();
             if (ae.getSource() == back) {
-                new HomePage(connection,name, Username).setVisible(true);
+                new HomePage(connection, name, Username).setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == submit) {
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(14);
+                    os.writeUTF(selectedPNR);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                String s = (String) oi.readUTF();
+                if (s.equals("ok")) {
+                    JOptionPane.showMessageDialog(null, "Meal Booked Successfully for the PNR: " + selectedPNR
+                            + ". Payment is to be done at the time of journey.");
+                    new AdminHome(connection).setVisible(true);
+                    setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Request Not processed. Try Again.");
+
+                }
             }
 
         } catch (Exception e) {

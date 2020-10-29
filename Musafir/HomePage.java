@@ -258,7 +258,16 @@ public class HomePage extends JFrame implements ActionListener {
                 new ReroutedTrains(connection, name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == mealbt) {
-                new BookAMeal(connection, name, Username).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(16);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<String> pnrList = (Vector<String>) oi.readObject();
+                new BookAMeal(connection, name, Username, pnrList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == trainbt) {
                 try {

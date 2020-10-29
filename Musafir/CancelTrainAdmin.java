@@ -132,21 +132,22 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
                 new AdminHome(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == submit) {
-                String trainNo = (String) tf1.getSelectedItem();
+                String trainX1 = (String) tf1.getSelectedItem();
+                StringTokenizer st2 = new StringTokenizer(trainX1, " ");
+                String trainNoSend = st2.nextToken();
                 java.util.Date dateFrom = picker.getDate();
                 java.util.Date dateTo = picker1.getDate();
                 String dFrom = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);
                 String dTo = new SimpleDateFormat("yyyy-MM-dd").format(dateTo);
                 java.sql.Date dateFromSend = java.sql.Date.valueOf(dFrom);
                 java.sql.Date dateToSend = java.sql.Date.valueOf(dTo);
-                // System.out.println(dateFromSend);
-                // System.out.println(dateToSend);
-                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, dateFromSend, dateToSend);
+
+                CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNoSend, dateFromSend, dateToSend);
 
                 try {
 
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
-                    os.writeInt(8);
+                    os.writeInt(14);
                     os.writeObject(cancelRequest);
                     os.flush();
                 } catch (Exception e) {
@@ -159,6 +160,7 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
                     new AdminHome(connection).setVisible(true);
                     setVisible(false);
                 } else {
+                    JOptionPane.showMessageDialog(null, "Request Not processed. Try Again.");
 
                 }
             }
