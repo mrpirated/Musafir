@@ -322,6 +322,36 @@ public class HandleClient implements Runnable {
         return trainInfo;
     }
 
+    public Vector<Vector<String>> BotReplyFirst() {
+        Vector<Vector<String>> str = new Vector<Vector<String>>();
+        Vector<String> temp1 = new Vector<String>(), temp2 = new Vector<String>();
+        temp1.add("Welcome To Musafir App !!!");
+        temp1.add("I'm RailBOT.");
+        temp1.add("I will be happy to sort you out.");
+        str.add(temp1);
+
+        temp2.add("Check these options and choose an");
+        temp2.add("appropriate option from the below");
+        temp2.add("menu and click on send to process");
+        temp2.add("the request.");
+        temp2.add("1. How To See Trains According to requirement?");
+        temp2.add("2. How to Check Availability?");
+        temp2.add("3. How to Check Fare?");
+        temp2.add("4. How to Book a Ticket?");
+        temp2.add("5. How to get my Booking History?");
+        temp2.add("6. How to PNR Status?");
+        temp2.add("7. How to Cancel Ticket?");
+        temp2.add("8. How to Check Refeund History?");
+        temp2.add("9. How to see Cancelled Trains?");
+        temp2.add("10. How to see Reouted Trains?");
+        temp2.add("11. How to book meal for a ticket?");
+        temp2.add("12. How to get Info of a Train?");
+        temp2.add("13. Other Query.");
+        str.add(temp2);
+
+        return str;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -412,6 +442,11 @@ public class HandleClient implements Runnable {
                     case 12:
                         Vector<String> train12 = GetTrain();
                         os.writeObject(train12);
+                        os.flush();
+                        break;
+                    case 17:
+                        Vector<Vector<String>> reply17 = BotReplyFirst();
+                        os.writeObject(reply17);
                         os.flush();
                         break;
                 }

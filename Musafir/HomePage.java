@@ -24,7 +24,7 @@ public class HomePage extends JFrame implements ActionListener {
     private Connect connection;
     private JScrollPane scroll;
 
-    HomePage(Connect connection, String name,int userid) {
+    HomePage(Connect connection, String name, int userid) {
         this.connection = connection;
         this.name = name;
         this.userid = userid;
@@ -283,7 +283,17 @@ public class HomePage extends JFrame implements ActionListener {
                 new TrainInfoClient(connection, name, userid, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == querybt) {
-                new BotClient(connection, name, userid).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(17);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<Vector<String>> reply = (Vector<Vector<String>>) oi.readObject();
+                new BotClient(connection, name, userid, reply.get(0), reply.get(1)).setVisible(true);
                 setVisible(false);
             }
 
