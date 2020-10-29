@@ -36,7 +36,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private JLabel[] arrival, departure, trainName, train, srno, day1, day2, duration;
     private JButton[] sl, ac;
     private float[] fare;
-
+    private int[] srcint, destint;
     PlanMyJourney(Connect connection, String name, String[][] cities, String Username) {
         this.name = name;
         this.Username = Username;
@@ -208,6 +208,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         sl = new JButton[trains];
         ac = new JButton[trains];
         fare = new float[trains];
+        srcint = new int[trains];
+        destint = new int[trains];
         String str;
         int seats;
 
@@ -297,6 +299,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
 
             y = y + 50;
             fare[i] = availabilityInfo.get(i).getFare();
+            srcint[i] = availabilityInfo.get(i).getSrcint();
+            destint[i] = availabilityInfo.get(i).getDestint();
 
         }
 
@@ -360,8 +364,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 os.writeObject(scheduleEnq);
                 os.flush();
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                @SuppressWarnings (value="unchecked")
                 Vector<AvailabilityInfo> availabilityInfo = (Vector<AvailabilityInfo>) oi.readObject();
-
                 showTrains(availabilityInfo);
                 availability.revalidate();
                 availability.repaint();
@@ -371,16 +375,16 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 for (int i = 0; i < trains; i++) {
                     if (ae.getSource() == sl[i]) {
                         new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 1,
-                                (String) from.getSelectedItem(), (String) to.getSelectedItem(),
+                                (String) from.getSelectedItem(),srcint[i], (String) to.getSelectedItem(),destint[i],
                                 day1[i].getText() + " " + departure[i].getText(),
                                 day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i]).setVisible(true);
+                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i],Integer.parseInt(sl[i].getText())).setVisible(true);
                     } else if (ae.getSource() == ac[i]) {
                         new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
-                                (String) from.getSelectedItem(), (String) to.getSelectedItem(),
+                                (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(),destint[i],
                                 day1[i].getText() + " " + departure[i].getText(),
                                 day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i]).setVisible(true);
+                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i],Integer.parseInt(ac[i].getText())).setVisible(true);
                     }
                 }
             }

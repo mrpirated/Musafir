@@ -6,14 +6,14 @@ import java.time.LocalDate;
 
 public class PassengersDetailForm implements Serializable {
     // PassengerTicketDetails()
-    private String name, Username, trainNo, src, dest,trainName;
+    private String name, Username, trainNo,trainName;
     private LocalDate date;
-    private Integer noOfPassenger;
-    private PassengerInfo[] passengerInfo = new PassengerInfo[noOfPassenger];
+    private Integer noOfPassenger,type,src,dest;
+    private PassengerInfo[] passengerInfo; 
 
 
-    public PassengersDetailForm(String name, String trainNo,String trainName, String src, String dest,
-            LocalDate date, Integer noOfPassenger,PassengerInfo[] passengerInfo) {
+    public PassengersDetailForm(String name, String trainNo,String trainName, int src, int dest,
+            LocalDate date, Integer noOfPassenger,PassengerInfo[] passengerInfo,int type) {
         this.name = name;
         this.trainNo = trainNo;
         this.trainName = trainName;
@@ -22,13 +22,15 @@ public class PassengersDetailForm implements Serializable {
         this.date = date;
         this.noOfPassenger = noOfPassenger;
         this.passengerInfo = passengerInfo;
+        this.type = type;
+        passengerInfo = new PassengerInfo[noOfPassenger];
     }
 
     public LocalDate getDate() {
         return date;
     }
 
-    public String getDest() {
+    public int getDest() {
         return dest;
     }
 
@@ -36,7 +38,7 @@ public class PassengersDetailForm implements Serializable {
         return noOfPassenger;
     }
 
-    public String getSrc() {
+    public int getSrc() {
         return src;
     }
 
@@ -56,5 +58,9 @@ public class PassengersDetailForm implements Serializable {
     }
     public PassengerInfo[] getPassengerInfo() {
         return passengerInfo;
+    }
+    
+    public Integer getType() {
+        return type;
     }
 }

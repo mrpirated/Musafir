@@ -18,7 +18,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private JButton back, submit, form,getfare;
     private JTextField pnrText;
     private String Username, trainname, name, src, dest, datetime1, datetime2, trainNo, duration;
-    private int noOfPassenger = 1,type;
+    private int noOfPassenger = 1,type,avail,srcint,destint;
     private float fare;
     private JComboBox noOfPassengers;
     private JTextField[] nameOfPassenger, age;
@@ -27,8 +27,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private Connect connection;
     private LocalDate date;
 
-    public PassengerTicketDetails( Connect connection,  String name, String trainNo, String trainname,int type, String src,
-            String dest, String datetime1, String datetime2, String duration, LocalDate date,float fare) {
+    public PassengerTicketDetails( Connect connection,  String name, String trainNo, String trainname,int type, String src,int srcint,
+            String dest,int destint, String datetime1, String datetime2, String duration, LocalDate date,float fare,int avail) {
         this.name = name;
         this.trainNo = trainNo;
         this.trainname = trainname;
@@ -40,6 +40,9 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         this.date = date;
         this.fare = fare;
         this.type = type;
+        this.avail = avail;
+        this.srcint = srcint;
+        this.destint = destint;
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -335,7 +338,6 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     String passengerNameSend = nameOfPassenger[i].getText();
                     String agex = age[i].getText();
                     String genderx = (String) gender[i].getSelectedItem();
-                    String berthPrefSend = (String) preference[i].getSelectedItem();
                     int agenum= 0;
                     if(agex.equals("")||passengerNameSend.equals("")){
                         JOptionPane.showMessageDialog(null, "Fill All Details");
@@ -382,8 +384,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     String berthPrefSend = (String) preference[i].getSelectedItem();
                     passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend);
                 }
-                PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo,trainname, src,
-                        dest, date, noOfPassenger,passengerInfo);
+                PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo,trainname, srcint,
+                        destint, date, noOfPassenger,passengerInfo,type);
 
                 try {
 
@@ -395,12 +397,10 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     e.printStackTrace();
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                String s = (String) oi.readUTF();
-                if (s.equals("ok")) {
-
-                } else {
-
-                }
+                BookedTicket bookedTicket= (BookedTicket) oi.readObject();
+                int[][] t= bookedTicket.getSeats(); 
+                System.out.println(t[0][0] +" "+t[0][1] + " " +t[0][2] );
+                
             }
 
         } catch (Exception e) {
