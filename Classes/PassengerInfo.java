@@ -41,9 +41,9 @@ public class PassengerInfo implements Serializable{
         return full;
     }
     public Boolean isSenior(){
-        if(age > 58 && gender.equals('F'))
+        if(age >=58 && gender.equals('F'))
         return true;
-        else if(age > 60)
+        else if(age >=60)
         return true;
         else return false;
     }
