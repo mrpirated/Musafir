@@ -378,13 +378,13 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                                 (String) from.getSelectedItem(),srcint[i], (String) to.getSelectedItem(),destint[i],
                                 day1[i].getText() + " " + departure[i].getText(),
                                 day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i],Integer.parseInt(sl[i].getText())).setVisible(true);
+                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(sl[i].getText())).setVisible(true);
                     } else if (ae.getSource() == ac[i]) {
                         new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
                                 (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(),destint[i],
                                 day1[i].getText() + " " + departure[i].getText(),
                                 day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                Date.valueOf(df.format(dt)).toLocalDate(), fare[i],Integer.parseInt(ac[i].getText())).setVisible(true);
+                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(ac[i].getText())).setVisible(true);
                     }
                 }
             }

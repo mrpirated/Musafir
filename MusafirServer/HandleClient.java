@@ -300,16 +300,10 @@ public class HandleClient implements Runnable {
 
     }
 
-    private String PNR() {
-        String s = "";
-        for (int i = 0; i < 10; i++) {
-            s = s + (int) (Math.random() * 10);
-        }
-        return s;
-    }
+    
+    
+    /*private BookedTicket Book(PassengersDetailForm passengersDetailForm) {
 
-    private BookedTicket Book(PassengersDetailForm passengersDetailForm) {
-        String PNR = PNR();
         int noofpassengers = passengersDetailForm.getNoOfPassenger();
         BookedTicket bookedTicket = new BookedTicket(noofpassengers);
         bookedTicket.setPNR(PNR);
@@ -324,9 +318,9 @@ public class HandleClient implements Runnable {
             rs.next();
             index = rs.getInt("index_no");
 
-            int avail = 0, seats = 0 , tempseat;
+            int avail = 0, seats = 0 , tempseat,tempcoach;
             if (noofpassengers == 1) {
-                booked = false;
+                
                 if (passengersDetailForm.getType() == 1) {
                     seats = rs.getInt("Total_S")*2/3;
                     avail = rs.getInt("Avail_S") - seats/2;
@@ -348,11 +342,99 @@ public class HandleClient implements Runnable {
                                 + passengersDetailForm.getType() + "'";
                         c2 = new Conn();
                         rs2 = c2.s.executeQuery(query);
+                        
+                        if(booked == false){
+                            for(int i = 0;i<avail;i++){
+                                if(i==72)
+                                i=144;
+
+                                query1 ="SELECT * FROM `tickets` WHERE `index_no` = " + index + " AND `type` = " + passengersDetailForm.getType() + " AND `coach_no` = " + i/72 + " AND `seat_no` = " + i%72 + "";
+                                c3 = new Conn();
+                                rs3 = c3.s.executeQuery(query1);
+                                if(rs3.next()==false){
+                                    query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                                        + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
+                                        + i/72 + "', '" + i%72+1 + "', NULL, '"
+                                        + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
+                                        + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
+                                        + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
+                                    c4 = new Conn();
+                                    c4.s.executeUpdate(query2);
+                                    seatinfo[0][0] = passengersDetailForm.getType();
+                                    seatinfo[0][1] = i/72;
+                                    seatinfo[0][2] = i%72+1;
+                                    bookedTicket.setSeats(seatinfo);
+                                    booked = true;
+                                    return bookedTicket;
+                                    
+                                }
+                                
+                            }
+                        }
+                        rs2 = c2.s.executeQuery(query);
                         while (rs2.next() && booked == false) {
                             if (rs2.getInt("dest") < passengersDetailForm.getSrc()
                                     || rs2.getInt("src") > passengersDetailForm.getDest()) {
                                 tempseat = (rs2.getInt("coach_no") - 1) * 72 + rs2.getInt("seat_no");
-                                if ((tempseat < 72 || tempseat < 145)) {
+                                if ((tempseat >72 && tempseat < 145)) {
+                                    c3 = new Conn();
+                                    query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                                            + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
+                                            + rs2.getInt("coach_no") + "', '" + rs2.getInt("seat_no") + "', NULL, '"
+                                            + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
+                                            + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
+                                            + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
+                                    c3.s.executeUpdate(query2);
+                                    seatinfo[0][0] = passengersDetailForm.getType();
+                                    seatinfo[0][1] = rs2.getInt("coach_no");
+                                    seatinfo[0][2] = rs2.getInt("seat_no");
+                                    bookedTicket.setSeats(seatinfo);
+                                    booked = true;
+                                    return bookedTicket;
+                                }
+                            }
+
+                        }
+
+                        if(booked == false){
+                            for(int i = 72;i<144;i++){
+                                query1 ="SEARCH * FROM tickets WHERE index_no = '" + index + "' AND type = '"
+                                + passengersDetailForm.getType() + " AND coach_no = '" + i/72 + "' AND seat_no = '" + i%72 + "'";
+                                c3 = new Conn();
+                                rs3 = c3.s.executeQuery(query1);
+                                if(rs3.next()==false){
+                                    query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                                        + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
+                                        + i/72 + "', '" + i%72+1 + "', NULL, '"
+                                        + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
+                                        + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
+                                        + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
+                                    c4 = new Conn();
+                                    c4.s.executeUpdate(query2);
+                                    seatinfo[0][0] = passengersDetailForm.getType();
+                                    seatinfo[0][1] = i/72;
+                                    seatinfo[0][2] = i%72+1;
+                                    bookedTicket.setSeats(seatinfo);
+                                    booked = true;
+                                    return bookedTicket;
+                                }
+                                
+                            }
+                        }
+
+
+                    }
+                    else if (passengersDetailForm.getPassengerInfo()[0].getBerthPreference().equals("NONE")
+                    && (passengersDetailForm.getPassengerInfo()[0].isSenior())) {
+                        query = "SELECT * FROM tickets WHERE index_no = '" + index + "' AND type = '"
+                                + passengersDetailForm.getType() + "'";
+                        c2 = new Conn();
+                        rs2 = c2.s.executeQuery(query);
+                        while (rs2.next() && booked == false) {
+                            if (rs2.getInt("dest") < passengersDetailForm.getSrc()
+                                    || rs2.getInt("src") > passengersDetailForm.getDest()) {
+                                tempseat = (rs2.getInt("coach_no") - 1) * 72 + rs2.getInt("seat_no");
+                                if ((tempseat < 73 || tempseat > 144)&&(tempseat%8 == 0||tempseat%8 == 3||tempseat%8 == 6)) {
                                     c3 = new Conn();
                                     query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
                                             + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
@@ -362,42 +444,55 @@ public class HandleClient implements Runnable {
                                             + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
                                     c3.s.executeUpdate(query2);
                                     booked = true;
+                                    return bookedTicket;
                                 }
                             }
 
                         }
+                        if (booked == false) {
+                            for (int i = 0; i < avail; i++) {
+                                if (i == 72)
+                                    i = 144;
+                                if (i % 8 == 0 || i % 8 == 6 || i % 8 == 3) {
+                                    query1 = "SELECT * FROM `tickets` WHERE `index_no` = " + index + " AND `type` = "
+                                            + passengersDetailForm.getType() + " AND `coach_no` = " + i / 72
+                                            + " AND `seat_no` = " + i % 72 + "";
+                                    c3 = new Conn();
+                                    rs3 = c3.s.executeQuery(query1);
+                                    if (rs3.next() == false) {
+                                        query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                                                + index + "', '" + PNR + "', '" + passengersDetailForm.getType()
+                                                + "', '" + i / 72 + "', '" + i % 72 + 1 + "', NULL, '"
+                                                + passengersDetailForm.getSrc() + "', '"
+                                                + passengersDetailForm.getDest() + "', '"
+                                                + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
+                                                + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
+                                        c4 = new Conn();
+                                        c4.s.executeUpdate(query2);
+                                        seatinfo[0][0] = passengersDetailForm.getType();
+                                        seatinfo[0][1] = i / 72;
+                                        seatinfo[0][2] = i % 72 + 1;
+                                        bookedTicket.setSeats(seatinfo);
+                                        booked = true;
+                                        return bookedTicket;
+                                    }
+                                }
+
+                            }
+
+                        }
                         if(booked == false){
-                            for(int i = 1;i<=avail;i++){
-                                if(i==73)
-                                i=145;
+                            for(int i = 0;i<avail;i++){
+                                if(i==72)
+                                i=144;
+
                                 query1 ="SELECT * FROM `tickets` WHERE `index_no` = " + index + " AND `type` = " + passengersDetailForm.getType() + " AND `coach_no` = " + i/72 + " AND `seat_no` = " + i%72 + "";
                                 c3 = new Conn();
                                 rs3 = c3.s.executeQuery(query1);
                                 if(rs3.next()==false){
                                     query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
                                         + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
-                                        + i/72 + "', '" + i%72 + "', NULL, '"
-                                        + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
-                                        + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
-                                        + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
-                                    c4 = new Conn();
-                                    c4.s.executeUpdate(query2);
-                                    booked = true;
-                                    break;
-                                }
-                                
-                            }
-                        }
-                        if(booked == false){
-                            for(int i = 73;i<=144;i++){
-                                query1 ="SEARCH * FROM tickets WHERE index_no = '" + index + "' AND type = '"
-                                + passengersDetailForm.getType() + " AND coach_no = '" + i/72 + "' AND seat_no = '" + i%72 + "'";
-                                c3 = new Conn();
-                                rs3 = c3.s.executeQuery(query1);
-                                if(rs3.next()==false){
-                                    query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
-                                        + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
-                                        + i/72 + "', '" + i%72 + "', NULL, '"
+                                        + i/72 + "', '" + i%72+1 + "', NULL, '"
                                         + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
                                         + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
                                         + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
@@ -405,14 +500,67 @@ public class HandleClient implements Runnable {
                                     c4.s.executeUpdate(query2);
                                     seatinfo[0][0] = passengersDetailForm.getType();
                                     seatinfo[0][1] = i/72;
-                                    seatinfo[0][2] = i%72;
+                                    seatinfo[0][2] = i%72+1;
                                     bookedTicket.setSeats(seatinfo);
                                     booked = true;
-                                    break;
+                                    return bookedTicket;
                                 }
                                 
                             }
                         }
+                        rs2 = c2.s.executeQuery(query);
+                        while (rs2.next() && booked == false) {
+                            if (rs2.getInt("dest") < passengersDetailForm.getSrc()
+                                    || rs2.getInt("src") > passengersDetailForm.getDest()) {
+                                tempseat = (rs2.getInt("coach_no") - 1) * 72 + rs2.getInt("seat_no");
+                                if ((tempseat >72 && tempseat < 145)) {
+                                    c3 = new Conn();
+                                    query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                                            + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
+                                            + rs2.getInt("coach_no") + "', '" + rs2.getInt("seat_no") + "', NULL, '"
+                                            + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
+                                            + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
+                                            + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
+                                    c3.s.executeUpdate(query2);
+                                    seatinfo[0][0] = passengersDetailForm.getType();
+                                    seatinfo[0][1] = rs2.getInt("coach_no");
+                                    seatinfo[0][2] = rs2.getInt("seat_no");
+                                    bookedTicket.setSeats(seatinfo);
+                                    booked = true;
+                                    return bookedTicket;
+                                }
+                            }
+
+                        }
+
+                        if(booked == false){
+                            for(int i = 72;i<144;i++){
+                                query1 ="SEARCH * FROM tickets WHERE index_no = '" + index + "' AND type = '"
+                                + passengersDetailForm.getType() + " AND coach_no = '" + i/72 + "' AND seat_no = '" + i%72 + "'";
+                                c3 = new Conn();
+                                rs3 = c3.s.executeQuery(query1);
+                                if(rs3.next()==false){
+                                    query2 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                                        + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "', '"
+                                        + i/72 + "', '" + i%72+1 + "', NULL, '"
+                                        + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest()
+                                        + "', '" + passengersDetailForm.getPassengerInfo()[0].getAge() + "', '"
+                                        + passengersDetailForm.getPassengerInfo()[0].getGender() + "')";
+                                    c4 = new Conn();
+                                    c4.s.executeUpdate(query2);
+                                    seatinfo[0][0] = passengersDetailForm.getType();
+                                    seatinfo[0][1] = i/72;
+                                    seatinfo[0][2] = i%72+1;
+                                    bookedTicket.setSeats(seatinfo);
+                                    booked = true;
+                                    return bookedTicket;
+
+                                }
+                                
+                            }
+                        }
+                        
+
 
                     }
 
@@ -424,7 +572,7 @@ public class HandleClient implements Runnable {
 
         return bookedTicket;
 
-    }
+    }*/
 
     private Vector<String> GetTrain() {
         Vector<String> trainInfo = new Vector<String>();
@@ -522,7 +670,8 @@ public class HandleClient implements Runnable {
                         break;
                     case 10:
                         PassengersDetailForm passengersDetailForm = (PassengersDetailForm) oi.readObject();
-                        BookedTicket bookedTicket = Book(passengersDetailForm);
+
+                        BookedTicket bookedTicket = new BookTicket(passengersDetailForm).getBookedTicket();
                         os.writeObject(bookedTicket);
                         os.flush();
                         break;

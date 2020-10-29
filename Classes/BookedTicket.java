@@ -6,11 +6,15 @@ public class BookedTicket implements Serializable{
     private String PNR;
     private int noofpassengers;
     private int[][] seats;
+    private boolean gotseat = false;
     
     public BookedTicket(int noofpassengers){
         this.noofpassengers = noofpassengers;
         this.seats = new int[noofpassengers][3];
 
+    }
+    public void setGotseat(boolean gotseat) {
+        this.gotseat = gotseat;
     }
     public void setPNR(String PNR) {
         this.PNR = PNR;
@@ -26,5 +30,8 @@ public class BookedTicket implements Serializable{
     }
     public int[][] getSeats() {
         return seats;
+    }
+    public boolean getGotseat(){
+        return gotseat;
     }
 }
