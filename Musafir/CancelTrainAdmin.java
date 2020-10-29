@@ -139,8 +139,8 @@ public class CancelTrainAdmin extends JFrame implements ActionListener {
                 String dTo = new SimpleDateFormat("yyyy-MM-dd").format(dateTo);
                 java.sql.Date dateFromSend = java.sql.Date.valueOf(dFrom);
                 java.sql.Date dateToSend = java.sql.Date.valueOf(dTo);
-                System.out.println(dateFromSend);
-                System.out.println(dateToSend);
+                // System.out.println(dateFromSend);
+                // System.out.println(dateToSend);
                 CancelTrainAdminInfo cancelRequest = new CancelTrainAdminInfo(trainNo, dateFromSend, dateToSend);
 
                 try {

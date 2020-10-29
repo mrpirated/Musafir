@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class HomePage extends JFrame implements ActionListener {
 
@@ -260,7 +261,16 @@ public class HomePage extends JFrame implements ActionListener {
                 new BookAMeal(connection, name, Username).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == trainbt) {
-                new TrainInfoClient(connection, name, Username).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(12);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<String> trainList = (Vector<String>) oi.readObject();
+                new TrainInfoClient(connection, name, Username, trainList).setVisible(true);
                 setVisible(false);
             }
 

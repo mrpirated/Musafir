@@ -7,23 +7,26 @@ import java.awt.event.*;
 import java.net.*;
 import Classes.*;
 import java.io.*;
-import java.util.Vector;
+import java.util.*;
 
 public class TrainInfoClient extends JFrame implements ActionListener {
 
     private JLabel headLabel, pnrLabel, trainNoLabel;
     private JPanel p1, p2, panel;
     private JButton back, submit, b1;
-    private JTextField pnrText, tf1;
+    private JTextField pnrText;
     private Connect connection;
     private JScrollPane scroll;
     private int noOfHalts = 0;
-    private String name, Username;
+    private String name, Username, trainNo;
+    private Vector<String> trainList;
+    private JComboBox tf1;
 
-    public TrainInfoClient(Connect connection, String name, String Username) {
+    public TrainInfoClient(Connect connection, String name, String Username, Vector<String> trainList) {
         this.connection = connection;
         this.name = name;
         this.Username = Username;
+        this.trainList = trainList;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -64,7 +67,7 @@ public class TrainInfoClient extends JFrame implements ActionListener {
         trainNoLabel.setBounds(100, 60, 600, 30);
         add(trainNoLabel);
 
-        tf1 = new JTextField(15);
+        tf1 = new JComboBox(trainList);
         tf1.setFont(new Font("Times new roman", Font.PLAIN, 20));
         tf1.setBounds(300, 60, 230, 30);
         add(tf1);
@@ -331,7 +334,9 @@ public class TrainInfoClient extends JFrame implements ActionListener {
                 setVisible(false);
             } else if (ae.getSource() == b1) {
                 p2.removeAll();
-                String trainNo = tf1.getText();
+                String trainX = (String) tf1.getSelectedItem();
+                StringTokenizer st1 = new StringTokenizer(trainX, " ");
+                trainNo = st1.nextToken();
                 ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                 os.writeInt(8);
                 os.writeUTF(trainNo);

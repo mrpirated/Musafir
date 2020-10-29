@@ -63,7 +63,7 @@ public class RemoveTrainAdmin extends JFrame implements ActionListener {
         infoLabel.setBounds(160, 90, 600, 30);
         add(infoLabel);
 
-        trainNo = new JLabel("Train No:");
+        trainNo = new JLabel("Train:");
         trainNo.setFont(new Font("Times new roman", Font.BOLD, 20));
         trainNo.setBounds(200, 180, 150, 32);
         add(trainNo);

@@ -249,7 +249,16 @@ public class AdminHome extends JFrame implements ActionListener {
                 new PassengerInfoAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == reroutebt) {
-                new RerouteTrainAdmin(connection).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(12);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<String> trainList = (Vector<String>) oi.readObject();
+                new RerouteTrainAdmin(connection, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addbt) {
                 try {
@@ -268,10 +277,19 @@ public class AdminHome extends JFrame implements ActionListener {
                 new AddRemoveCoach(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == trainbt) {
-                new TrainInfoAdmin(connection).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(12);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<String> trainList = (Vector<String>) oi.readObject();
+                new TrainInfoAdmin(connection, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addCitybt) {
-                //new AddCityAdmin(connection).setVisible(true);
+                // new AddCityAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == alltrainbt) {
                 new AllTrainsAdmin(connection).setVisible(true);
