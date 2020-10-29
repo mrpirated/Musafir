@@ -282,6 +282,9 @@ public class HomePage extends JFrame implements ActionListener {
                 Vector<String> trainList = (Vector<String>) oi.readObject();
                 new TrainInfoClient(connection, name, userid, trainList).setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == querybt) {
+                new BotClient(connection, name, Username).setVisible(true);
+                setVisible(false);
             }
 
         } catch (Exception e) {
