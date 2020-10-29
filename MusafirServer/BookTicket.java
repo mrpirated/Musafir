@@ -71,6 +71,8 @@ public class BookTicket {
                             bookedTicket = PreferenceBooking(bookedTicket, 0);
                     }
 
+                } else {
+                    bookedTicket = Waiting(bookedTicket);
                 }
             }
 
@@ -78,6 +80,23 @@ public class BookTicket {
             e.printStackTrace();
         }
 
+    }
+
+    private BookedTicket Waiting(BookedTicket bookedTicket) {
+        String query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
+                + passengersDetailForm.getPassengerInfo()[x].getName() + "', NULL, NULL,'" + Math.abs(available)
+                + "' , '" + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
+                + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
+                + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+        c4 = new Conn();
+        try {
+            c4.s.executeUpdate(query3);
+            bookedTicket.setGotseat(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookedTicket;
     }
 
     private BookedTicket PreferenceBooking(BookedTicket bookedTicket, int n) {

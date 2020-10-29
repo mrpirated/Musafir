@@ -6,8 +6,8 @@ import java.time.*;
 public class HandleDatabase {
 
     public HandleDatabase() {
-        Conn c1 = new Conn();
-        String query = "SELECT * FROM `month` ORDER BY `month`.`date` ASC", query2;
+        Conn c1 = new Conn(),c2,c3;
+        String query = "SELECT * FROM `month` ORDER BY `month`.`date` ASC", query2,query3,query4;
         try {
             long d = System.currentTimeMillis();
             Date td = new Date(d);
@@ -49,7 +49,7 @@ public class HandleDatabase {
                             query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
                                     + start + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '"
                                     + ac + "')";
-                            Conn c2 = new Conn();
+                            c2 = new Conn();
                             c2.s.executeUpdate(query2);
                             System.out.println(start + " inserted");
                         }
@@ -59,12 +59,34 @@ public class HandleDatabase {
 
                 }
             }
+            LocalDateTime ldt = LocalDateTime.now();
+            int index;
+            Timestamp now = Timestamp.valueOf(ldt),dept;
+            c1 = new Conn();
+            query2 = "SELECT * FROM month WHERE date = '" + today + "'";
+            ResultSet rs1 = c1.s.executeQuery(query2),rs2;
+            while(rs1.next()){
+                index = rs1.getInt("index_no");
+                c2 = new Conn();
+                query3 = "SELECT * FROM src_dest_table where train_no ='" + rs1.getString("train_no") + "'AND station_no = 1";
+                rs2 = c2.s.executeQuery(query3);
+                dept = rs2.getTimestamp("departure");
+                if(totaltime(now)>totaltime(dept)){
+                    query4 = "DELETE FROM `month` WHERE index_no = '" + index + "'";
+                    c3 = new Conn();
+                    c3.s.executeUpdate(query4);
+
+                }
+            }
 
             System.out.println(count);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+    long totaltime(Timestamp t){
+        return t.getMinutes()+60*t.getHours();
     }
 
     public void NewTrain(int train) {
