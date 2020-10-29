@@ -16,9 +16,10 @@ public class CancelledTrains extends JFrame implements ActionListener {
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
-    public CancelledTrains(Connect connection,String name, String Username) {
+    private int userid;
+    public CancelledTrains(Connect connection,String name, int userid) {
         this.name = name;
-        this.Username = Username;
+        this.userid=userid;
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -70,7 +71,7 @@ public class CancelledTrains extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection,name, Username).setVisible(true);
+                new HomePage(connection,name, userid).setVisible(true);
                 setVisible(false);
             }
 

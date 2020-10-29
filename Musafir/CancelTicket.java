@@ -15,11 +15,12 @@ public class CancelTicket extends JFrame implements ActionListener {
     private JButton back, submit, b1;
     private JTextField pnrText, tf1, tf2;
     private JPasswordField pf2;
+    private int userid;
     private String name, Username;
     private Connect connection;
-    public CancelTicket(Connect connection,String name, String Username) {
+    public CancelTicket(Connect connection,String name, int userid) {
         this.name = name;
-        this.Username = Username;
+        this.userid=userid;
         this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -106,7 +107,7 @@ public class CancelTicket extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         try {
             if (ae.getSource() == back) {
-                new HomePage(connection,name, Username).setVisible(true);
+                new HomePage(connection,name, userid).setVisible(true);
                 setVisible(false);
             }
 

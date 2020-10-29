@@ -18,11 +18,12 @@ public class BookAMeal extends JFrame implements ActionListener {
     private String name, Username;
     private Connect connection;
     private JComboBox pnrListBox;
+    private int userid;
     private Vector<String> pnrList = new Vector<String>();
 
-    public BookAMeal(Connect connection, String name, String Username, Vector<String> pnrList) {
+    public BookAMeal(Connect connection, String name, int userid, Vector<String> pnrList) {
         this.name = name;
-        this.Username = Username;
+        this.userid=userid;
         this.connection = connection;
         this.pnrList = pnrList;
 
@@ -92,7 +93,7 @@ public class BookAMeal extends JFrame implements ActionListener {
         try {
             String selectedPNR = (String) pnrListBox.getSelectedItem();
             if (ae.getSource() == back) {
-                new HomePage(connection, name, Username).setVisible(true);
+                new HomePage(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == submit) {
                 try {

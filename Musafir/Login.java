@@ -112,12 +112,14 @@ public class Login extends JFrame implements ActionListener {
                     e.printStackTrace();
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                String s = (String) oi.readUTF();
-                if (s.equals("")) {
+                Userid userid = (Userid) oi.readObject();
+
+                if (userid.getUsername().equals("")) {
 
                     JOptionPane.showMessageDialog(null, "Username or Password entered is Incorrect");
                 } else {
-                    new HomePage(connection, s, username).setVisible(true);
+
+                    new HomePage(connection, userid.getUsername(), userid.getUserid()).setVisible(true);
                     setVisible(false);
                 }
 

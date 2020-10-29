@@ -13,7 +13,8 @@ import java.util.*;
 
 public class HomePage extends JFrame implements ActionListener {
 
-    private String name, Username;
+    private String name;
+    private int userid;
     private JLabel home, plan, booking, pnr, cancel, refund, traincancel, reroute, meal, query, train;
     private JButton planbt, bookingbt, pnrbt, cancelbt, refundbt, traincancelbt, reroutebt, mealbt, querybt, logout,
             trainbt;
@@ -23,10 +24,10 @@ public class HomePage extends JFrame implements ActionListener {
     private Connect connection;
     private JScrollPane scroll;
 
-    HomePage(Connect connection, String name, String Username) {
+    HomePage(Connect connection, String name,int userid) {
         this.connection = connection;
         this.name = name;
-        this.Username = Username;
+        this.userid = userid;
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -234,28 +235,28 @@ public class HomePage extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String[][] cities = (String[][]) oi.readObject();
-                new PlanMyJourney(connection, name, cities, Username).setVisible(true);
+                new PlanMyJourney(connection, name, cities, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == logout) {
                 new Login(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == pnrbt) {
-                new PnrEnquiry(connection, name, Username).setVisible(true);
+                new PnrEnquiry(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == bookingbt) {
-                new MyBookings(connection, name, Username).setVisible(true);
+                new MyBookings(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == cancelbt) {
-                new CancelTicket(connection, name, Username).setVisible(true);
+                new CancelTicket(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == refundbt) {
-                new Refund(connection, name, Username).setVisible(true);
+                new Refund(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == traincancelbt) {
-                new CancelledTrains(connection, name, Username).setVisible(true);
+                new CancelledTrains(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == reroutebt) {
-                new ReroutedTrains(connection, name, Username).setVisible(true);
+                new ReroutedTrains(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == mealbt) {
                 try {
@@ -267,7 +268,7 @@ public class HomePage extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 Vector<String> pnrList = (Vector<String>) oi.readObject();
-                new BookAMeal(connection, name, Username, pnrList).setVisible(true);
+                new BookAMeal(connection, name, userid, pnrList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == trainbt) {
                 try {
@@ -279,7 +280,7 @@ public class HomePage extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 Vector<String> trainList = (Vector<String>) oi.readObject();
-                new TrainInfoClient(connection, name, Username, trainList).setVisible(true);
+                new TrainInfoClient(connection, name, userid, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == querybt) {
                 new BotClient(connection, name, Username).setVisible(true);

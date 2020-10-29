@@ -11,14 +11,15 @@ import java.io.*;
 public class PnrEnquiry extends JFrame implements ActionListener {
 
     private JLabel headLabel, pnrLabel;
+    private int userid;
     private JPanel p1, p2, panel;
     private JButton back, submit;
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
-    public PnrEnquiry(Connect connection,String name, String Username) {
+    public PnrEnquiry(Connect connection,String name, int userid) {
         this.name = name;
-        this.Username = Username;
+        this.userid=userid;
         this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -92,7 +93,7 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection,name, Username).setVisible(true);
+                new HomePage(connection,name, userid).setVisible(true);
                 setVisible(false);
             }
 
