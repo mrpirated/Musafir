@@ -183,7 +183,7 @@ public class BotClient extends JFrame implements ActionListener {
         @Override
         public Dimension getPreferredSize() {
             if (noOfChats > 0)
-                return new Dimension(690, 1000 + 500 * (noOfChats - 1));
+                return new Dimension(690, 1000 + 450 * (noOfChats));
             else
                 return new Dimension(690, 1000);
         }
@@ -210,7 +210,6 @@ public class BotClient extends JFrame implements ActionListener {
         p2.add(user);
 
         yFinal += 50;
-        noOfChats++;
     }
 
     public void PrintBotResponse(Vector<String> selection) {
