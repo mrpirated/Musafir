@@ -8,7 +8,7 @@ import Classes.PassengerHistory;
 
 public class HandleDatabase {
 
-    public HandleDatabase() {
+    public void Serverside() {
         Conn c1 = new Conn(), c2, c3, c4, c5;
         String query = "SELECT * FROM `month` ORDER BY `month`.`date` ASC", query2, query3, query4, query5, query6;
         try {
@@ -116,14 +116,28 @@ public class HandleDatabase {
                                     passengerHistory[i] = new PassengerHistory(rs5.getString("name"),
                                             "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
                                             rs5.getInt("age"), rs5.getString("gender").charAt(0));
+
                                 i++;
                             }
+                            bookingHistory.setPassengerHistory(passengerHistory);
                             query6 = "DELETE FROM tickets WHERE index_no = '" + index + "'";
                             c5 = new Conn();
                             c5.s.executeUpdate(query6);
                             query6 = "DELETE FROM passenger WHERE PNR = '" + PNR + "'";
                             c5 = new Conn();
                             c5.s.executeUpdate(query6);
+                            for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
+                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`) VALUES ("
+                                        + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getName() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getAge() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getGender() + "', '"
+                                        + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
+                                        + bookingHistory.getDate() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getSeat() + "')";
+                                        c5 = new Conn();
+                                        c5.s.executeUpdate(query6);
+                            }
                         } else
                             break;
                     }
@@ -146,7 +160,7 @@ public class HandleDatabase {
         return t.getMinutes() + 60 * t.getHours();
     }
 
-    public void NewTrain(int train) {
+    public void NewTrain(String train) {
         Conn c1 = new Conn();
 
         String query = "SELECT * FROM `trains_basic_details` WHERE train = '" + train + "'", query2;

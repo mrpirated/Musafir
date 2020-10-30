@@ -178,6 +178,7 @@ public class HandleClient implements Runnable {
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
+            new HandleDatabase().NewTrain(trainInfo.getTrainNo());
             return " ";
         }
 
@@ -195,6 +196,7 @@ public class HandleClient implements Runnable {
                 c1.s.executeUpdate(query);
             } catch (Exception e) {
                 e.printStackTrace();
+                return " ";
             }
         }
         return "ok";

@@ -108,7 +108,7 @@ public class AddCityAdmin extends JFrame implements ActionListener {
         submit.setBounds(520, 600, 100, 30);
         add(submit);
 
-        submit.setEnabled(false);
+        
 
         back.addActionListener(this);
         submit.addActionListener(this);
@@ -186,8 +186,10 @@ public class AddCityAdmin extends JFrame implements ActionListener {
                     for(int i=0;i<n;i++){
                         addCityInfo[i] = new AddCityAdminInfo(station[i].getText(), code[i].getText());
                     }
+                    
                 }catch(Exception e){
                     JOptionPane.showMessageDialog(null, "Enter all fields");
+                    
                 }
                 try {
 
