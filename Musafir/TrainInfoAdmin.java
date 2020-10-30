@@ -67,7 +67,7 @@ public class TrainInfoAdmin extends JFrame implements ActionListener {
 
         tf1 = new JComboBox(trainList);
         tf1.setFont(new Font("Times new roman", Font.PLAIN, 20));
-        tf1.setBounds(300, 60, 230, 30);
+        tf1.setBounds(300, 60, 300, 30);
         add(tf1);
 
         b1 = new JButton("Get Details");

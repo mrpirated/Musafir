@@ -26,7 +26,7 @@ public class TrainInfoClient extends JFrame implements ActionListener {
     public TrainInfoClient(Connect connection, String name, int userid, Vector<String> trainList) {
         this.connection = connection;
         this.name = name;
-        this.userid=userid;
+        this.userid = userid;
         this.trainList = trainList;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -70,7 +70,7 @@ public class TrainInfoClient extends JFrame implements ActionListener {
 
         tf1 = new JComboBox(trainList);
         tf1.setFont(new Font("Times new roman", Font.PLAIN, 20));
-        tf1.setBounds(300, 60, 230, 30);
+        tf1.setBounds(300, 60, 300, 30);
         add(tf1);
 
         b1 = new JButton("Get Details");

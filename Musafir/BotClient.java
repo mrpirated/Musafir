@@ -183,7 +183,7 @@ public class BotClient extends JFrame implements ActionListener {
         @Override
         public Dimension getPreferredSize() {
             if (noOfChats > 0)
-                return new Dimension(690, 1500 + 500 * (noOfChats));
+                return new Dimension(690, 1000 + 450 * (noOfChats));
             else
                 return new Dimension(690, 1000);
         }
@@ -210,13 +210,12 @@ public class BotClient extends JFrame implements ActionListener {
         p2.add(user);
 
         yFinal += 50;
-        noOfChats++;
     }
 
     public void PrintBotResponse(Vector<String> selection) {
         JPanel p6 = new JPanel();
         p6.setBackground(Color.BLACK);
-        p6.setBounds(70, yFinal, 420, 350);
+        p6.setBounds(70, yFinal, 428, 350);
         p2.add(p6);
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/chat.png"));
@@ -234,7 +233,7 @@ public class BotClient extends JFrame implements ActionListener {
 
             reply3Label[i] = new JLabel(str1, JLabel.LEFT);
             reply3Label[i].setFont(new Font("Times new roman", Font.BOLD, 25));
-            reply3Label[i].setBounds(x2, y2, 420, 30);
+            reply3Label[i].setBounds(x2, y2, 428, 30);
             reply3Label[i].setForeground(Color.WHITE);
             p6.add(reply3Label[i]);
             y2 = y2 + 40;

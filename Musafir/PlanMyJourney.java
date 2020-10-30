@@ -35,11 +35,13 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private Panel availability;
     private JScrollPane scroll;
     private JLabel[] arrival, departure, trainName, train, srno, day1, day2, duration;
-    private JButton[] sl, ac;
+    private JButton[] sl, ac, getFare;
     private float[] fare;
     private int[] srcint, destint;
+    private String[] trainNo;
     private java.util.Date dt = new java.util.Date();
-    PlanMyJourney(Connect connection, String name, String[][] cities,int userid) {
+
+    PlanMyJourney(Connect connection, String name, String[][] cities, int userid) {
         this.name = name;
         this.userid = userid;
         this.connection = connection;
@@ -210,8 +212,11 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         sl = new JButton[trains];
         ac = new JButton[trains];
         fare = new float[trains];
+        trainNo = new String[trains];
         srcint = new int[trains];
         destint = new int[trains];
+        getFare = new JButton[trains];
+
         String str;
         int seats;
 
@@ -227,6 +232,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
 
             x = 90;
             str = String.valueOf(availabilityInfo.get(i).getTrain());
+            trainNo[i] = str;
             train[i] = new JLabel(str);
             train[i].setFont(new Font("Times new roman", Font.BOLD, 18));
             train[i].setBounds(x, y, 50, 30);
@@ -275,8 +281,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             seats = availabilityInfo.get(i).getSl();
             str = String.valueOf(Math.abs(seats));
             sl[i] = new JButton(str);
-            sl[i].setFont(new Font("Times new roman", Font.BOLD, 18));
-            sl[i].setBounds(x, y, 70, 25);
+            sl[i].setFont(new Font("Times new roman", Font.BOLD, 15));
+            sl[i].setBounds(x, y - 10, 70, 20);
             if (seats < 0) {
                 sl[i].setBackground(Color.RED);
                 sl[i].setForeground(Color.white);
@@ -289,8 +295,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             seats = availabilityInfo.get(i).getAc();
             str = String.valueOf(Math.abs(seats));
             ac[i] = new JButton(str);
-            ac[i].setFont(new Font("Times new roman", Font.BOLD, 18));
-            ac[i].setBounds(x, y, 70, 25);
+            ac[i].setFont(new Font("Times new roman", Font.BOLD, 15));
+            ac[i].setBounds(x, y - 10, 70, 20);
             if (seats < 0) {
                 ac[i].setBackground(Color.RED);
                 ac[i].setForeground(Color.white);
@@ -298,6 +304,15 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 ac[i].setBackground(Color.GREEN);
             availability.add(ac[i]);
             ac[i].addActionListener(this);
+
+            x = 515;
+            getFare[i] = new JButton("Get Fare");
+            getFare[i].setFont(new Font("Times new roman", Font.BOLD, 18));
+            getFare[i].setBounds(x, y + 15, 140, 20);
+            getFare[i].setBackground(Color.BLACK);
+            getFare[i].setForeground(Color.WHITE);
+            availability.add(getFare[i]);
+            getFare[i].addActionListener(this);
 
             y = y + 50;
             fare[i] = availabilityInfo.get(i).getFare();
@@ -342,7 +357,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
      * {{"as","cs"},{"dfs","dsfs"}}; new PlanMyJourney("asa",s,"adas"); }
      */
     public void actionPerformed(ActionEvent ae) {
-        
+
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
@@ -366,31 +381,34 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 os.writeObject(scheduleEnq);
                 os.flush();
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                @SuppressWarnings (value="unchecked")
+                @SuppressWarnings(value = "unchecked")
                 Vector<AvailabilityInfo> availabilityInfo = (Vector<AvailabilityInfo>) oi.readObject();
                 showTrains(availabilityInfo);
                 availability.revalidate();
                 availability.repaint();
                 System.out.println(date);
 
-            } 
-                for (int i = 0; i < trains; i++) {
-                    if (ae.getSource() == sl[i]) {
-                        new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 1,
-                                (String) from.getSelectedItem(),srcint[i], (String) to.getSelectedItem(),destint[i],
-                                day1[i].getText() + " " + departure[i].getText(),
-                                day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(sl[i].getText()), userid).setVisible(true);
-                                
-                    } else if (ae.getSource() == ac[i]) {
-                        new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
-                                (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(),destint[i],
-                                day1[i].getText() + " " + departure[i].getText(),
-                                day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                                (Date.valueOf(df.format(dt))).toLocalDate(), fare[i],Integer.parseInt(ac[i].getText()), userid).setVisible(true);
-                    }
+            }
+            for (int i = 0; i < trains; i++) {
+                if (ae.getSource() == sl[i]) {
+                    new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 1,
+                            (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
+                            day1[i].getText() + " " + departure[i].getText(),
+                            day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
+                            (Date.valueOf(df.format(dt))).toLocalDate(), fare[i], Integer.parseInt(sl[i].getText()),
+                            userid).setVisible(true);
+
+                } else if (ae.getSource() == ac[i]) {
+                    new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
+                            (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
+                            day1[i].getText() + " " + departure[i].getText(),
+                            day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
+                            (Date.valueOf(df.format(dt))).toLocalDate(), fare[i], Integer.parseInt(ac[i].getText()),
+                            userid).setVisible(true);
+                } else if (ae.getSource() == getFare[i]) {
+                    new GetFareClient(connection, name, fare[i], userid, trainNo[i]).setVisible(true);
                 }
-            
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
