@@ -66,11 +66,11 @@ public class Login extends JFrame implements ActionListener {
         add(l3);
 
         tf1.setFont(new Font("Times new roman", Font.BOLD, 14));
-
+        tf1.setText("7066715904");
         pf2.setFont(new Font("Times new roman", Font.BOLD, 14));
         pf2.setBounds(200, 150, 230, 30);
         add(pf2);
-
+pf2.setText("12345");
         b1.setFont(new Font("Times new roman", Font.BOLD, 14));
         b1.setBounds(25, 225, 200, 30);
         add(b1);

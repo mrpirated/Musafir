@@ -272,6 +272,7 @@ public class BotClient extends JFrame implements ActionListener {
                     Vector<String> response = (Vector<String>) oi.readObject();
                     PrintBotResponse(response);
                 }
+                p2.repaint();
             }
 
         } catch (

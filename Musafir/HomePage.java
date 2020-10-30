@@ -87,7 +87,7 @@ public class HomePage extends JFrame implements ActionListener {
         booking = new JLabel("My Bookings");
         booking.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         booking.setForeground(Color.BLACK);
-        booking.setBounds(340, 180, 200, 24);
+        booking.setBounds(315, 180, 200, 24);
         p2.add(booking);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/pnrEnquiry.png"));
@@ -126,7 +126,7 @@ public class HomePage extends JFrame implements ActionListener {
         refund = new JLabel("Refund");
         refund.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         refund.setForeground(Color.BLACK);
-        refund.setBounds(315, 355, 200, 24);
+        refund.setBounds(330, 355, 200, 24);
         p2.add(refund);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/cancel.png"));
@@ -139,7 +139,7 @@ public class HomePage extends JFrame implements ActionListener {
         traincancel = new JLabel("Cancelled Trains");
         traincancel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         traincancel.setForeground(Color.BLACK);
-        traincancel.setBounds(545, 355, 200, 24);
+        traincancel.setBounds(540, 355, 200, 24);
         p2.add(traincancel);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/reroute.png"));
@@ -152,7 +152,7 @@ public class HomePage extends JFrame implements ActionListener {
         reroute = new JLabel("Rerouted Trains");
         reroute.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
         reroute.setForeground(Color.BLACK);
-        reroute.setBounds(75, 530, 200, 24);
+        reroute.setBounds(60, 530, 200, 24);
         p2.add(reroute);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/meal.png"));

@@ -10,12 +10,17 @@ public class HandleDatabase {
 
     public void Serverside() {
         Conn c1 = new Conn(), c2, c3, c4, c5;
+        LocalDateTime ldt = LocalDateTime.now();
+        int index;
+        Timestamp now = Timestamp.valueOf(ldt), dept;
+        String PNR;
         String query = "SELECT * FROM `month` ORDER BY `month`.`date` ASC", query2, query3, query4, query5, query6;
         try {
             long d = System.currentTimeMillis();
             Date td = new Date(d);
             LocalDate today = td.toLocalDate();
-            ResultSet rs = c1.s.executeQuery(query);
+            ResultSet rs = c1.s.executeQuery(query), rs1, rs2, rs3, rs4, rs5;
+            ;
             int count = 0;
             rs.next();
             Date dt = (Date) rs.getDate("date");
@@ -27,8 +32,80 @@ public class HandleDatabase {
             }
 
             for (int i = 0; i < count; i++) {
-                query2 = "DELETE FROM `month` WHERE `date` = '" + temp + "' ";
-                c1.s.executeUpdate(query2);
+                query2 = "SELECT * FROM month WHERE date = '" + temp + "'";
+                c1 = new Conn();
+                rs1 = c1.s.executeQuery(query2);
+                while (rs1.next()) {
+                    index = rs1.getInt("index_no");
+                    BookingHistory bookingHistory;
+                    while (true) {
+                        query4 = "SELECT * FROM tickets WHERE index_no = '" + index + "'";
+                        c3 = new Conn();
+                        rs3 = c3.s.executeQuery(query4);
+                        if (rs3.next()) {
+                            PNR = rs3.getString("PNR");
+                            query5 = "SELECT * FROM passenger WHERE PNR = '" + PNR + "'";
+                            c4 = new Conn();
+                            rs4 = c4.s.executeQuery(query5);
+                            rs4.next();
+                            bookingHistory = new BookingHistory();
+                            PassengerHistory[] passengerHistory = new PassengerHistory[rs4.getInt("tickets")];
+                            bookingHistory.setUserid(rs4.getInt("user_id"));
+                            bookingHistory.setDate(rs4.getDate("date"));
+                            query6 = "SELECT * FROM src_dest_table WHERE train_no ='" + rs1.getString("train") + "'";
+                            c5 = new Conn();
+                            rs5 = c5.s.executeQuery(query6);
+                            while (rs5.next()) {
+                                if (rs5.getInt("station_no") == rs3.getInt("src"))
+                                    bookingHistory.setSrc(rs5.getString("station"));
+
+                                if (rs5.getInt("station_no") == rs3.getInt("dest"))
+                                    bookingHistory.setDest(rs5.getString("station"));
+                            }
+                            query6 = "SELECT * FROM tickets WHERE PNR = '" + PNR + "'";
+                            c5 = new Conn();
+                            rs5 = c5.s.executeQuery(query6);
+                            int k = 0;
+                            while (rs5.next()) {
+                                if (rs5.getInt("type") == 1)
+                                    passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
+                                            "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                if (rs5.getInt("type") == 2)
+                                    passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
+                                            "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+
+                                k++;
+                            }
+                            bookingHistory.setPassengerHistory(passengerHistory);
+                            query6 = "DELETE FROM tickets WHERE index_no = '" + index + "'";
+                            c5 = new Conn();
+                            c5.s.executeUpdate(query6);
+                            query6 = "DELETE FROM passenger WHERE PNR = '" + PNR + "'";
+                            c5 = new Conn();
+                            c5.s.executeUpdate(query6);
+                            for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
+                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`) VALUES ("
+                                        + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getName() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getAge() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getGender() + "', '"
+                                        + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
+                                        + bookingHistory.getDate() + "', '"
+                                        + bookingHistory.getPassengerHistory()[i].getSeat() + "')";
+                                c5 = new Conn();
+                                c5.s.executeUpdate(query6);
+                            }
+                        } else
+                            break;
+                    }
+
+                    query6 = "DELETE FROM `month` WHERE index_no = '" + index + "'";
+                    c3 = new Conn();
+                    c3.s.executeUpdate(query6);
+                }
+
                 temp = temp.plusDays(1);
             }
             LocalDate start = today.plusDays(30 - count);
@@ -62,13 +139,10 @@ public class HandleDatabase {
 
                 }
             }
-            LocalDateTime ldt = LocalDateTime.now();
-            int index;
-            Timestamp now = Timestamp.valueOf(ldt), dept;
-            String PNR;
+
             c1 = new Conn();
             query2 = "SELECT * FROM month WHERE date = '" + today + "'";
-            ResultSet rs1 = c1.s.executeQuery(query2), rs2, rs3, rs4, rs5;
+            rs1 = c1.s.executeQuery(query2);
             while (rs1.next()) {
                 index = rs1.getInt("index_no");
                 c2 = new Conn();
@@ -135,8 +209,8 @@ public class HandleDatabase {
                                         + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
                                         + bookingHistory.getDate() + "', '"
                                         + bookingHistory.getPassengerHistory()[i].getSeat() + "')";
-                                        c5 = new Conn();
-                                        c5.s.executeUpdate(query6);
+                                c5 = new Conn();
+                                c5.s.executeUpdate(query6);
                             }
                         } else
                             break;
@@ -146,6 +220,29 @@ public class HandleDatabase {
                     c3 = new Conn();
                     c3.s.executeUpdate(query6);
 
+                }
+            }
+            c1 = new Conn();
+
+            rs1 = c1.s.executeQuery(query2);
+            if (rs1.next() == false) {
+                end = end.plusDays(1);
+                weekday = DayOfWeek.from(end);
+                val = weekday.getValue() - 1;
+                rs = c1.s.executeQuery(query);
+                while (rs.next()) {
+                    runningdays = (String) rs.getString("runningDays");
+                    if (runningdays.charAt(val) == '1') {
+                        String trainno = rs.getString("train_no");
+                        int sl = rs.getInt("ts_slr");
+                        int ac = rs.getInt("ts_ac");
+                        query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
+                                + end + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '" + ac
+                                + "')";
+                        c2 = new Conn();
+                        c2.s.executeUpdate(query2);
+                        System.out.println(end + " inserted");
+                    }
                 }
             }
 
