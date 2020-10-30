@@ -8,18 +8,24 @@ import java.net.*;
 import Classes.*;
 import java.io.*;
 import java.util.*;
+import java.awt.Font;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 
 public class BotClient extends JFrame implements ActionListener {
 
     private JLabel headLabel, pnrLabel;
     private JPanel p1, p2, panel, p3, p4, p5;
     private JButton back, submit, send, bot, bot0, bot1;
-    private JTextField pnrText, tf1;
-    private String name;
+    private JTextField pnrText;
+    private String name, Username;
     private Connect connection;
     private JScrollPane scroll;
     private int userid;
+    private JComboBox tf1;
     private Vector<String> reply1, reply2;
+    private Integer x1Final, yFinal, x2Final;
+    private Integer noOfChats = 0;
 
     public BotClient(Connect connection, String name, int userid, Vector<String> reply1, Vector<String> reply2) {
         this.name = name;
@@ -69,6 +75,7 @@ public class BotClient extends JFrame implements ActionListener {
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/chat.png"));
         i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
@@ -100,45 +107,55 @@ public class BotClient extends JFrame implements ActionListener {
 
         p4 = new JPanel();
         p4.setBackground(Color.BLACK);
-        p4.setBounds(70, 90, 410, 410);
+        p4.setBounds(70, 90, 410, 150);
         p2.add(p4);
 
         int x1 = 3, y1 = 5;
         for (int i = 0; i < reply1.size(); i++) {
-            JLabel reply2Label = new JLabel(reply1.get(i), SwingConstants.LEFT);
+            JLabel reply2Label = new JLabel(reply1.get(i), JLabel.LEFT);
             reply2Label.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 25));
             reply2Label.setForeground(Color.WHITE);
             reply2Label.setBounds(x1, y1, 400, 30);
             p4.add(reply2Label);
             y1 = y1 + 40;
         }
-        p2.add(p4);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/chat.png"));
         i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         bot1 = new JButton(i3);
         bot1.setBackground(Color.WHITE);
-        bot1.setBounds(15, 525, 50, 50);
+        bot1.setBounds(15, 265, 50, 50);
         p2.add(bot1);
 
         p5 = new JPanel();
         p5.setBackground(Color.BLACK);
-        p5.setBounds(70, 525, 550, 720);
+        p5.setBounds(70, 265, 420, 600);
         p2.add(p5);
 
         int x2 = 3, y2 = 5;
+        JLabel reply3Label[] = new JLabel[reply2.size()];
         for (int i = 0; i < reply2.size(); i++) {
-            JLabel reply2Label = new JLabel(reply2.get(i), SwingConstants.LEFT);
-            reply2Label.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 25));
-            reply2Label.setForeground(Color.WHITE);
-            reply2Label.setBounds(x2, y2, 540, 30);
-            p5.add(reply2Label);
+            String str1 = reply2.get(i);
+
+            reply3Label[i] = new JLabel(str1, JLabel.LEFT);
+            reply3Label[i].setFont(new Font("Times new roman", Font.BOLD, 25));
+            reply3Label[i].setBounds(x2, y2, 420, 30);
+            reply3Label[i].setForeground(Color.WHITE);
+            p5.add(reply3Label[i]);
             y2 = y2 + 40;
         }
-        p2.add(p5);
 
-        tf1 = new JTextField(15);
+        x1Final = 253;
+        yFinal = 900;
+        x2Final = x2;
+
+        Vector<String> options = new Vector<String>();
+        for (int i = 4; i < reply2.size(); i++) {
+            options.add(reply2.get(i));
+        }
+
+        tf1 = new JComboBox(options);
         tf1.setFont(new Font("Times new roman", Font.BOLD, 14));
         tf1.setBounds(15, 620, 550, 30);
         add(tf1);
@@ -152,6 +169,7 @@ public class BotClient extends JFrame implements ActionListener {
         add(send);
 
         back.addActionListener(this);
+        send.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -164,8 +182,66 @@ public class BotClient extends JFrame implements ActionListener {
     class Panel extends JPanel {
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(690, 1500);
+            if (noOfChats > 0)
+                return new Dimension(690, 1500 + 500 * (noOfChats));
+            else
+                return new Dimension(690, 1000);
         }
+    }
+
+    public void PrintSelectedItem(String selection) {
+        JPanel p6 = new JPanel();
+        p6.setBackground(Color.BLACK);
+        p6.setBounds(x1Final, yFinal, 380, 30);
+        p2.add(p6);
+
+        JLabel newLabel = new JLabel(selection);
+        newLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        newLabel.setForeground(Color.WHITE);
+        newLabel.setBounds(5, 3, 380, 30);
+        p6.add(newLabel);
+
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/user.png"));
+        Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+        ImageIcon i3 = new ImageIcon(i2);
+        JButton user = new JButton(i3);
+        user.setBackground(Color.WHITE);
+        user.setBounds(640, yFinal, 35, 35);
+        p2.add(user);
+
+        yFinal += 50;
+        noOfChats++;
+    }
+
+    public void PrintBotResponse(Vector<String> selection) {
+        JPanel p6 = new JPanel();
+        p6.setBackground(Color.BLACK);
+        p6.setBounds(70, yFinal, 420, 350);
+        p2.add(p6);
+
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/chat.png"));
+        Image i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
+        ImageIcon i3 = new ImageIcon(i2);
+        bot1 = new JButton(i3);
+        bot1.setBackground(Color.WHITE);
+        bot1.setBounds(15, yFinal, 50, 50);
+        p2.add(bot1);
+
+        int x2 = 3, y2 = 5;
+        JLabel reply3Label[] = new JLabel[selection.size()];
+        for (int i = 0; i < selection.size(); i++) {
+            String str1 = selection.get(i);
+
+            reply3Label[i] = new JLabel(str1, JLabel.LEFT);
+            reply3Label[i].setFont(new Font("Times new roman", Font.BOLD, 25));
+            reply3Label[i].setBounds(x2, y2, 420, 30);
+            reply3Label[i].setForeground(Color.WHITE);
+            p6.add(reply3Label[i]);
+            y2 = y2 + 40;
+            yFinal += 40;
+        }
+        yFinal += 50;
+        noOfChats++;
     }
 
     @Override
@@ -175,9 +251,33 @@ public class BotClient extends JFrame implements ActionListener {
             if (ae.getSource() == back) {
                 new HomePage(connection, name, userid).setVisible(true);
                 setVisible(false);
+            } else if (ae.getSource() == send) {
+                String selection = (String) tf1.getSelectedItem();
+                StringTokenizer st2 = new StringTokenizer(selection, ".");
+                String selectString = st2.nextToken();
+                Integer itemNo = Integer.parseInt(selectString);
+
+                String parts[] = selection.split(" ", 2);
+                PrintSelectedItem(parts[1]);
+                if (itemNo != 13) {
+                    try {
+
+                        ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                        os.writeInt(18);
+                        os.writeInt(itemNo);
+                        os.flush();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                    Vector<String> response = (Vector<String>) oi.readObject();
+                    PrintBotResponse(response);
+                }
             }
 
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             e.printStackTrace();
         }
     }

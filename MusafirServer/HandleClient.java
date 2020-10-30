@@ -330,26 +330,166 @@ public class HandleClient implements Runnable {
         temp1.add("I will be happy to sort you out.");
         str.add(temp1);
 
-        temp2.add("Check these options and choose an");
-        temp2.add("appropriate option from the below");
-        temp2.add("menu and click on send to process");
-        temp2.add("the request.");
-        temp2.add("1. How To See Trains According to requirement?");
-        temp2.add("2. How to Check Availability?");
-        temp2.add("3. How to Check Fare?");
-        temp2.add("4. How to Book a Ticket?");
-        temp2.add("5. How to get my Booking History?");
-        temp2.add("6. How to PNR Status?");
-        temp2.add("7. How to Cancel Ticket?");
-        temp2.add("8. How to Check Refeund History?");
-        temp2.add("9. How to see Cancelled Trains?");
-        temp2.add("10. How to see Reouted Trains?");
-        temp2.add("11. How to book meal for a ticket?");
-        temp2.add("12. How to get Info of a Train?");
-        temp2.add("13. Other Query.");
+        temp2.add("Check these options and choose an   ");
+        temp2.add("appropriate option from the below   ");
+        temp2.add("menu and click on send to process.  ");
+        temp2.add("                                    ");
+        temp2.add("1. How To See the right Trains?     ");
+        temp2.add("2. How to Check the Availability?   ");
+        temp2.add("3. How to Check Fare for the train? ");
+        temp2.add("4. How to Book a Ticket for a train?");
+        temp2.add("5. How to get my Booking History?   ");
+        temp2.add("6. How to get the Status of a PNR?  ");
+        temp2.add("7. How to Cancel a Ticket manually? ");
+        temp2.add("8. How to Check the Refund History? ");
+        temp2.add("9. How to see the Cancelled Trains? ");
+        temp2.add("10. How to see the Rerouted Trains? ");
+        temp2.add("11. How to book meal for a ticket?  ");
+        temp2.add("12. How to get Infos about a Train? ");
+        temp2.add("13. Have Other Query? Let Us Know.  ");
         str.add(temp2);
 
         return str;
+    }
+
+    public Vector<String> BotResponses(Integer a) {
+        Vector<String> temp = new Vector<String>();
+
+        switch (a) {
+            case 1:
+                temp.add("Way To See the right Trains:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Plan My Journey.");
+                temp.add("3. Fill in the infos asked to you.");
+                temp.add("4. Tap on submit button to get Trains.");
+                temp.add("5. Information will get displayed below.");
+                temp.add("Hola!!! You got the right trains.");
+                temp.add("Anything else? Select from the menu.");
+                break;
+            case 2:
+                temp.add("Way to Check Availability for a train:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Plan My Journey.");
+                temp.add("3. Fill in the infos asked to you.");
+                temp.add("4. Tap on submit button to get Trains.");
+                temp.add("5. Now Check the availability column.");
+                temp.add("You Did it!! My Job is Done. Go, Book.");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 3:
+                temp.add("Way to Check Fare based on requirements:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Plan My Journey.");
+                temp.add("3. Fill in the infos asked to you.");
+                temp.add("4. Tap on submit button to get Trains.");
+                temp.add("5. Now Check the fare column in the list.");
+                temp.add("Gosh!! Did the Right Job didn't I?");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 4:
+                temp.add("Way to Book a Ticket for a Train:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Plan My Journey.");
+                temp.add("3. Fill in the infos asked to you.");
+                temp.add("4. Tap on submit button to get Trains.");
+                temp.add("5. Now select the right train from list.");
+                temp.add("6. Fill the Passenger Details and Submit.");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 5:
+                temp.add("Way to get my Booking History is:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Booking History.");
+                temp.add("3. Now find the righteous PNR.");
+                temp.add("4. Found the Correct PNR ???!");
+                temp.add("5. Check the Journey Details then.");
+                temp.add("Helping Others Is my Passion!!");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 6:
+                temp.add("Way to check the PNR Status is:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on PNR Enquiry Tab.");
+                temp.add("3. Now enter the 10 Digits PNR.");
+                temp.add("4. Click on submit button to process.");
+                temp.add("5. The Information will be displayed.");
+                temp.add("Gosh!! Did the Right Job didn't I?");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 7:
+                temp.add("Way to Cancel a Ticket manually is:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Cancel Ticket tab.");
+                temp.add("3. Now fill the informations asked.");
+                temp.add("4. Now click on the Submit button.");
+                temp.add("5. Verify the Details of the ticket.");
+                temp.add("Helping Others Is my Passion!!");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 8:
+                temp.add("How to Check the Refund History?");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on PNR Enquiry Tab.");
+                temp.add("3. Now enter the 10 Digits PNR.");
+                temp.add("4. Click on submit button to process.");
+                temp.add("5. The Information will be displayed.");
+                temp.add("Gosh!! Did the Right Job didn't I?");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 9:
+                temp.add("Way to see the Cancelled Trains:   ");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Cancelled Trains.  ");
+                temp.add("3. Now enter the details asked.    ");
+                temp.add("4. Click on submit button to process.");
+                temp.add("5. The Information will be displayed.");
+                temp.add("Helping Others Is my Passion!!     ");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 10:
+                temp.add("Way to see the Rerouted Trains:   ");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Rerouted Trains tab.");
+                temp.add("3. Now enter the details asked.   ");
+                temp.add("4. Click on submit button to process.");
+                temp.add("5. The Information will be displayed.");
+                temp.add("Gosh!! Did the Right Job didn't I?");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 11:
+                temp.add("Way to book the meal for a ticket:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Book A Meal tab.");
+                temp.add("3. Now choose the PNR to select it.");
+                temp.add("4. Click on submit button to process.");
+                temp.add("5. Meal will be booked accordingly.");
+                temp.add("I hope you enjoy the meal on Rails!");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+            case 12:
+                temp.add("Way to get Info about a Train:");
+                temp.add("1. Open HomePage. After Logging in.");
+                temp.add("2. Now Click on Train Info tab.");
+                temp.add("3. Now choose the train number.");
+                temp.add("4. Click on 'Get Details' button.");
+                temp.add("5. Info will be displayed accordingly.");
+                temp.add("Gosh!! Did the Right Job didn't I?");
+                temp.add("Anything else? Select from the menu.");
+                break;
+
+        }
+
+        return temp;
     }
 
     @Override
@@ -447,6 +587,12 @@ public class HandleClient implements Runnable {
                     case 17:
                         Vector<Vector<String>> reply17 = BotReplyFirst();
                         os.writeObject(reply17);
+                        os.flush();
+                        break;
+                    case 18:
+                        Integer selectedItem = (Integer) oi.readInt();
+                        Vector<String> reply18 = BotResponses(selectedItem);
+                        os.writeObject(reply18);
                         os.flush();
                         break;
                 }
