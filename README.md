@@ -6,9 +6,13 @@
   - [Admin Side Features](#admin-side-features)
   - [Client Side Features](#client-side-features)
   - [Advanced Features](#advanced-features)
+- [Usage](#usage)
 - [Roadmap](#roadmap)
+  - [For Passenger](#for-passenger)
+  - [For Admin](#for-admin)
+- [Musafir Database](#musafir-database)
 - [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
+- [Project Link](#project-link)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -25,7 +29,7 @@ The project is completely based on JAVA. The concepts of JAVA used are:
 - Socket Programming in JAVA
 - JAVA GUI (e.g., Swing, AWT, etc.)
 
-<!-- ROADMAP -->
+<!-- FEATURES -->
 
 ## Features
 
@@ -57,11 +61,19 @@ The project is completely based on JAVA. The concepts of JAVA used are:
 - Users get notification for offers and train cancellations or reroutes.
 - Has a chat feature to handle complaints from users.
 
+<!-- USAGE -->
+
+## Usage
+
+To use the application, one will first have to set up the 'Musafir Database'. After setting up the database correctly, he would have to create a new column inside the admin_info table in the database if he wants to be an admin. After that, he would have to run the 'server.java' file inside the 'MusafirServer' folder. After running it, he would have to run the 'LoginAdmin.java' file inside the 'Musafir' folder if he wants to access as the Railway admin or will have to run the 'Login.java' file if he wants to access as a passenger. If the passenger is new to the application, he would have to signup first, and then he would be able to access other features. That's it; now, we are ready to use the Musafir Application to its utmost.
+
 <!-- ROADMAP -->
 
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+<!-- MUSAFIR DATABASE -->
+
+## Musafir Database
 
 <!-- CONTACT -->
 
@@ -73,8 +85,6 @@ Aditya Darji - [https://github.com/aditya-darji](https://github.com/aditya-darji
 
 Atharva Verma - [https://github.com/atharva-boop](https://github.com/atharva-boop) - atharvaverma20194080@gmail.com
 
+## Project Link
+
 Project Link: [https://github.com/dprathi/Deathly-Hallows](https://github.com/dprathi/Deathly-Hallows)
-
-<!-- ACKNOWLEDGEMENTS -->
-
-## Acknowledgements
