@@ -59,7 +59,7 @@ public class HandleDatabase {
 
                 }
             }
-            LocalDateTime ldt = LocalDateTime.now();
+            /*LocalDateTime ldt = LocalDateTime.now();
             int index;
             Timestamp now = Timestamp.valueOf(ldt),dept;
             c1 = new Conn();
@@ -68,8 +68,9 @@ public class HandleDatabase {
             while(rs1.next()){
                 index = rs1.getInt("index_no");
                 c2 = new Conn();
-                query3 = "SELECT * FROM src_dest_table where train_no ='" + rs1.getString("train_no") + "'AND station_no = 1";
+                query3 = "SELECT * FROM src_dest_table where train_no = '" + rs1.getString("train") + "'AND station_no = 1";
                 rs2 = c2.s.executeQuery(query3);
+                rs2.next();
                 dept = rs2.getTimestamp("departure");
                 if(totaltime(now)>totaltime(dept)){
                     query4 = "DELETE FROM `month` WHERE index_no = '" + index + "'";
@@ -77,7 +78,7 @@ public class HandleDatabase {
                     c3.s.executeUpdate(query4);
 
                 }
-            }
+            }*/
 
             System.out.println(count);
         } catch (Exception e) {
