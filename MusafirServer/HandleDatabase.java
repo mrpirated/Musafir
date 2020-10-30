@@ -3,11 +3,14 @@ package MusafirServer;
 import java.sql.*;
 import java.time.*;
 
+import Classes.BookingHistory;
+import Classes.PassengerHistory;
+
 public class HandleDatabase {
 
     public HandleDatabase() {
-        Conn c1 = new Conn(),c2,c3;
-        String query = "SELECT * FROM `month` ORDER BY `month`.`date` ASC", query2,query3,query4;
+        Conn c1 = new Conn(), c2, c3, c4, c5;
+        String query = "SELECT * FROM `month` ORDER BY `month`.`date` ASC", query2, query3, query4, query5, query6;
         try {
             long d = System.currentTimeMillis();
             Date td = new Date(d);
@@ -59,26 +62,78 @@ public class HandleDatabase {
 
                 }
             }
-            /*LocalDateTime ldt = LocalDateTime.now();
+            LocalDateTime ldt = LocalDateTime.now();
             int index;
-            Timestamp now = Timestamp.valueOf(ldt),dept;
+            Timestamp now = Timestamp.valueOf(ldt), dept;
+            String PNR;
             c1 = new Conn();
             query2 = "SELECT * FROM month WHERE date = '" + today + "'";
-            ResultSet rs1 = c1.s.executeQuery(query2),rs2;
-            while(rs1.next()){
+            ResultSet rs1 = c1.s.executeQuery(query2), rs2, rs3, rs4, rs5;
+            while (rs1.next()) {
                 index = rs1.getInt("index_no");
                 c2 = new Conn();
-                query3 = "SELECT * FROM src_dest_table where train_no = '" + rs1.getString("train") + "'AND station_no = 1";
+                query3 = "SELECT * FROM src_dest_table where train_no = '" + rs1.getString("train")
+                        + "'AND station_no = 1";
                 rs2 = c2.s.executeQuery(query3);
                 rs2.next();
                 dept = rs2.getTimestamp("departure");
-                if(totaltime(now)>totaltime(dept)){
-                    query4 = "DELETE FROM `month` WHERE index_no = '" + index + "'";
+                if (totaltime(now) >= totaltime(dept)) {
+                    BookingHistory bookingHistory;
+                    while (true) {
+                        query4 = "SELECT * FROM tickets WHERE index_no = '" + index + "'";
+                        c3 = new Conn();
+                        rs3 = c3.s.executeQuery(query4);
+                        if (rs3.next()) {
+                            PNR = rs3.getString("PNR");
+                            query5 = "SELECT * FROM passenger WHERE PNR = '" + PNR + "'";
+                            c4 = new Conn();
+                            rs4 = c4.s.executeQuery(query5);
+                            rs4.next();
+                            bookingHistory = new BookingHistory();
+                            PassengerHistory[] passengerHistory = new PassengerHistory[rs4.getInt("tickets")];
+                            bookingHistory.setUserid(rs4.getInt("user_id"));
+                            bookingHistory.setDate(rs4.getDate("date"));
+                            query6 = "SELECT * FROM src_dest_table WHERE train_no ='" + rs1.getString("train") + "'";
+                            c5 = new Conn();
+                            rs5 = c5.s.executeQuery(query6);
+                            while (rs5.next()) {
+                                if (rs5.getInt("station_no") == rs3.getInt("src"))
+                                    bookingHistory.setSrc(rs5.getString("station"));
+
+                                if (rs5.getInt("station_no") == rs3.getInt("dest"))
+                                    bookingHistory.setDest(rs5.getString("station"));
+                            }
+                            query6 = "SELECT * FROM tickets WHERE PNR = '" + PNR + "'";
+                            c5 = new Conn();
+                            rs5 = c5.s.executeQuery(query6);
+                            int i = 0;
+                            while (rs5.next()) {
+                                if (rs5.getInt("type") == 1)
+                                    passengerHistory[i] = new PassengerHistory(rs5.getString("name"),
+                                            "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                if (rs5.getInt("type") == 2)
+                                    passengerHistory[i] = new PassengerHistory(rs5.getString("name"),
+                                            "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                i++;
+                            }
+                            query6 = "DELETE FROM tickets WHERE index_no = '" + index + "'";
+                            c5 = new Conn();
+                            c5.s.executeUpdate(query6);
+                            query6 = "DELETE FROM passenger WHERE PNR = '" + PNR + "'";
+                            c5 = new Conn();
+                            c5.s.executeUpdate(query6);
+                        } else
+                            break;
+                    }
+
+                    query6 = "DELETE FROM `month` WHERE index_no = '" + index + "'";
                     c3 = new Conn();
-                    c3.s.executeUpdate(query4);
+                    c3.s.executeUpdate(query6);
 
                 }
-            }*/
+            }
 
             System.out.println(count);
         } catch (Exception e) {
@@ -86,8 +141,9 @@ public class HandleDatabase {
         }
 
     }
-    long totaltime(Timestamp t){
-        return t.getMinutes()+60*t.getHours();
+
+    long totaltime(Timestamp t) {
+        return t.getMinutes() + 60 * t.getHours();
     }
 
     public void NewTrain(int train) {
