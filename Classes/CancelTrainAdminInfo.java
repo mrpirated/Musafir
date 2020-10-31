@@ -1,8 +1,9 @@
 package Classes;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class CancelTrainAdminInfo {
+public class CancelTrainAdminInfo implements Serializable{
     private String trainNo;
     private Date from;
     private Date to;

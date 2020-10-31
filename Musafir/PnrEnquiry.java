@@ -106,10 +106,10 @@ public class PnrEnquiry extends JFrame implements ActionListener {
     class Panel extends JPanel {
         @Override
         public Dimension getPreferredSize() {
-            if (noOfPassengers > 1)
-                return new Dimension(670, 540 + 100 * (noOfPassengers - 1));
+            if (noOfPassengers > 3)
+                return new Dimension(670, 460 + 100 * (noOfPassengers - 3));
             else
-                return new Dimension(670, 480);
+                return new Dimension(670, 460);
         }
     }
 
@@ -187,10 +187,10 @@ public class PnrEnquiry extends JFrame implements ActionListener {
 
         JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
         passengerLabel.setFont(new Font("Times new roman", Font.BOLD, 20));
-        passengerLabel.setBounds(260, 150, 300, 30);
+        passengerLabel.setBounds(240, 120, 300, 30);
         p2.add(passengerLabel);
 
-        int x, y = 190;
+        int x, y = 170;
         for (int i = 0; i < noOfPassengers; i++) {
             x = 2;
             Integer srNo = i + 1;
@@ -298,6 +298,7 @@ public class PnrEnquiry extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
+                p2.removeAll();
                 String pnr = pnrText.getText();
                 try {
 

@@ -399,8 +399,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 BookedTicket bookedTicket= (BookedTicket) oi.readObject();
-                int[][] t= bookedTicket.getSeats(); 
-                System.out.println(t[0][0] +" "+t[0][1] + " " +t[0][2] );
+                
+                
                 
             }
 
