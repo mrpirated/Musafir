@@ -661,6 +661,9 @@ public class HandleClient implements Runnable {
                         os.writeObject(reply18);
                         os.flush();
                         break;
+                    case 19:
+                        String pnr19 = (String) oi.readUTF();
+
                 }
 
             } catch (Exception e) {

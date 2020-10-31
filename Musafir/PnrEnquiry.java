@@ -17,9 +17,10 @@ public class PnrEnquiry extends JFrame implements ActionListener {
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
-    public PnrEnquiry(Connect connection,String name, int userid) {
+
+    public PnrEnquiry(Connect connection, String name, int userid) {
         this.name = name;
-        this.userid=userid;
+        this.userid = userid;
         this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -93,20 +94,18 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection,name, userid).setVisible(true);
+                new HomePage(connection, name, userid).setVisible(true);
                 setVisible(false);
             }
 
             else if (ae.getSource() == submit) {
                 String pnr = pnrText.getText();
-                PnrEnquiryInfo ticket = new PnrEnquiryInfo(pnr);
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    
 
 }
