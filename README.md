@@ -22,7 +22,7 @@ The project is done for an event named 'Softablitz' under the technical festival
 
 ### Built With
 
-The project is completely based on JAVA. The concepts of JAVA used are:
+The project is wholly based on JAVA with an MYSQL database. The concepts of JAVA used are:
 
 - Basics Of JAVA
 - Object-Oriented Programming Concepts
@@ -75,11 +75,11 @@ The roadmap guides the passengers and admins on how to use various features of t
 
 ### For Passenger
 
-If a Passenger is new to the app, he will first have to signup and submit various information asked in the Signup Form. Else he will have to log in to his account. After logging in, the home page will open. The home page consists of various buttons labelled accordingly. The Passenger can click any of them to perform respective task. Below are various tasks that a passenger can perform:
+If a Passenger is new to the app, he will first have to signup and submit various information asked in the Signup Form. Else he will have to log in to his account. After logging in, the home page will open. The home page consists of various buttons labelled accordingly. The Passenger can click any of them to perform respective task.<!-- Below are various tasks that a passenger can perform:-->
 
 ### For Admin
 
-An admin will have to log in first by running the 'LoginAdmin.java' file inside the 'Musafir' folder. After logging in, he will be redirected to Admin Home Page, where he can perform the various tasks accordingly. Below are various tasks that an admin can perform:
+An admin will have to log in first by running the 'LoginAdmin.java' file inside the 'Musafir' folder. After logging in, he will be redirected to Admin Home Page, where he can perform the various tasks accordingly. <!--Below are various tasks that an admin can perform:-->
 
 <!-- MUSAFIR DATABASE
 
