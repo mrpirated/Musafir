@@ -17,6 +17,7 @@ public class MyBookings extends JFrame implements ActionListener {
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
+    private JScrollPane scroll;
     public MyBookings(/*Connect connection,*/String name, int userid) {
         this.name = name;
         this.userid=userid;
@@ -38,6 +39,16 @@ public class MyBookings extends JFrame implements ActionListener {
         p1.setBackground(Color.BLACK);
         p1.setBounds(0, 0, 750, 45);
         add(p1);
+
+        p2 = new Panel();
+        p2.setLayout(null);
+
+        scroll = new JScrollPane(p2);
+        scroll.setBounds(15, 120, 710, 570);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        getContentPane().add(scroll);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/backArrow.png"));
         Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
@@ -63,6 +74,12 @@ public class MyBookings extends JFrame implements ActionListener {
         setSize(750, 750);
         setLocation(400, 50);
         setVisible(true);
+    }
+    class Panel extends JPanel {
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(690, 550);
+        }
     }
 
     public static void main(String[] args) {
