@@ -375,7 +375,6 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 String source = (String) from.getSelectedItem();
                 String dest = (String) to.getSelectedItem();
                 dt = picker.getDate();
-                System.out.println(dt);
                 String d = df.format(dt);
                 Date date = Date.valueOf(d);
                 ScheduleEnq scheduleEnq = new ScheduleEnq(source, dest, date);

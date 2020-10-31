@@ -47,7 +47,7 @@ public class BotClient extends JFrame implements ActionListener {
 
         p1 = new JPanel();
         p1.setLayout(null);
-        p1.setBackground(Color.BLACK);
+        p1.setBackground((new Color(136, 217, 212)));
         p1.setBounds(0, 0, 750, 45);
         add(p1);
 
@@ -55,7 +55,7 @@ public class BotClient extends JFrame implements ActionListener {
         Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         back = new JButton(i3);
-        back.setBackground(Color.BLACK);
+        back.setBackground(new Color(136, 217, 212));
         Border emptyBorder = BorderFactory.createEmptyBorder();
         back.setBorder(emptyBorder);
         back.setBounds(5, 8, 30, 30);
@@ -63,7 +63,7 @@ public class BotClient extends JFrame implements ActionListener {
 
         headLabel = new JLabel("Have A Query?");
         headLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 30));
-        headLabel.setForeground(Color.WHITE);
+        headLabel.setForeground(Color.black);
         headLabel.setBounds(250, 10, 400, 30);
         p1.add(headLabel);
 
@@ -76,23 +76,24 @@ public class BotClient extends JFrame implements ActionListener {
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
+        scroll.setBackground(Color.white);
 
         i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/chat.png"));
         i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         bot = new JButton(i3);
-        bot.setBackground(Color.WHITE);
+        bot.setBackground(new Color(136, 217, 212));
         bot.setBounds(15, 15, 50, 50);
         p2.add(bot);
 
         p3 = new JPanel();
-        p3.setBackground(Color.BLACK);
+        p3.setBackground(new Color(136, 217, 212));
         p3.setBounds(70, 15, 120, 40);
         p2.add(p3);
 
         JLabel reply1Label = new JLabel("Namaste");
         reply1Label.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 25));
-        reply1Label.setForeground(Color.WHITE);
+        reply1Label.setForeground(Color.black);
         reply1Label.setBounds(3, 5, 120, 35);
         p3.add(reply1Label);
         p2.add(p3);
@@ -106,7 +107,7 @@ public class BotClient extends JFrame implements ActionListener {
         p2.add(bot0);
 
         p4 = new JPanel();
-        p4.setBackground(Color.BLACK);
+        p4.setBackground((new Color(136, 217, 212)));
         p4.setBounds(70, 90, 410, 150);
         p2.add(p4);
 
@@ -114,7 +115,7 @@ public class BotClient extends JFrame implements ActionListener {
         for (int i = 0; i < reply1.size(); i++) {
             JLabel reply2Label = new JLabel(reply1.get(i), JLabel.LEFT);
             reply2Label.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 25));
-            reply2Label.setForeground(Color.WHITE);
+            reply2Label.setForeground(Color.black);
             reply2Label.setBounds(x1, y1, 400, 30);
             p4.add(reply2Label);
             y1 = y1 + 40;
@@ -191,13 +192,13 @@ public class BotClient extends JFrame implements ActionListener {
 
     public void PrintSelectedItem(String selection) {
         JPanel p6 = new JPanel();
-        p6.setBackground(Color.BLACK);
+        p6.setBackground((new Color(136, 217, 212)));
         p6.setBounds(x1Final, yFinal, 380, 30);
         p2.add(p6);
 
         JLabel newLabel = new JLabel(selection);
         newLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
-        newLabel.setForeground(Color.WHITE);
+        newLabel.setForeground(Color.black);
         newLabel.setBounds(5, 3, 380, 30);
         p6.add(newLabel);
 
@@ -214,7 +215,7 @@ public class BotClient extends JFrame implements ActionListener {
 
     public void PrintBotResponse(Vector<String> selection) {
         JPanel p6 = new JPanel();
-        p6.setBackground(Color.BLACK);
+        p6.setBackground(new Color(136, 217, 212));
         p6.setBounds(70, yFinal, 428, 350);
         p2.add(p6);
 
@@ -222,7 +223,7 @@ public class BotClient extends JFrame implements ActionListener {
         Image i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         bot1 = new JButton(i3);
-        bot1.setBackground(Color.WHITE);
+        bot1.setBackground(Color.black);
         bot1.setBounds(15, yFinal, 50, 50);
         p2.add(bot1);
 
@@ -234,7 +235,7 @@ public class BotClient extends JFrame implements ActionListener {
             reply3Label[i] = new JLabel(str1, JLabel.LEFT);
             reply3Label[i].setFont(new Font("Times new roman", Font.BOLD, 25));
             reply3Label[i].setBounds(x2, y2, 428, 30);
-            reply3Label[i].setForeground(Color.WHITE);
+            reply3Label[i].setForeground(Color.black);
             p6.add(reply3Label[i]);
             y2 = y2 + 40;
             yFinal += 40;
