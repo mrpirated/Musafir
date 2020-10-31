@@ -41,6 +41,41 @@ public class HandleClient implements Runnable {
         return userid;
     }
 
+    private Userid LoginEncrypted(LoginInfo loginInfo) {
+        Userid userid = new Userid(0, "");
+        try {
+            String query = "SELECT * FROM `user_info` WHERE email='" + loginInfo.getUsername() + "'";
+
+            ResultSet rs = c1.s.executeQuery(query);
+            if (rs.next()) {
+                char[] providedPassword = loginInfo.getPassword();
+                String securePassword = rs.getString("secure_password");
+                String salt = rs.getString("salt");
+
+                boolean passwordMatch = PasswordUtils.verifyUserPassword(providedPassword, securePassword, salt);
+                if (passwordMatch) {
+                    userid = new Userid(rs.getInt("user_id"), rs.getString("name"));
+                    return userid;
+                }
+            }
+            query = "SELECT * FROM `user_info` WHERE phone='" + loginInfo.getUsername() + "'";
+            rs = c1.s.executeQuery(query);
+            char[] providedPassword = loginInfo.getPassword();
+            String securePassword = rs.getString("secure_password");
+            String salt = rs.getString("salt");
+
+            boolean passwordMatch = PasswordUtils.verifyUserPassword(providedPassword, securePassword, salt);
+            if (passwordMatch) {
+                userid = new Userid(rs.getInt("user_id"), rs.getString("name"));
+                return userid;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return userid;
+    }
+
     private Boolean Signup(UserInfo userInfo) {
 
         String d = userInfo.getMm() + "-" + userInfo.getDd() + "-" + userInfo.getYy();
@@ -535,7 +570,7 @@ public class HandleClient implements Runnable {
                 switch (choice) {
                     case 1:
                         LoginInfo loginInfo = (LoginInfo) oi.readObject();
-                        Userid userid = Login(loginInfo);
+                        Userid userid = LoginEncrypted(loginInfo);
                         os.writeObject(userid);
                         os.flush();
                         break;
