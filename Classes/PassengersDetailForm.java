@@ -8,12 +8,12 @@ public class PassengersDetailForm implements Serializable {
     // PassengerTicketDetails()
     private String name, Username, trainNo,trainName;
     private LocalDate date;
-    private Integer noOfPassenger,type,src,dest, userid;
+    private Integer noOfPassenger,type,src,dest, userid,day;
     private PassengerInfo[] passengerInfo; 
 
 
     public PassengersDetailForm(String name, String trainNo,String trainName, int src, int dest,
-            LocalDate date, Integer noOfPassenger,PassengerInfo[] passengerInfo,int type, int userid) {
+            LocalDate date, Integer noOfPassenger,PassengerInfo[] passengerInfo,int type, int userid,int day) {
         this.name = name;
         this.trainNo = trainNo;
         this.trainName = trainName;
@@ -24,6 +24,7 @@ public class PassengersDetailForm implements Serializable {
         this.passengerInfo = passengerInfo;
         this.type = type;
         this.userid=userid;
+        this.day = day;
         passengerInfo = new PassengerInfo[noOfPassenger];
     }
 
@@ -66,5 +67,8 @@ public class PassengersDetailForm implements Serializable {
     
     public Integer getType() {
         return type;
+    }
+    public Integer getDay() {
+        return day;
     }
 }

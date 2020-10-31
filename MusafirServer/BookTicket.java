@@ -23,7 +23,7 @@ public class BookTicket {
         c = new Conn();
         query = "INSERT INTO `passenger` (`PNR`,`train`, `user_id`, `date`, `tickets`) VALUES ('" + PNR + "','"
                 + passengersDetailForm.getTrainNo() + " " + passengersDetailForm.getTrainName() + "', '"
-                + passengersDetailForm.getUserid() + "', '" + passengersDetailForm.getDate() + "', '"
+                + passengersDetailForm.getUserid() + "', '" + (passengersDetailForm.getDate().plusDays(passengersDetailForm.getDay()-1)) + "', '"
                 + passengersDetailForm.getNoOfPassenger() + "')";
         try {
             c.s.executeUpdate(query);
