@@ -209,8 +209,8 @@ public class HandleClient implements Runnable {
                             System.out.println("rs3");
                             st2 = (String) rs3.getString("station");
                             if (dest.equals(st2)) {
-                                availsl = rs1.getInt("Avail_S") - rs1.getInt("Total_S") / 3;
-                                availac = rs1.getInt("Avail_AC") - rs1.getInt("Total_AC") / 3;
+                                availsl = rs1.getInt("Avail_S");
+                                availac = rs1.getInt("Avail_AC");
                                 temp = new AvailabilityInfo(true, train, trainName, availsl, availac,
                                         rs3.getTimestamp("arrival"), dep, (Date) scheduleEnq.getDate(), day1,
                                         rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
@@ -558,6 +558,10 @@ public class HandleClient implements Runnable {
 
         return temp;
     }
+    public String CancelTrains(CancelTrainAdminInfo cancelTrainAdminInfo){
+        
+        return "ok";
+    }
 
     @Override
     public void run() {
@@ -651,6 +655,10 @@ public class HandleClient implements Runnable {
                         os.writeObject(train12);
                         os.flush();
                         break;
+                    case 14:
+                        CancelTrainAdminInfo cancelTrainAdminInfo = (CancelTrainAdminInfo)oi.readObject();
+
+
                     case 17:
                         Vector<Vector<String>> reply17 = BotReplyFirst();
                         os.writeObject(reply17);
