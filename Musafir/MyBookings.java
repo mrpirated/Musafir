@@ -17,10 +17,10 @@ public class MyBookings extends JFrame implements ActionListener {
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
-    public MyBookings(Connect connection,String name, int userid) {
+    public MyBookings(/*Connect connection,*/String name, int userid) {
         this.name = name;
         this.userid=userid;
-        this.connection = connection;
+        //this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -65,7 +65,9 @@ public class MyBookings extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-
+    public static void main(String[] args) {
+        new MyBookings("dprathi",1).setVisible(true);
+    }
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {

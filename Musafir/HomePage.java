@@ -244,7 +244,7 @@ public class HomePage extends JFrame implements ActionListener {
                 new PnrEnquiry(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == bookingbt) {
-                new MyBookings(connection, name, userid).setVisible(true);
+                //new MyBookings(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == cancelbt) {
                 new CancelTicket(connection, name, userid).setVisible(true);
