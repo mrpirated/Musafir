@@ -21,6 +21,7 @@ public class BookAMeal extends JFrame implements ActionListener {
     private JScrollPane scroll;
     private Integer noOfPassengers = 0;
     private JButton[] bookMeal;
+    PnrEnquiryFinalInfo passengerDetails;
 
     public BookAMeal(Connect connection, String name, int userid) {
         this.name = name;
@@ -304,7 +305,7 @@ public class BookAMeal extends JFrame implements ActionListener {
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String train = (String) oi.readUTF();
                 if (train != " ") {
-                    PnrEnquiryFinalInfo passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
                     showPnrDetails(passengerDetails);
                 } else {
                     errorDisplay();
@@ -314,7 +315,21 @@ public class BookAMeal extends JFrame implements ActionListener {
             }
             for (int i = 0; i < noOfPassengers; i++) {
                 if (ae.getSource() == bookMeal[i]) {
+                    try {
+                        String pnr = pnrText.getText();
+                        String name = passengerDetails.getPassengersInfo().get(i).getName();
+                        Integer age = passengerDetails.getPassengersInfo().get(i).getAge();
+                        ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
 
+                        BookAMealInfo bookMeal = new BookAMealInfo(pnr, name, age);
+                        os.writeInt(13);
+                        os.writeObject(bookMeal);
+                        os.flush();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                    String response = (String) oi.readUTF();
                 }
             }
 

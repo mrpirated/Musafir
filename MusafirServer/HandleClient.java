@@ -647,6 +647,19 @@ public class HandleClient implements Runnable {
         return pnrDetails;
     }
 
+    public String BookMeal(BookAMealInfo bookMeal) {
+        String s = " ";
+        String query = "UPDATE `tickets` SET `meal`='1' WHERE PNR='" + bookMeal.getPnr() + "' AND name='"
+                + bookMeal.getName() + "' AND age=" + bookMeal.getAge() + "";
+        try {
+            c1.s.executeUpdate(query);
+            return "ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -737,6 +750,12 @@ public class HandleClient implements Runnable {
                     case 12:
                         Vector<String> train12 = GetTrain();
                         os.writeObject(train12);
+                        os.flush();
+                        break;
+                    case 13:
+                        BookAMealInfo bookMeal = (BookAMealInfo) oi.readObject();
+                        String reply13 = BookMeal(bookMeal);
+                        os.writeUTF(reply13);
                         os.flush();
                         break;
                     case 17:
