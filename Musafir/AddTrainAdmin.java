@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.net.*;
 import Classes.*;
 import java.io.*;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.time.*;
@@ -190,8 +191,12 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                 Integer noOfHaltx = Integer.parseInt(noOfStations.getText());
                 Integer ts_slr = Integer.parseInt(tsSlr.getText()) * 72;
                 Integer ts_ac = Integer.parseInt(tsAc.getText()) * 72;
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date dt = picker.getDate();
+                String d = df.format(dt);
+                Date date = Date.valueOf(d);
                 AddTrainAdminInfo addTrain = new AddTrainAdminInfo(trainNox, trainNamex, srcx, destx, runningDaysx,
-                        noOfHaltx, ts_slr, ts_ac);
+                        noOfHaltx, ts_slr, ts_ac,date);
 
                 try {
 

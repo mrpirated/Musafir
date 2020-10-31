@@ -86,7 +86,7 @@ public class BookTicket {
     private BookedTicket Waiting(BookedTicket bookedTicket) {
         String query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
-                + passengersDetailForm.getPassengerInfo()[x].getName() + "', NULL, NULL,'" + Math.abs(available)
+                + passengersDetailForm.getPassengerInfo()[x].getName() + "', NULL, NULL,'" + (Math.abs(available)+1)
                 + "' , '" + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                 + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";

@@ -1,6 +1,7 @@
 package Classes;
 
 import java.io.*;
+import java.sql.Date;
 
 public class AddTrainAdminInfo implements Serializable {
     private String trainNo;
@@ -11,9 +12,10 @@ public class AddTrainAdminInfo implements Serializable {
     private Integer noOfHalts;
     private Integer ts_slr;
     private Integer ts_ac;
+    private Date date;
 
     public AddTrainAdminInfo(String trainNo, String trainName, String src, String dest, String runningDays,
-            Integer noOfHalts, Integer ts_slr, Integer ts_ac) {
+            Integer noOfHalts, Integer ts_slr, Integer ts_ac,Date date) {
         this.trainNo = trainNo;
         this.trainName = trainName;
         this.src = src;
@@ -22,6 +24,7 @@ public class AddTrainAdminInfo implements Serializable {
         this.noOfHalts = noOfHalts;
         this.ts_slr = ts_slr;
         this.ts_ac = ts_ac;
+        this.date = date;
     }
 
     public String getDest() {
@@ -54,5 +57,8 @@ public class AddTrainAdminInfo implements Serializable {
 
     public Integer getTs_slr() {
         return ts_slr;
+    }
+    public Date getDate() {
+        return date;
     }
 }

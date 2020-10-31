@@ -272,7 +272,7 @@ public class HandleClient implements Runnable {
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
-            // new HandleDatabase().NewTrain(trainInfo.getTrainNo());
+            new HandleDatabase().NewTrain(trainInfo.getTrainNo(),trainInfo.getDate().toLocalDate());
             return " ";
         }
 
@@ -865,7 +865,7 @@ public class HandleClient implements Runnable {
         return pnrDetails;
     }
 
-    public Vector<BookingHistory2FinalInfo> BookingHistory2(Integer userId) {
+    private Vector<BookingHistory2FinalInfo> BookingHistory2(Integer userId) {
         Vector<BookingHistory2FinalInfo> bookingHistory2 = new Vector<BookingHistory2FinalInfo>();
         BookingHistory2FinalInfo temp;
         String query1 = "SELECT * FROM `booking_history` WHERE `user_id` = " + userId + "";
@@ -886,6 +886,208 @@ public class HandleClient implements Runnable {
         }
 
         return bookingHistory2;
+    }
+
+    private String Canceluserticket(CancelTicket cancelTicket) {
+        String PNR = cancelTicket.getPNR();
+        Conn c1, c2, c3, c4;
+        String query1, query2, query3, query4;
+        ResultSet rs1, rs2, rs3, rs4;
+        int index;
+        BookingHistory bookingHistory = new BookingHistory();
+        bookingHistory.setUserid(cancelTicket.getUserid());
+        bookingHistory.setPNR(PNR);
+        bookingHistory.setDate(cancelTicket.getDate());
+        bookingHistory.setDest(cancelTicket.getDest());
+        bookingHistory.setSrc(cancelTicket.getSrc());
+        bookingHistory.setTrain(cancelTicket.getTrain());
+        if (cancelTicket.getName() != null) {
+            PassengerHistory[] passengerHistory = new PassengerHistory[1];
+
+            try {
+                query1 = "SELECT * FROM tickets WHERE PNR ='" + PNR + "' AND name = '" + cancelTicket.getName() + "' ";
+                c1 = new Conn();
+                rs1 = c1.s.executeQuery(query1);
+                rs1.next();
+                index = rs1.getInt("index_no");
+                passengerHistory[0] = new PassengerHistory(rs1.getString("name"),
+                        "S" + rs1.getInt("coach_no") + " " + rs1.getInt("seat_no"), rs1.getInt("age"),
+                        rs1.getString("gender").charAt(0));
+                bookingHistory.setPassengerHistory(passengerHistory);
+                query2 = "SELECT * FROM month WHERE index_no = '" + index + "'";
+                c2 = new Conn();
+                rs2 = c2.s.executeQuery(query2);
+                rs2.next();
+                if (rs1.getInt("type") == 1) {
+                    if (rs2.getInt("Avail_S") < 0) {
+                        query3 = "SELECT * FROM tickets WHERE index_no = '" + index
+                                + "' AND type = 1AND seat_no = NULL ORDER BY `tickets`.`waiting` ASC";
+                        c3 = new Conn();
+                        rs3 = c3.s.executeQuery(query3);
+                        rs3.next();
+                        c4 = new Conn();
+                        query4 = "UPDATE tickets SET seat_no = '" + rs1.getInt("seat_no") + "',coach_no = '"
+                                + rs1.getInt("coach_no") + "' WHERE waiting = 1";
+                        c4.s.executeUpdate(query4);
+                        rs3.next();
+                        while (rs3.next()) {
+                            c4 = new Conn();
+                            query4 = "UPDATE tickets SET waiting = '" + (rs3.getInt("waiting") - 1)
+                                    + "' WHERE waiting = '" + rs3.getInt("waiting") + "'";
+                            c4.s.executeUpdate(query4);
+                        }
+
+                    } else {
+                        query3 = "UPDATE `month` SET `Avail_S` = '" + (rs2.getInt("Avail_S") + 1)
+                                + "' WHERE `month`.`index_no` = '" + index + "'";
+                        c3 = new Conn();
+                        c3.s.executeUpdate(query3);
+                    }
+                }
+                if (rs1.getInt("type") == 2) {
+                    if (rs2.getInt("Avail_AC") < 0) {
+                        query3 = "SELECT * FROM tickets WHERE index_no = '" + index
+                                + "' AND type = 2 AND seat_no = NULL ORDER BY `tickets`.`waiting` ASC";
+                        c3 = new Conn();
+                        rs3 = c3.s.executeQuery(query3);
+                        rs3.next();
+                        c4 = new Conn();
+                        query4 = "UPDATE tickets SET seat_no = '" + rs1.getInt("seat_no") + "',coach_no = '"
+                                + rs1.getInt("coach_no") + "' WHERE waiting = 1";
+                        c4.s.executeUpdate(query4);
+                        rs3.next();
+                        while (rs3.next()) {
+                            c4 = new Conn();
+                            query4 = "UPDATE tickets SET waiting = '" + (rs3.getInt("waiting") - 1)
+                                    + "' WHERE waiting = '" + rs3.getInt("waiting") + "'";
+                            c4.s.executeUpdate(query4);
+                        }
+
+                    } else {
+                        query3 = "UPDATE `month` SET `Avail_S` = '" + (rs2.getInt("Avail_AC") + 1)
+                                + "' WHERE `month`.`index_no` = '" + index + "'";
+                        c3 = new Conn();
+                        c3.s.executeUpdate(query3);
+                    }
+                }
+                for (int j = 0; j < 1; j++) {
+                    query4 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`cancelled`) VALUES ('"
+                            + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','"
+                            + bookingHistory.getTrain() + "' ,'" + bookingHistory.getPassengerHistory()[j].getName()
+                            + "', '" + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
+                            + bookingHistory.getPassengerHistory()[j].getGender() + "', '" + bookingHistory.getSrc()
+                            + "', '" + bookingHistory.getDest() + "', '" + bookingHistory.getDate() + "', '"
+                            + bookingHistory.getPassengerHistory()[j].getSeat() + "',1)";
+                    c4 = new Conn();
+                    c4.s.executeUpdate(query4);
+                }
+                query4 = "DELETE FROM tickets WHERE PNR ='" + PNR + "' AND name = '" + cancelTicket.getName() + "' ";
+                c4 = new Conn();
+                c4.s.executeUpdate(query4);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            try {
+                query1 = "SELECT * FROM passenger WHERE PNR ='" + PNR + "'";
+                c1 = new Conn();
+                rs1 = c1.s.executeQuery(query1);
+                rs1.next();
+                PassengerHistory[] passengerHistory = new PassengerHistory[rs1.getInt("tickets")];
+                query1 = "SELECT * FROM tickets WHERE PNR ='" + PNR + "' ";
+                c1 = new Conn();
+                rs1 = c1.s.executeQuery(query1);
+                int i = 0;
+                while (rs1.next()) {
+                    index = rs1.getInt("index_no");
+                    passengerHistory[i] = new PassengerHistory(rs1.getString("name"),
+                            "S" + rs1.getInt("coach_no") + " " + rs1.getInt("seat_no"), rs1.getInt("age"),
+                            rs1.getString("gender").charAt(0));
+
+                    i++;
+                    query2 = "SELECT * FROM month WHERE index_no = '" + index + "'";
+                    c2 = new Conn();
+                    rs2 = c2.s.executeQuery(query2);
+                    rs2.next();
+                    if (rs1.getInt("type") == 1) {
+                        if (rs2.getInt("Avail_S") < 0) {
+                            query3 = "SELECT * FROM tickets WHERE index_no = '" + index
+                                    + "' AND type = 1AND seat_no = NULL ORDER BY `tickets`.`waiting` ASC";
+                            c3 = new Conn();
+                            rs3 = c3.s.executeQuery(query3);
+                            rs3.next();
+                            c4 = new Conn();
+                            query4 = "UPDATE tickets SET seat_no = '" + rs1.getInt("seat_no") + "',coach_no = '"
+                                    + rs1.getInt("coach_no") + "' WHERE waiting = 1";
+                            c4.s.executeUpdate(query4);
+                            rs3.next();
+                            while (rs3.next()) {
+                                c4 = new Conn();
+                                query4 = "UPDATE tickets SET waiting = '" + (rs3.getInt("waiting") - 1)
+                                        + "' WHERE waiting = '" + rs3.getInt("waiting") + "'";
+                                c4.s.executeUpdate(query4);
+                            }
+
+                        } else {
+                            query3 = "UPDATE `month` SET `Avail_S` = '" + (rs2.getInt("Avail_S") + 1)
+                                    + "' WHERE `month`.`index_no` = '" + index + "'";
+                            c3 = new Conn();
+                            c3.s.executeUpdate(query3);
+                        }
+                    }
+                    if (rs1.getInt("type") == 2) {
+                        if (rs2.getInt("Avail_AC") < 0) {
+                            query3 = "SELECT * FROM tickets WHERE index_no = '" + index
+                                    + "' AND type = 2 AND seat_no = NULL ORDER BY `tickets`.`waiting` ASC";
+                            c3 = new Conn();
+                            rs3 = c3.s.executeQuery(query3);
+                            rs3.next();
+                            c4 = new Conn();
+                            query4 = "UPDATE tickets SET seat_no = '" + rs1.getInt("seat_no") + "',coach_no = '"
+                                    + rs1.getInt("coach_no") + "' WHERE waiting = 1";
+                            c4.s.executeUpdate(query4);
+                            rs3.next();
+                            while (rs3.next()) {
+                                c4 = new Conn();
+                                query4 = "UPDATE tickets SET waiting = '" + (rs3.getInt("waiting") - 1)
+                                        + "' WHERE waiting = '" + rs3.getInt("waiting") + "'";
+                                c4.s.executeUpdate(query4);
+                            }
+
+                        } else {
+                            query3 = "UPDATE `month` SET `Avail_S` = '" + (rs2.getInt("Avail_AC") + 1)
+                                    + "' WHERE `month`.`index_no` = '" + index + "'";
+                            c3 = new Conn();
+                            c3.s.executeUpdate(query3);
+                        }
+                    }
+                    for (int j = 0; j < passengerHistory.length; j++) {
+                        query4 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`cancelled`) VALUES ('"
+                                + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','"
+                                + bookingHistory.getTrain() + "' ,'" + bookingHistory.getPassengerHistory()[j].getName()
+                                + "', '" + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
+                                + bookingHistory.getPassengerHistory()[j].getGender() + "', '" + bookingHistory.getSrc()
+                                + "', '" + bookingHistory.getDest() + "', '" + bookingHistory.getDate() + "', '"
+                                + bookingHistory.getPassengerHistory()[j].getSeat() + "',1)";
+                        c4 = new Conn();
+                        c4.s.executeUpdate(query4);
+                    }
+                    query4 = "DELETE FROM tickets WHERE PNR ='" + PNR + "' ";
+                    c4 = new Conn();
+                    c4.s.executeUpdate(query4);
+                    query4 = "DELETE FROM passengers WHERE PNR ='" + PNR + "' ";
+                    c4 = new Conn();
+                    c4.s.executeUpdate(query4);
+
+                }
+                bookingHistory.setPassengerHistory(passengerHistory);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "ok";
     }
 
     @Override
@@ -1023,6 +1225,10 @@ public class HandleClient implements Runnable {
                         os.writeObject(bookingHistory2);
                         os.flush();
                         break;
+                    case 21:
+                        CancelTicket cancelTicket = (CancelTicket) oi.readObject();
+                        os.writeUTF(Canceluserticket(cancelTicket));
+                        os.flush();
                 }
 
             } catch (Exception e) {
