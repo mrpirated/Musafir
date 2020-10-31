@@ -297,6 +297,7 @@ public class PnrEnquiry extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
+                p2.removeAll();
                 String pnr = pnrText.getText();
                 try {
 
