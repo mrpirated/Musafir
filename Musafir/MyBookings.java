@@ -18,6 +18,7 @@ public class MyBookings extends JFrame implements ActionListener {
     private String name, Username;
     private Connect connection;
     private JScrollPane scroll;
+    private JCheckBox previous , ongoing;
     public MyBookings(/*Connect connection,*/String name, int userid) {
         this.name = name;
         this.userid=userid;
@@ -44,7 +45,7 @@ public class MyBookings extends JFrame implements ActionListener {
         p2.setLayout(null);
 
         scroll = new JScrollPane(p2);
-        scroll.setBounds(15, 120, 710, 570);
+        scroll.setBounds(15, 120, 710, 520);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         getContentPane().add(scroll);
@@ -66,8 +67,29 @@ public class MyBookings extends JFrame implements ActionListener {
         headLabel.setBounds(250, 10, 400, 30);
         p1.add(headLabel);
 
-        back.addActionListener(this);
+        previous= new JCheckBox("Completed Journeys");
+        previous.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        previous.setBackground(Color.WHITE);
+        previous.setBounds(80,80,200,30);
+        add(previous);
 
+        ongoing= new JCheckBox("Upcoming Journeys");
+        ongoing.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        ongoing.setBackground(Color.WHITE);
+        ongoing.setBounds(420,80,200,30);
+        add(ongoing);
+
+        submit = new JButton("Submit");
+        submit.setBackground(Color.BLACK);
+        submit.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        submit.setForeground(Color.WHITE);
+        submit.setBorder(emptyBorder);
+        submit.setBounds(300, 650, 100, 30);
+        add(submit);
+
+
+        back.addActionListener(this);
+        //submit.addActionListener(this);
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
 
@@ -75,10 +97,11 @@ public class MyBookings extends JFrame implements ActionListener {
         setLocation(400, 50);
         setVisible(true);
     }
+    
     class Panel extends JPanel {
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(690, 550);
+            return new Dimension(690, 510);
         }
     }
 

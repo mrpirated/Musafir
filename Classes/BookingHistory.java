@@ -11,6 +11,7 @@ public class BookingHistory implements Serializable{
     private PassengerHistory[] passengerHistory;
     private Date date;
     
+    
     public void setTrain(String train) {
         this.train = train;
     }
