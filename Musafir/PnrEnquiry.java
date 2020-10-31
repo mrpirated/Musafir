@@ -66,7 +66,8 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         add(pnrLabel);
 
         pnrText = new JTextField(10);
-        pnrText.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
+        pnrText.setFont(new Font("TIMES NEW ROMAN", Font.PLAIN, 20));
+        pnrText.setHorizontalAlignment(JTextField.CENTER);
         pnrText.setForeground(Color.BLACK);
         pnrText.setBounds(280, 120, 150, 30);
         add(pnrText);
@@ -186,10 +187,10 @@ public class PnrEnquiry extends JFrame implements ActionListener {
 
         JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
         passengerLabel.setFont(new Font("Times new roman", Font.BOLD, 20));
-        passengerLabel.setBounds(260, 110, 300, 30);
+        passengerLabel.setBounds(260, 150, 300, 30);
         p2.add(passengerLabel);
 
-        int x, y = 150;
+        int x, y = 190;
         for (int i = 0; i < noOfPassengers; i++) {
             x = 2;
             Integer srNo = i + 1;
