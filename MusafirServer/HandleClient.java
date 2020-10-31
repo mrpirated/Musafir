@@ -174,7 +174,7 @@ public class HandleClient implements Runnable {
         Vector<AvailabilityInfo> availabilityInfo = new Vector<AvailabilityInfo>();
         AvailabilityInfo temp;
         String train;
-        String query = "SELECT * FROM `trains_basic_details`", query2, query3,query4;
+        String query = "SELECT * FROM `trains_basic_details`", query2, query3, query4;
         String st1, st2;
         String source = scheduleEnq.getSource();
         String dest = scheduleEnq.getDest();
@@ -182,12 +182,12 @@ public class HandleClient implements Runnable {
         Timestamp dep;
         int day1, fare1, station_no, availsl, availac;
         try {
-            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4,rs5;
+            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4, rs5;
             while (rs1.next()) {
                 train = (String) rs1.getString("train_no");
                 query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + train + "' ORDER BY `station_no` ASC";
                 trainName = rs1.getString("train_name");
-                Conn c2 = new Conn(),c3,c5;
+                Conn c2 = new Conn(), c3, c5;
                 rs2 = c2.s.executeQuery(query2);
 
                 while (rs2.next()) {
@@ -204,43 +204,46 @@ public class HandleClient implements Runnable {
                             System.out.println("rs3");
                             st2 = (String) rs3.getString("station");
                             if (dest.equals(st2)) {
-                                query3 = "SELECT * FROM month  where date = '"+scheduleEnq.getDate().toLocalDate().minusDays(day1-1)+"'AND train = '" + train + "'";
+                                query3 = "SELECT * FROM month  where date = '"
+                                        + scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1) + "'AND train = '"
+                                        + train + "'";
                                 c3 = new Conn();
-                                rs4=c3.s.executeQuery(query3);
-                                while(rs4.next()){
-                                availsl = rs4.getInt("Avail_S");
-                                availac = rs4.getInt("Avail_AC");
-                                query4 ="SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no") + "'AND type = 1";
-                                c5 = new Conn();
-                                rs5 = c5.s.executeQuery(query4);
-                                while(rs5.next()){
-                                    if(!(((rs5.getInt("dest") > station_no)
-                                    && (rs5.getInt("src") < station_no))
-                                    || ((rs5.getInt("src") < rs3.getInt("station_no"))
-                                            && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
-                                    || (rs5.getInt("dest") == rs3.getInt("station_no"))
-                                    || (rs5.getInt("src") == station_no)))
-                                    availsl++;
-                                }
-                                query4 ="SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no") + "'AND type = 2";
-                                c5 = new Conn();
-                                rs5 = c5.s.executeQuery(query4);
-                                while(rs5.next()){
-                                    if(!(((rs5.getInt("dest") > station_no)
-                                    && (rs5.getInt("src") < station_no))
-                                    || ((rs5.getInt("src") < rs3.getInt("station_no"))
-                                            && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
-                                    || (rs5.getInt("dest") == rs3.getInt("station_no"))
-                                    || (rs5.getInt("src") == station_no)))
-                                    availac++;
-                                }
-                                temp = new AvailabilityInfo(true, train, trainName, availsl, availac,
-                                        rs3.getTimestamp("arrival"), dep, scheduleEnq.getDate().toLocalDate().minusDays(day1-1), day1,
-                                        rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
-                                        rs3.getInt("station_no"));
+                                rs4 = c3.s.executeQuery(query3);
+                                while (rs4.next()) {
+                                    availsl = rs4.getInt("Avail_S");
+                                    availac = rs4.getInt("Avail_AC");
+                                    query4 = "SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no")
+                                            + "'AND type = 1";
+                                    c5 = new Conn();
+                                    rs5 = c5.s.executeQuery(query4);
+                                    while (rs5.next()) {
+                                        if (!(((rs5.getInt("dest") > station_no) && (rs5.getInt("src") < station_no))
+                                                || ((rs5.getInt("src") < rs3.getInt("station_no"))
+                                                        && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
+                                                || (rs5.getInt("dest") == rs3.getInt("station_no"))
+                                                || (rs5.getInt("src") == station_no)))
+                                            availsl++;
+                                    }
+                                    query4 = "SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no")
+                                            + "'AND type = 2";
+                                    c5 = new Conn();
+                                    rs5 = c5.s.executeQuery(query4);
+                                    while (rs5.next()) {
+                                        if (!(((rs5.getInt("dest") > station_no) && (rs5.getInt("src") < station_no))
+                                                || ((rs5.getInt("src") < rs3.getInt("station_no"))
+                                                        && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
+                                                || (rs5.getInt("dest") == rs3.getInt("station_no"))
+                                                || (rs5.getInt("src") == station_no)))
+                                            availac++;
+                                    }
+                                    temp = new AvailabilityInfo(true, train, trainName, availsl, availac,
+                                            rs3.getTimestamp("arrival"), dep,
+                                            scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1), day1,
+                                            rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
+                                            rs3.getInt("station_no"));
 
-                                availabilityInfo.add(temp);
-                                System.out.println("added");
+                                    availabilityInfo.add(temp);
+                                    System.out.println("added");
                                 }
                                 break;
                             }
@@ -809,6 +812,80 @@ public class HandleClient implements Runnable {
         return bookingHistory1;
     }
 
+    public BookingHistory2FinalInfo SingleHistory(String pnr, String train) {
+        String trainNo, trainName, src = " ", dest = " ";
+        java.sql.Date doj;
+        String name, gender, seat;
+        Integer age;
+        String query = "SELECT * FROM `booking_history` WHERE `PNR` = '" + pnr + "'", query2, query3;
+        BookingHistory2FinalInfo pnrDetails;
+        Vector<BookingHistory2TicketInfo> passengersDetails = new Vector<BookingHistory2TicketInfo>();
+        BookingHistory2TicketInfo temp;
+
+        String parts[] = train.split(" ", 2);
+        trainNo = parts[0];
+        trainName = parts[1];
+        long d = System.currentTimeMillis();
+        doj = new java.sql.Date(d);
+
+        try {
+            Conn c2 = new Conn();
+            ResultSet rs2 = c2.s.executeQuery(query), rs3;
+            if (rs2.next()) {
+                name = rs2.getString("name");
+                age = rs2.getInt("age");
+                gender = rs2.getString("gender");
+                src = rs2.getString("source");
+                dest = rs2.getString("destination");
+                doj = rs2.getDate("date");
+                seat = rs2.getString("seat");
+
+                temp = new BookingHistory2TicketInfo(name, age, gender, seat);
+                passengersDetails.add(temp);
+            }
+            while (rs2.next()) {
+                name = rs2.getString("name");
+                age = rs2.getInt("age");
+                gender = rs2.getString("gender");
+                seat = rs2.getString("seat");
+
+                temp = new BookingHistory2TicketInfo(name, age, gender, seat);
+                passengersDetails.add(temp);
+            }
+            rs2.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pnrDetails = new BookingHistory2FinalInfo(trainNo, trainName, src, dest, passengersDetails, doj);
+
+        return pnrDetails;
+    }
+
+    public Vector<BookingHistory2FinalInfo> BookingHistory2(Integer userId) {
+        Vector<BookingHistory2FinalInfo> bookingHistory2 = new Vector<BookingHistory2FinalInfo>();
+        BookingHistory2FinalInfo temp;
+        String query1 = "SELECT * FROM `booking_history` WHERE `user_id` = " + userId + "";
+
+        try {
+            Conn c5 = new Conn();
+            ResultSet rs5 = c5.s.executeQuery(query1);
+            while (rs5.next()) {
+                String train = rs5.getString("train");
+                String pnr = rs5.getString("PNR");
+                temp = SingleHistory(pnr, train);
+                bookingHistory2.add(temp);
+            }
+            rs5.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bookingHistory2;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -939,7 +1016,9 @@ public class HandleClient implements Runnable {
                     case 20:
                         Integer userId20 = (Integer) oi.readInt();
                         Vector<PnrEnquiryFinalInfo> bookingHistory1 = BookingHistory1(userId20);
+                        Vector<BookingHistory2FinalInfo> bookingHistory2 = BookingHistory2(userId20);
                         os.writeObject(bookingHistory1);
+                        os.writeObject(bookingHistory2);
                         os.flush();
                         break;
                 }

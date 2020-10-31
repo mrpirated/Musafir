@@ -3,28 +3,18 @@ package Classes;
 import java.io.*;
 
 public class BookingHistory2TicketInfo implements Serializable {
-    private String name, coach_no, gender;
-    private Integer type, seat_no, waiting, age;
-    private char meal;
+    private String name, gender, seat;
+    private Integer age;
 
-    public BookingHistory2TicketInfo(String name, Integer type, String coach_no, Integer seat_no, Integer waiting,
-            Integer age, String gender, char meal) {
+    public BookingHistory2TicketInfo(String name, Integer age, String gender, String seat) {
         this.name = name;
-        this.type = type;
-        this.coach_no = coach_no;
-        this.seat_no = seat_no;
-        this.waiting = waiting;
         this.age = age;
         this.gender = gender;
-        this.meal = meal;
+        this.seat = seat;
     }
 
     public Integer getAge() {
         return age;
-    }
-
-    public String getCoach_no() {
-        return coach_no;
     }
 
     public String getGender() {
@@ -35,19 +25,7 @@ public class BookingHistory2TicketInfo implements Serializable {
         return name;
     }
 
-    public Integer getSeat_no() {
-        return seat_no;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public Integer getWaiting() {
-        return waiting;
-    }
-
-    public char getMeal() {
-        return meal;
+    public String getSeat() {
+        return seat;
     }
 }

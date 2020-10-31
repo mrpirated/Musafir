@@ -19,7 +19,7 @@ public class MyBookings extends JFrame implements ActionListener {
     private String name, Username;
     private Connect connection;
     private JScrollPane scroll;
-    private Integer noOfPassengers = 0, y1 = 0, noOfTickets = 0;
+    private Integer noOfPassengers2 = 0, noOfPassengers = 0, y1 = 0, noOfTickets = 0, noOfTickets2 = 0;
 
     public MyBookings(Connect connection, String name, int userid) {
         this.name = name;
@@ -292,6 +292,181 @@ public class MyBookings extends JFrame implements ActionListener {
 
             y1 = y1 + 100;
         }
+
+        x = 325;
+        JLabel line = new JLabel("----X----");
+        line.setFont(new Font("Times new roman", Font.PLAIN, 15));
+        line.setBounds(x, y1, 160, 30);
+        p2.add(line);
+
+        y1 = y1 + 80;
+    }
+
+    public void showPnrDetails2(BookingHistory2FinalInfo passengerDetails) {
+        noOfPassengers2 = passengerDetails.getPassengersInfo().size();
+
+        y1 += 5;
+        JLabel trainNoLabel = new JLabel("TRAIN NO:");
+        trainNoLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+        trainNoLabel.setBounds(15, y1, 160, 30);
+        p2.add(trainNoLabel);
+
+        String trainNox = passengerDetails.getTrainNo();
+        JLabel trainNo1Label = new JLabel(trainNox);
+        trainNo1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        trainNo1Label.setBounds(120, y1, 160, 30);
+        p2.add(trainNo1Label);
+
+        JLabel trainNameLabel = new JLabel("TRAIN NAME:");
+        trainNameLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+        trainNameLabel.setBounds(370, y1, 160, 30);
+        p2.add(trainNameLabel);
+
+        JLabel trainName1Label = new JLabel(passengerDetails.getTrainName());
+        trainName1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        trainName1Label.setBounds(515, y1, 160, 30);
+        p2.add(trainName1Label);
+
+        y1 += 30;
+        JLabel src = new JLabel("SOURCE:");
+        src.setFont(new Font("Times new roman", Font.BOLD, 18));
+        src.setBounds(15, y1, 160, 30);
+        p2.add(src);
+
+        JLabel src1 = new JLabel(passengerDetails.getSrc());
+        src1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        src1.setBounds(110, y1, 160, 30);
+        p2.add(src1);
+
+        JLabel dest = new JLabel("DESTINATION:");
+        dest.setFont(new Font("Times new roman", Font.BOLD, 18));
+        dest.setBounds(370, y1, 160, 30);
+        p2.add(dest);
+
+        JLabel dest1 = new JLabel(passengerDetails.getDest());
+        dest1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        dest1.setBounds(515, y1, 160, 30);
+        p2.add(dest1);
+
+        y1 += 30;
+        JLabel doj = new JLabel("DATE OF JOURNEY:");
+        doj.setFont(new Font("Times new roman", Font.BOLD, 18));
+        doj.setBounds(15, y1, 250, 30);
+        p2.add(doj);
+
+        JLabel doj1 = new JLabel(passengerDetails.getDoj().toString());
+        doj1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        doj1.setBounds(240, y1, 160, 30);
+        p2.add(doj1);
+
+        JLabel noOfpass = new JLabel("NO OF PASSENGERS:");
+        noOfpass.setFont(new Font("Times new roman", Font.BOLD, 18));
+        noOfpass.setBounds(370, y1, 250, 30);
+        p2.add(noOfpass);
+
+        JLabel noOfpass1 = new JLabel(noOfPassengers.toString());
+        noOfpass1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        noOfpass1.setBounds(595, y1, 160, 30);
+        p2.add(noOfpass1);
+
+        y1 += 55;
+        JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
+        passengerLabel.setFont(new Font("Times new roman", Font.BOLD, 20));
+        passengerLabel.setBounds(240, y1, 300, 30);
+        p2.add(passengerLabel);
+
+        int x;
+        y1 = y1 + 50;
+        for (int i = 0; i < noOfPassengers; i++) {
+            x = 2;
+            Integer srNo = i + 1;
+            JLabel srNo1 = new JLabel(srNo.toString() + ".");
+            srNo1.setFont(new Font("Times new roman", Font.BOLD, 20));
+            srNo1.setBounds(x, y1 + 20, 160, 30);
+            p2.add(srNo1);
+
+            x = 35;
+            JLabel nameLabel = new JLabel("Name:");
+            nameLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+            nameLabel.setBounds(x, y1, 160, 30);
+            p2.add(nameLabel);
+
+            x = 160;
+            String nameX = passengerDetails.getPassengersInfo().get(i).getName();
+            JLabel name1Label = new JLabel(nameX);
+            name1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            name1Label.setBounds(x, y1, 160, 30);
+            p2.add(name1Label);
+
+            x = 390;
+
+            JLabel berthLabel = new JLabel("Berth No:");
+            berthLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+            berthLabel.setBounds(x, y1, 160, 30);
+            p2.add(berthLabel);
+
+            x = 535;
+            JLabel berth1Label = new JLabel(passengerDetails.getPassengersInfo().get(i).getSeat());
+            berth1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            berth1Label.setBounds(x, y1, 160, 30);
+            p2.add(berth1Label);
+
+            x = 35;
+            JLabel gender = new JLabel("Gender:");
+            gender.setFont(new Font("Times new roman", Font.BOLD, 18));
+            gender.setBounds(x, y1 + 25, 160, 30);
+            p2.add(gender);
+
+            x = 160;
+            JLabel gender1 = new JLabel(passengerDetails.getPassengersInfo().get(i).getGender());
+            gender1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            gender1.setBounds(x, y1 + 25, 160, 30);
+            p2.add(gender1);
+
+            x = 390;
+            JLabel ageLabel = new JLabel("Age:");
+            ageLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+            ageLabel.setBounds(x, y1 + 25, 160, 30);
+            p2.add(ageLabel);
+
+            x = 535;
+            JLabel age1Label = new JLabel(passengerDetails.getPassengersInfo().get(i).getAge().toString());
+            age1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            age1Label.setBounds(x, y1 + 25, 160, 30);
+            p2.add(age1Label);
+
+            // x = 390;
+            // JLabel berthtype = new JLabel("Berth Type:");
+            // berthtype.setFont(new Font("Times new roman", Font.BOLD, 18));
+            // berthtype.setBounds(x, y1 + 50, 160, 30);
+            // p2.add(berthtype);
+
+            // String berth;
+            // if (seatNo % 8 == 1 || seatNo % 8 == 4) {
+            // berth = "Lower Berth";
+            // } else if (seatNo % 8 == 2 || seatNo % 8 == 5) {
+            // berth = "Middle Berth";
+            // } else if (seatNo % 8 == 3 || seatNo % 8 == 6) {
+            // berth = "Upper Berth";
+            // } else if (seatNo % 8 == 7) {
+            // berth = "Side Lower Berth";
+            // } else {
+            // berth = "Side Upper Berth";
+            // }
+            // x = 535;
+            // JLabel berthtype1 = new JLabel(berth);
+            // berthtype1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            // berthtype1.setBounds(x, y1 + 50, 200, 30);
+            // p2.add(berthtype1);
+
+            y1 = y1 + 75;
+        }
+        x = 325;
+        JLabel line = new JLabel("----X----");
+        line.setFont(new Font("Times new roman", Font.PLAIN, 15));
+        line.setBounds(x, y1, 160, 30);
+        p2.add(line);
+
         y1 = y1 + 80;
     }
 
@@ -321,6 +496,14 @@ public class MyBookings extends JFrame implements ActionListener {
                 System.out.println(noOfTickets);
                 for (int i = 0; i < noOfTickets; i++) {
                     showPnrDetails(bookingHistory.get(i));
+                }
+
+                Vector<BookingHistory2FinalInfo> bookingHistory2 = (Vector<BookingHistory2FinalInfo>) oi.readObject();
+                noOfTickets2 = bookingHistory2.size();
+                noOfTickets += noOfTickets2;
+                System.out.println(noOfTickets2);
+                for (int i = 0; i < noOfTickets2; i++) {
+                    showPnrDetails2(bookingHistory2.get(i));
                 }
 
                 p2.revalidate();
