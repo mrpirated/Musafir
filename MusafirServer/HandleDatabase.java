@@ -14,7 +14,7 @@ public class HandleDatabase {
         int index;
         Timestamp now = Timestamp.valueOf(ldt), dept;
         String PNR,trainno;
-        String query = "SELECT * FROM `month` ORDER BY `month`.`date` ASC", query2, query3, query4, query5, query6,query7;
+        String query = "SELECT * FROM lastupdated ", query2, query3, query4, query5, query6,query7;
         try {
             long d = System.currentTimeMillis();
             Date td = new Date(d);
@@ -30,7 +30,9 @@ public class HandleDatabase {
                 date = date.plusDays(1);
                 count++;
             }
-            
+            query = "UPDATE `lastupdated` SET `date` = '" + today + "' WHERE `lastupdated`.`index` = 1";
+            c1 = new Conn();
+            c1.s.executeUpdate(query);
             for (int i = 0; i < count; i++) {
                 BookingHistory bookingHistory;
                 query2 = "SELECT * FROM month WHERE date = '" + temp + "'";
@@ -156,6 +158,7 @@ public class HandleDatabase {
                 c6 = new Conn();
                 query7 = "SELECT * FROM trains_basic_details WHERE train_no = '" + trainno + "'";
                 rs6 = c6.s.executeQuery(query7);
+                rs6.next();
                 
                 c2 = new Conn();
                 query3 = "SELECT * FROM src_dest_table where train_no = '" + rs1.getString("train")
@@ -217,12 +220,12 @@ public class HandleDatabase {
                             for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
                                 query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`) VALUES ("
                                         + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','" + bookingHistory.getTrain() + "' ,'"
-                                        + bookingHistory.getPassengerHistory()[i].getName() + "', '"
-                                        + bookingHistory.getPassengerHistory()[i].getAge() + "', '"
-                                        + bookingHistory.getPassengerHistory()[i].getGender() + "', '"
+                                        + bookingHistory.getPassengerHistory()[j].getName() + "', '"
+                                        + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
+                                        + bookingHistory.getPassengerHistory()[j].getGender() + "', '"
                                         + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
                                         + bookingHistory.getDate() + "', '"
-                                        + bookingHistory.getPassengerHistory()[i].getSeat() + "')";
+                                        + bookingHistory.getPassengerHistory()[j].getSeat() + "')";
                                 c5 = new Conn();
                                 c5.s.executeUpdate(query6);
                             }
@@ -236,29 +239,7 @@ public class HandleDatabase {
 
                 }
             }
-            c1 = new Conn();
-
-            rs1 = c1.s.executeQuery(query2);
-            if (rs1.next() == false) {
-                end = end.plusDays(1);
-                weekday = DayOfWeek.from(end);
-                val = weekday.getValue() - 1;
-                rs = c1.s.executeQuery(query);
-                while (rs.next()) {
-                    runningdays = (String) rs.getString("runningDays");
-                    if (runningdays.charAt(val) == '1') {
-                        trainno = rs.getString("train_no");
-                        int sl = rs.getInt("ts_slr");
-                        int ac = rs.getInt("ts_ac");
-                        query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
-                                + end + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '" + ac
-                                + "')";
-                        c2 = new Conn();
-                        c2.s.executeUpdate(query2);
-                        System.out.println(end + " inserted");
-                    }
-                }
-            }
+            
 
             System.out.println(count);
         } catch (Exception e) {
