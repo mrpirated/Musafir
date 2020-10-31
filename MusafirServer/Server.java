@@ -16,7 +16,7 @@ public class Server {
             e.printStackTrace();
             return;
         }
-        new HandleDatabase();
+        new HandleDatabase().Serverside();
         while (true) {
             try {
                 socket = serverSocket.accept();

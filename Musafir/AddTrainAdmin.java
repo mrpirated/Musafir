@@ -168,7 +168,7 @@ public class AddTrainAdmin extends JFrame implements ActionListener {
                 String runningDaysx = runningDays.getText();
                 Integer noOfHaltx = Integer.parseInt(noOfStations.getText());
                 Integer ts_slr = Integer.parseInt(tsSlr.getText()) * 72;
-                Integer ts_ac = Integer.parseInt(tsAc.getText()) * 50;
+                Integer ts_ac = Integer.parseInt(tsAc.getText()) * 72;
                 AddTrainAdminInfo addTrain = new AddTrainAdminInfo(trainNox, trainNamex, srcx, destx, runningDaysx,
                         noOfHaltx, ts_slr, ts_ac);
 
