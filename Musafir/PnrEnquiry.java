@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.net.*;
 import Classes.*;
 import java.io.*;
+import java.util.*;
 
 public class PnrEnquiry extends JFrame implements ActionListener {
 
@@ -17,9 +18,12 @@ public class PnrEnquiry extends JFrame implements ActionListener {
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
-    public PnrEnquiry(Connect connection,String name, int userid) {
+    private JScrollPane scroll;
+    private Integer noOfPassengers = 0;
+
+    public PnrEnquiry(Connect connection, String name, int userid) {
         this.name = name;
-        this.userid=userid;
+        this.userid = userid;
         this.connection = connection;
 
         setFont(new Font("System", Font.BOLD, 22));
@@ -58,13 +62,13 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         pnrLabel = new JLabel("Enter 10 Digit PNR");
         pnrLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
         pnrLabel.setBackground(Color.WHITE);
-        pnrLabel.setBounds(270, 200, 400, 30);
+        pnrLabel.setBounds(270, 70, 400, 30);
         add(pnrLabel);
 
         pnrText = new JTextField(10);
         pnrText.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
         pnrText.setForeground(Color.BLACK);
-        pnrText.setBounds(280, 250, 150, 30);
+        pnrText.setBounds(280, 120, 150, 30);
         add(pnrText);
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -74,8 +78,18 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         submit.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
         submit.setForeground(Color.WHITE);
         submit.setBorder(emptyBorder);
-        submit.setBounds(300, 350, 100, 30);
+        submit.setBounds(300, 170, 100, 30);
         add(submit);
+
+        p2 = new Panel();
+        p2.setLayout(null);
+
+        scroll = new JScrollPane(p2);
+        scroll.setBounds(15, 210, 690, 470);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        getContentPane().add(scroll);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
 
         back.addActionListener(this);
         submit.addActionListener(this);
@@ -88,25 +102,226 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    class Panel extends JPanel {
+        @Override
+        public Dimension getPreferredSize() {
+            if (noOfPassengers > 1)
+                return new Dimension(670, 540 + 100 * (noOfPassengers - 1));
+            else
+                return new Dimension(670, 480);
+        }
+    }
+
+    public void errorDisplay() {
+        JLabel trainNoLabel = new JLabel("INVALID PNR NUMBER.");
+        trainNoLabel.setFont(new Font("Times new roman", Font.BOLD, 25));
+        trainNoLabel.setBounds(150, 200, 500, 30);
+        p2.add(trainNoLabel);
+        return;
+    }
+
+    public void showPnrDetails(PnrEnquiryFinalInfo passengerDetails) {
+        noOfPassengers = passengerDetails.getPassengersInfo().size();
+
+        JLabel trainNoLabel = new JLabel("TRAIN NO:");
+        trainNoLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+        trainNoLabel.setBounds(15, 5, 160, 30);
+        p2.add(trainNoLabel);
+
+        String trainNox = passengerDetails.getTrainNo();
+        JLabel trainNo1Label = new JLabel(trainNox);
+        trainNo1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        trainNo1Label.setBounds(120, 5, 160, 30);
+        p2.add(trainNo1Label);
+
+        JLabel trainNameLabel = new JLabel("TRAIN NAME:");
+        trainNameLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+        trainNameLabel.setBounds(370, 5, 160, 30);
+        p2.add(trainNameLabel);
+
+        JLabel trainName1Label = new JLabel(passengerDetails.getTrainName());
+        trainName1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        trainName1Label.setBounds(515, 5, 160, 30);
+        p2.add(trainName1Label);
+
+        JLabel src = new JLabel("SOURCE:");
+        src.setFont(new Font("Times new roman", Font.BOLD, 18));
+        src.setBounds(15, 35, 160, 30);
+        p2.add(src);
+
+        JLabel src1 = new JLabel(passengerDetails.getSrc());
+        src1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        src1.setBounds(110, 35, 160, 30);
+        p2.add(src1);
+
+        JLabel dest = new JLabel("DESTINATION:");
+        dest.setFont(new Font("Times new roman", Font.BOLD, 18));
+        dest.setBounds(370, 35, 160, 30);
+        p2.add(dest);
+
+        JLabel dest1 = new JLabel(passengerDetails.getDest());
+        dest1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        dest1.setBounds(515, 35, 160, 30);
+        p2.add(dest1);
+
+        JLabel doj = new JLabel("DATE OF JOURNEY:");
+        doj.setFont(new Font("Times new roman", Font.BOLD, 18));
+        doj.setBounds(15, 65, 250, 30);
+        p2.add(doj);
+
+        JLabel doj1 = new JLabel(passengerDetails.getDoj().toString());
+        doj1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        doj1.setBounds(240, 65, 160, 30);
+        p2.add(doj1);
+
+        JLabel noOfpass = new JLabel("NO OF PASSENGERS:");
+        noOfpass.setFont(new Font("Times new roman", Font.BOLD, 18));
+        noOfpass.setBounds(370, 65, 250, 30);
+        p2.add(noOfpass);
+
+        JLabel noOfpass1 = new JLabel(noOfPassengers.toString());
+        noOfpass1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        noOfpass1.setBounds(595, 65, 160, 30);
+        p2.add(noOfpass1);
+
+        JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
+        passengerLabel.setFont(new Font("Times new roman", Font.BOLD, 20));
+        passengerLabel.setBounds(260, 110, 300, 30);
+        p2.add(passengerLabel);
+
+        int x, y = 150;
+        for (int i = 0; i < noOfPassengers; i++) {
+            x = 2;
+            Integer srNo = i + 1;
+            JLabel srNo1 = new JLabel(srNo.toString() + ".");
+            srNo1.setFont(new Font("Times new roman", Font.BOLD, 20));
+            srNo1.setBounds(x, y + 20, 160, 30);
+            p2.add(srNo1);
+
+            x = 35;
+            JLabel nameLabel = new JLabel("Name:");
+            nameLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+            nameLabel.setBounds(x, y, 160, 30);
+            p2.add(nameLabel);
+
+            x = 160;
+            String nameX = passengerDetails.getPassengersInfo().get(i).getName();
+            JLabel name1Label = new JLabel(nameX);
+            name1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            name1Label.setBounds(x, y, 160, 30);
+            p2.add(name1Label);
+
+            x = 390;
+
+            JLabel berthLabel = new JLabel("Berth No:");
+            berthLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+            berthLabel.setBounds(x, y, 160, 30);
+            p2.add(berthLabel);
+
+            x = 535;
+            Integer waitingNo = passengerDetails.getPassengersInfo().get(i).getWaiting();
+            Integer typeNo = passengerDetails.getPassengersInfo().get(i).getType();
+            Integer seatNo = passengerDetails.getPassengersInfo().get(i).getSeat_no();
+            String coachNo = passengerDetails.getPassengersInfo().get(i).getCoach_no();
+
+            String seatText = "";
+            if (waitingNo == 0) {
+                if (typeNo == 1) {
+                    seatText = "SL-" + coachNo + " / " + seatNo.toString();
+                } else if (typeNo == 2) {
+                    seatText = "AC-" + coachNo + " / " + seatNo.toString();
+                }
+            } else {
+                seatText = "WL / " + waitingNo.toString();
+            }
+
+            JLabel berth1Label = new JLabel(seatText);
+            berth1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            berth1Label.setBounds(x, y, 160, 30);
+            p2.add(berth1Label);
+
+            x = 35;
+            JLabel gender = new JLabel("Gender:");
+            gender.setFont(new Font("Times new roman", Font.BOLD, 18));
+            gender.setBounds(x, y + 25, 160, 30);
+            p2.add(gender);
+
+            x = 160;
+            JLabel gender1 = new JLabel(passengerDetails.getPassengersInfo().get(i).getGender());
+            gender1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            gender1.setBounds(x, y + 25, 160, 30);
+            p2.add(gender1);
+
+            x = 390;
+            JLabel ageLabel = new JLabel("Age:");
+            ageLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+            ageLabel.setBounds(x, y + 25, 160, 30);
+            p2.add(ageLabel);
+
+            x = 535;
+            JLabel age1Label = new JLabel(passengerDetails.getPassengersInfo().get(i).getAge().toString());
+            age1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            age1Label.setBounds(x, y + 25, 160, 30);
+            p2.add(age1Label);
+
+            x = 35;
+            JLabel mealLabel = new JLabel("Meal Booked:");
+            mealLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+            mealLabel.setBounds(x, y + 50, 200, 30);
+            p2.add(mealLabel);
+
+            char mealbooked = passengerDetails.getPassengersInfo().get(0).getMeal();
+            String mealResponse;
+            if (mealbooked == '0') {
+                mealResponse = "No";
+            } else {
+                mealResponse = "Yes";
+            }
+            x = 160;
+            JLabel meal1Label = new JLabel(mealResponse);
+            meal1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            meal1Label.setBounds(x, y + 50, 160, 30);
+            p2.add(meal1Label);
+
+            y = y + 100;
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
             if (ae.getSource() == back) {
-                new HomePage(connection,name, userid).setVisible(true);
+                new HomePage(connection, name, userid).setVisible(true);
                 setVisible(false);
             }
 
             else if (ae.getSource() == submit) {
                 String pnr = pnrText.getText();
-                PnrEnquiryInfo ticket = new PnrEnquiryInfo(pnr);
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(19);
+                    os.writeUTF(pnr);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                String train = (String) oi.readUTF();
+                if (train != " ") {
+                    PnrEnquiryFinalInfo passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                    showPnrDetails(passengerDetails);
+                } else {
+                    errorDisplay();
+                }
+                p2.revalidate();
+                p2.repaint();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    
 
 }

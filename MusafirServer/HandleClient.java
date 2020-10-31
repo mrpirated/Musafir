@@ -243,7 +243,7 @@ public class HandleClient implements Runnable {
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
-            //new HandleDatabase().NewTrain(trainInfo.getTrainNo());
+            // new HandleDatabase().NewTrain(trainInfo.getTrainNo());
             return " ";
         }
 
@@ -563,6 +563,94 @@ public class HandleClient implements Runnable {
         return "ok";
     }
 
+    public String GetTrainPassenger(String pnr) {
+        String train = " ";
+        String query = "SELECT * FROM `passenger` WHERE `PNR` = '" + pnr + "'";
+
+        try {
+            ResultSet rs = c1.s.executeQuery(query);
+            if (rs.next()) {
+                train = rs.getString("train");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return train;
+    }
+
+    public PnrEnquiryFinalInfo GetPassengerDetails(String pnr, String train) {
+        String name, coach_no, gender, src = "", dest = "";
+        char meal = ' ';
+        java.sql.Date doj;
+        Integer type, seat_no, waiting, age, index_no, srcIndex, destIndex;
+        String query = "SELECT * FROM `tickets` WHERE `PNR` = '" + pnr + "'", query2, query3;
+        PnrEnquiryFinalInfo pnrDetails;
+        Vector<PnrEnquiryInfo> passengersDetails = new Vector<PnrEnquiryInfo>();
+        PnrEnquiryInfo temp;
+
+        String parts[] = train.split(" ", 2);
+        String trainNo = parts[0], trainName = parts[1];
+        long d = System.currentTimeMillis();
+        doj = new java.sql.Date(d);
+
+        try {
+            ResultSet rs = c1.s.executeQuery(query), rs2, rs3;
+            if (rs.next()) {
+                index_no = rs.getInt("index_no");
+                query2 = "SELECT * FROM `month` WHERE `index_no` = " + index_no + "";
+                Conn c3 = new Conn();
+                rs2 = c3.s.executeQuery(query2);
+                rs2.next();
+                doj = rs2.getDate("date");
+                meal = rs.getString("meal").charAt(0);
+
+                srcIndex = rs.getInt("src");
+                destIndex = rs.getInt("dest");
+
+                query3 = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + trainNo + "'";
+                Conn c4 = new Conn();
+                rs3 = c4.s.executeQuery(query3);
+                while (rs3.next()) {
+                    if (srcIndex == rs3.getInt("station_no"))
+                        src = rs3.getString("station");
+                    if (destIndex == rs3.getInt("station_no"))
+                        dest = rs3.getString("station");
+                }
+                name = rs.getString("name");
+                type = rs.getInt("type");
+                coach_no = rs.getString("coach_no");
+                seat_no = rs.getInt("seat_no");
+                waiting = rs.getInt("waiting");
+                age = rs.getInt("age");
+                gender = rs.getString("gender");
+
+                temp = new PnrEnquiryInfo(name, type, coach_no, seat_no, waiting, age, gender, meal);
+                passengersDetails.add(temp);
+            }
+            while (rs.next()) {
+                name = rs.getString("name");
+                type = rs.getInt("type");
+                coach_no = rs.getString("coach_no");
+                seat_no = rs.getInt("seat_no");
+                waiting = rs.getInt("waiting");
+                age = rs.getInt("age");
+                gender = rs.getString("gender");
+                meal = rs.getString("meal").charAt(0);
+
+                temp = new PnrEnquiryInfo(name, type, coach_no, seat_no, waiting, age, gender, meal);
+                passengersDetails.add(temp);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pnrDetails = new PnrEnquiryFinalInfo(trainNo, trainName, src, dest, passengersDetails, doj);
+
+        return pnrDetails;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -668,6 +756,16 @@ public class HandleClient implements Runnable {
                         Integer selectedItem = (Integer) oi.readInt();
                         Vector<String> reply18 = BotResponses(selectedItem);
                         os.writeObject(reply18);
+                        os.flush();
+                        break;
+                    case 19:
+                        String pnr19 = (String) oi.readUTF();
+                        String train19 = GetTrainPassenger(pnr19);
+                        os.writeUTF(train19);
+                        if (train19 != " ") {
+                            PnrEnquiryFinalInfo pnrDetails = GetPassengerDetails(pnr19, train19);
+                            os.writeObject(pnrDetails);
+                        }
                         os.flush();
                         break;
                 }
