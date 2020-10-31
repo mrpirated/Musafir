@@ -244,7 +244,7 @@ public class HomePage extends JFrame implements ActionListener {
                 new PnrEnquiry(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == bookingbt) {
-                //new MyBookings(connection, name, userid).setVisible(true);
+                // new MyBookings(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == cancelbt) {
                 new CancelTicket(connection, name, userid).setVisible(true);
@@ -259,16 +259,7 @@ public class HomePage extends JFrame implements ActionListener {
                 new ReroutedTrains(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == mealbt) {
-                try {
-                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
-                    os.writeInt(16);
-                    os.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                Vector<String> pnrList = (Vector<String>) oi.readObject();
-                new BookAMeal(connection, name, userid, pnrList).setVisible(true);
+                new BookAMeal(connection, name, userid).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == trainbt) {
                 try {
