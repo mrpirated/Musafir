@@ -689,6 +689,7 @@ public class HandleClient implements Runnable {
         doj = new java.sql.Date(d);
 
         try {
+            c1 = new Conn();
             ResultSet rs = c1.s.executeQuery(query), rs2, rs3;
             if (rs.next()) {
                 index_no = rs.getInt("index_no");
@@ -711,6 +712,7 @@ public class HandleClient implements Runnable {
                     if (destIndex == rs3.getInt("station_no"))
                         dest = rs3.getString("station");
                 }
+                rs3.close();
                 name = rs.getString("name");
                 type = rs.getInt("type");
                 coach_no = rs.getString("coach_no");
@@ -735,6 +737,7 @@ public class HandleClient implements Runnable {
                 temp = new PnrEnquiryInfo(name, type, coach_no, seat_no, waiting, age, gender, meal);
                 passengersDetails.add(temp);
             }
+            rs.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -756,6 +759,31 @@ public class HandleClient implements Runnable {
             e.printStackTrace();
         }
         return s;
+    }
+
+    public Vector<PnrEnquiryFinalInfo> BookingHistory1(Integer userId) {
+        Vector<PnrEnquiryFinalInfo> bookingHistory1 = new Vector<PnrEnquiryFinalInfo>();
+        PnrEnquiryFinalInfo temp;
+        String query1 = "SELECT * FROM `passenger` WHERE `user_id` = " + userId + "";
+
+        try {
+            int i = 1;
+            Conn c5 = new Conn();
+            ResultSet rs5 = c5.s.executeQuery(query1);
+            while (rs5.next()) {
+                String train = rs5.getString("train");
+                String pnr = rs5.getString("PNR");
+                temp = GetPassengerDetails(pnr, train);
+                bookingHistory1.add(temp);
+                System.out.println(i++);
+            }
+            rs5.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bookingHistory1;
     }
 
     @Override
@@ -883,6 +911,12 @@ public class HandleClient implements Runnable {
                             PnrEnquiryFinalInfo pnrDetails = GetPassengerDetails(pnr19, train19);
                             os.writeObject(pnrDetails);
                         }
+                        os.flush();
+                        break;
+                    case 20:
+                        Integer userId20 = (Integer) oi.readInt();
+                        Vector<PnrEnquiryFinalInfo> bookingHistory1 = BookingHistory1(userId20);
+                        os.writeObject(bookingHistory1);
                         os.flush();
                         break;
                 }

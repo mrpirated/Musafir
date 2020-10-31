@@ -228,9 +228,9 @@ public class PnrEnquiry extends JFrame implements ActionListener {
             String seatText = "";
             if (waitingNo == 0) {
                 if (typeNo == 1) {
-                    seatText = "SL-" + coachNo + " / " + seatNo.toString();
+                    seatText = "S-" + coachNo + " / " + seatNo.toString();
                 } else if (typeNo == 2) {
-                    seatText = "AC-" + coachNo + " / " + seatNo.toString();
+                    seatText = "B-" + coachNo + " / " + seatNo.toString();
                 }
             } else {
                 seatText = "WL / " + waitingNo.toString();
@@ -283,6 +283,30 @@ public class PnrEnquiry extends JFrame implements ActionListener {
             meal1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
             meal1Label.setBounds(x, y + 50, 160, 30);
             p2.add(meal1Label);
+
+            x = 390;
+            JLabel berthtype = new JLabel("Berth Type:");
+            berthtype.setFont(new Font("Times new roman", Font.BOLD, 18));
+            berthtype.setBounds(x, y + 50, 160, 30);
+            p2.add(berthtype);
+
+            String berth;
+            if (seatNo % 8 == 1 || seatNo % 8 == 4) {
+                berth = "Lower Berth";
+            } else if (seatNo % 8 == 2 || seatNo % 8 == 5) {
+                berth = "Middle Berth";
+            } else if (seatNo % 8 == 3 || seatNo % 8 == 6) {
+                berth = "Upper Berth";
+            } else if (seatNo % 8 == 7) {
+                berth = "Side Lower Berth";
+            } else {
+                berth = "Side Upper Berth";
+            }
+            x = 535;
+            JLabel berthtype1 = new JLabel(berth);
+            berthtype1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+            berthtype1.setBounds(x, y + 50, 200, 30);
+            p2.add(berthtype1);
 
             y = y + 100;
         }
