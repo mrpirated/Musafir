@@ -91,16 +91,16 @@ public class MyBookings extends JFrame implements ActionListener {
     class Panel extends JPanel {
         @Override
         public Dimension getPreferredSize() {
-            if (noOfTickets > 3)
-                return new Dimension(670, 1000 + 500 * (noOfPassengers - 3));
+            if (noOfTickets > 2)
+                return new Dimension(670, 1000 + 1000 * (noOfTickets - 2));
             else
                 return new Dimension(670, 1000);
         }
     }
 
     public void showPnrDetails(PnrEnquiryFinalInfo passengerDetails) {
+        submit.setEnabled(false);
         noOfPassengers = passengerDetails.getPassengersInfo().size();
-
         y1 += 5;
         JLabel trainNoLabel = new JLabel("TRAIN NO:");
         trainNoLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
