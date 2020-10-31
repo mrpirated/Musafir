@@ -43,9 +43,9 @@ public class HandleDatabase {
                     index = rs1.getInt("index_no");
                     trainno = rs1.getString("train");
                     c6 = new Conn();
-                    query7 = "SELECT * FROM trains_basic_details WHERE tra1n_no = '" + trainno + "'";
+                    query7 = "SELECT * FROM trains_basic_details WHERE train_no = '" + trainno + "'";
                     rs6 = c6.s.executeQuery(query7);
-                    
+                    rs6.next();
                     while (true) {
                         query4 = "SELECT * FROM tickets WHERE index_no = '" + index + "'";
                         c3 = new Conn();
@@ -57,6 +57,7 @@ public class HandleDatabase {
                             rs4 = c4.s.executeQuery(query5);
                             rs4.next();
                             bookingHistory = new BookingHistory();
+                            bookingHistory.setPNR(PNR);
                             bookingHistory.setTrain(trainno + " "+rs6.getString("train_name"));
                             PassengerHistory[] passengerHistory = new PassengerHistory[rs4.getInt("tickets")];
                             bookingHistory.setUserid(rs4.getInt("user_id"));
@@ -95,14 +96,14 @@ public class HandleDatabase {
                             c5 = new Conn();
                             c5.s.executeUpdate(query6);
                             for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
-                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`) VALUES ("
+                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`) VALUES ('"
                                         + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','" + bookingHistory.getTrain() + "' ,'"
-                                        + bookingHistory.getPassengerHistory()[i].getName() + "', '"
-                                        + bookingHistory.getPassengerHistory()[i].getAge() + "', '"
-                                        + bookingHistory.getPassengerHistory()[i].getGender() + "', '"
+                                        + bookingHistory.getPassengerHistory()[j].getName() + "', '"
+                                        + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
+                                        + bookingHistory.getPassengerHistory()[j].getGender() + "', '"
                                         + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
                                         + bookingHistory.getDate() + "', '"
-                                        + bookingHistory.getPassengerHistory()[i].getSeat() + "')";
+                                        + bookingHistory.getPassengerHistory()[j].getSeat() + "')";
                                 c5 = new Conn();
                                 c5.s.executeUpdate(query6);
                             }

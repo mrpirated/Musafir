@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.sql.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 import Classes.*;
@@ -558,8 +559,97 @@ public class HandleClient implements Runnable {
 
         return temp;
     }
-    public String CancelTrains(CancelTrainAdminInfo cancelTrainAdminInfo){
-        
+    private String CancelTrains(CancelTrainAdminInfo cancelTrainAdminInfo){
+        LocalDate start = cancelTrainAdminInfo.getFrom().toLocalDate();
+        LocalDate end = cancelTrainAdminInfo.getTo().toLocalDate();
+        int index;
+        String PNR,query2,query4,query5,query6,query7;
+        Conn c1,c3,c4,c5,c6;
+        ResultSet rs1,rs3,rs4,rs5,rs6;
+        while(start.compareTo(end) <= 0){
+            BookingHistory bookingHistory;
+            query2 = "SELECT * FROM month WHERE date = '" + start + "' AND train = '" + cancelTrainAdminInfo.getTrainNo()+"'";
+            try{
+            c1 = new Conn();
+            rs1 = c1.s.executeQuery(query2);
+            rs1.next();
+                index = rs1.getInt("index_no");
+                while (true) {
+                    query4 = "SELECT * FROM tickets WHERE index_no = '" + index + "'";
+                    c3 = new Conn();
+                    rs3 = c3.s.executeQuery(query4);
+                    query7 = "SELECT * FROM trains_basic_details WHERE train_no = '" + cancelTrainAdminInfo.getTrainNo() + "'";
+                    c6 = new Conn();
+                    rs6 = c6.s.executeQuery(query7);
+                    rs6.next();
+                    if (rs3.next()) {
+                        PNR = rs3.getString("PNR");
+                        query5 = "SELECT * FROM passenger WHERE PNR = '" + PNR + "'";
+                        c4 = new Conn();
+                        rs4 = c4.s.executeQuery(query5);
+                        rs4.next();
+                        bookingHistory = new BookingHistory();
+                        bookingHistory.setPNR(PNR);
+                        bookingHistory.setTrain(cancelTrainAdminInfo.getTrainNo() + " "+rs6.getString("train_name"));
+                        PassengerHistory[] passengerHistory = new PassengerHistory[rs4.getInt("tickets")];
+                        bookingHistory.setUserid(rs4.getInt("user_id"));
+                        bookingHistory.setDate(rs4.getDate("date"));
+                        query6 = "SELECT * FROM src_dest_table WHERE train_no ='" + rs1.getString("train") + "'";
+                        c5 = new Conn();
+                        rs5 = c5.s.executeQuery(query6);
+                        while (rs5.next()) {
+                            if (rs5.getInt("station_no") == rs3.getInt("src"))
+                                bookingHistory.setSrc(rs5.getString("station"));
+
+                            if (rs5.getInt("station_no") == rs3.getInt("dest"))
+                                bookingHistory.setDest(rs5.getString("station"));
+                        }
+                        query6 = "SELECT * FROM tickets WHERE PNR = '" + PNR + "'";
+                        c5 = new Conn();
+                        rs5 = c5.s.executeQuery(query6);
+                        int k = 0;
+                        while (rs5.next()) {
+                            if (rs5.getInt("type") == 1)
+                                passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
+                                        "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
+                                        rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                            if (rs5.getInt("type") == 2)
+                                passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
+                                        "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
+                                        rs5.getInt("age"), rs5.getString("gender").charAt(0));
+
+                            k++;
+                        }
+                        bookingHistory.setPassengerHistory(passengerHistory);
+                        query6 = "DELETE FROM tickets WHERE index_no = '" + index + "'";
+                        c5 = new Conn();
+                        c5.s.executeUpdate(query6);
+                        query6 = "DELETE FROM passenger WHERE PNR = '" + PNR + "'";
+                        c5 = new Conn();
+                        c5.s.executeUpdate(query6);
+                        for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
+                            query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`cancelled`) VALUES ('"
+                                    + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','" + bookingHistory.getTrain() + "' ,'"
+                                    + bookingHistory.getPassengerHistory()[j].getName() + "', '"
+                                    + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
+                                    + bookingHistory.getPassengerHistory()[j].getGender() + "', '"
+                                    + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
+                                    + bookingHistory.getDate() + "', '"
+                                    + bookingHistory.getPassengerHistory()[j].getSeat() + "',2)";
+                            c5 = new Conn();
+                            c5.s.executeUpdate(query6);
+                        }
+                    } else
+                        break;
+                }
+                query6 = "DELETE FROM `month` WHERE index_no = '" + index + "'";
+                    c3 = new Conn();
+                    c3.s.executeUpdate(query6);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            start = start.plusDays(1);
+        }
         return "ok";
     }
 
@@ -745,7 +835,10 @@ public class HandleClient implements Runnable {
                         break;
                     case 14:
                         CancelTrainAdminInfo cancelTrainAdminInfo = (CancelTrainAdminInfo)oi.readObject();
-
+                        String res = CancelTrains(cancelTrainAdminInfo);
+                        os.writeUTF(res);
+                        os.flush();
+                        break;
 
                     case 17:
                         Vector<Vector<String>> reply17 = BotReplyFirst();
