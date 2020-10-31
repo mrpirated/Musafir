@@ -74,7 +74,7 @@ public class HandleClient implements Runnable {
         System.out.println(userInfo.getPhone());
 
         String d = userInfo.getMm() + "-" + userInfo.getDd() + "-" + userInfo.getYy();
-        String query = "INSERT INTO `user_info` ( `name`, `dob`, `gender`, `email`, `phone`, `secure_password`, 'salt') VALUES ( '"
+        String query = "INSERT INTO `user_info` ( `name`, `dob`, `gender`, `email`, `phone`, `secure_password`, `salt`) VALUES ( '"
                 + userInfo.getName() + "', STR_TO_DATE('" + d + "','%m-%d-%Y'), '" + userInfo.getGender() + "', '"
                 + userInfo.getEmail() + "', '" + userInfo.getPhone() + "', '" + mySecurePassword + "', '" + salt + "')";
         try {
