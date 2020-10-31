@@ -4,13 +4,13 @@
   - [Built With](#built-with)
 - [Features](#features)
   - [Admin Side Features](#admin-side-features)
-  - [Client Side Features](#client-side-features)
+  - [Passenger Side Features](#passenger-side-features)
   - [Advanced Features](#advanced-features)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
   - [For Passenger](#for-passenger)
   - [For Admin](#for-admin)
-- [Musafir Database](#musafir-database)
+  <!-- - [Musafir Database](#musafir-database) -->
 - [Contact](#contact)
 - [Project Link](#project-link)
 
@@ -18,11 +18,11 @@
 
 ## About The Project
 
-The project is done for an event named 'Softablitz' under the technical festival 'Avishkar 2020' of Motilal Nehru National Institute of Technology, Allahabad. The project MUSAFIR is an app that provides a medium for both railway authority and passengers. Through this app, the Railway Authority can easily manage all the trains and various other facilities. They can keep an eye on multiple activities such as running trains on a particular day, canceling trains, removing them, rerouteing them, etc. It also eases passengers' lives for booking tickets, sees trains according to their requirements, manages their booking history, checks PNR status, etc.
+The project is done for an event named 'Softablitz' under the technical festival 'Avishkar 2020' of Motilal Nehru National Institute of Technology, Allahabad. The project MUSAFIR is an app that provides a medium for both railway authority and passengers. Through this app, the Railway Authority can easily manage all the trains and various other facilities. They can keep an eye on multiple activities such as running trains on a particular day, canceling trains, removing them, rerouting them, etc. It also eases passengers' lives for booking tickets, sees trains according to their requirements, manages their booking history, checks PNR status, etc.
 
 ### Built With
 
-The project is completely based on JAVA. The concepts of JAVA used are:
+The project is wholly based on JAVA with an MYSQL database. The concepts of JAVA used are:
 
 - Basics Of JAVA
 - Object-Oriented Programming Concepts
@@ -43,7 +43,7 @@ The project is completely based on JAVA. The concepts of JAVA used are:
 - Cancel trains.
 - Cancel and reroute trains for a certain duration.
 
-### Client Side Features
+### Passenger Side Features
 
 - Able to sign up, login and logout.
 - Can see trains between source and destination.
@@ -71,9 +71,19 @@ To use the application, one will first have to set up the 'Musafir Database'. Af
 
 ## Roadmap
 
-<!-- MUSAFIR DATABASE -->
+The roadmap guides the passengers and admins on how to use various features of the Musafir Application.
 
-## Musafir Database
+### For Passenger
+
+If a Passenger is new to the app, he will first have to signup and submit various information asked in the Signup Form. Else he will have to log in to his account. After logging in, the home page will open. The home page consists of various buttons labelled accordingly. The Passenger can click any of them to perform respective task.<!-- Below are various tasks that a passenger can perform:-->
+
+### For Admin
+
+An admin will have to log in first by running the 'LoginAdmin.java' file inside the 'Musafir' folder. After logging in, he will be redirected to Admin Home Page, where he can perform the various tasks accordingly. <!--Below are various tasks that an admin can perform:-->
+
+<!-- MUSAFIR DATABASE
+
+## Musafir Database -->
 
 <!-- CONTACT -->
 
