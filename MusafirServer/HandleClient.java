@@ -60,6 +60,7 @@ public class HandleClient implements Runnable {
             }
             query = "SELECT * FROM `user_info` WHERE phone='" + loginInfo.getUsername() + "'";
             rs = c1.s.executeQuery(query);
+            rs.next();
             char[] providedPassword = loginInfo.getPassword();
             String securePassword = rs.getString("secure_password");
             String salt = rs.getString("salt");
@@ -242,7 +243,7 @@ public class HandleClient implements Runnable {
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
-            new HandleDatabase().NewTrain(trainInfo.getTrainNo());
+            //new HandleDatabase().NewTrain(trainInfo.getTrainNo());
             return " ";
         }
 

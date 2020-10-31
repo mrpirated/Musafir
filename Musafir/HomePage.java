@@ -217,7 +217,7 @@ public class HomePage extends JFrame implements ActionListener {
     class Panel extends JPanel {
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(700, 1000);
+            return new Dimension(700, 800);
         }
     }
 
