@@ -878,7 +878,8 @@ public class HandleClient implements Runnable {
                         String pnr19 = (String) oi.readUTF();
                         String train19 = GetTrainPassenger(pnr19);
                         os.writeUTF(train19);
-                        if (train19 != " ") {
+                        Integer result19 = train19.compareTo(" ");
+                        if (result19 != -1) {
                             PnrEnquiryFinalInfo pnrDetails = GetPassengerDetails(pnr19, train19);
                             os.writeObject(pnrDetails);
                         }
