@@ -3,16 +3,21 @@ package Classes;
 import java.io.*;
 
 public class BookAMealInfo implements Serializable {
-    private String pnr;
-    private Integer choice;
+    private String pnr, name;
+    private Integer age;
 
-    public BookAMealInfo(String pnr, Integer choice) {
-        this.choice = choice;
+    public BookAMealInfo(String pnr, String name, Integer age) {
+        this.age = age;
         this.pnr = pnr;
+        this.name = name;
     }
 
-    public Integer getChoice() {
-        return choice;
+    public Integer getAge() {
+        return age;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getPnr() {

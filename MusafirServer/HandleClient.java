@@ -582,26 +582,29 @@ public class HandleClient implements Runnable {
 
         return temp;
     }
-    private String CancelTrains(CancelTrainAdminInfo cancelTrainAdminInfo){
+
+    private String CancelTrains(CancelTrainAdminInfo cancelTrainAdminInfo) {
         LocalDate start = cancelTrainAdminInfo.getFrom().toLocalDate();
         LocalDate end = cancelTrainAdminInfo.getTo().toLocalDate();
         int index;
-        String PNR,query2,query4,query5,query6,query7;
-        Conn c1,c3,c4,c5,c6;
-        ResultSet rs1,rs3,rs4,rs5,rs6;
-        while(start.compareTo(end) <= 0){
+        String PNR, query2, query4, query5, query6, query7;
+        Conn c1, c3, c4, c5, c6;
+        ResultSet rs1, rs3, rs4, rs5, rs6;
+        while (start.compareTo(end) <= 0) {
             BookingHistory bookingHistory;
-            query2 = "SELECT * FROM month WHERE date = '" + start + "' AND train = '" + cancelTrainAdminInfo.getTrainNo()+"'";
-            try{
-            c1 = new Conn();
-            rs1 = c1.s.executeQuery(query2);
-            rs1.next();
+            query2 = "SELECT * FROM month WHERE date = '" + start + "' AND train = '"
+                    + cancelTrainAdminInfo.getTrainNo() + "'";
+            try {
+                c1 = new Conn();
+                rs1 = c1.s.executeQuery(query2);
+                rs1.next();
                 index = rs1.getInt("index_no");
                 while (true) {
                     query4 = "SELECT * FROM tickets WHERE index_no = '" + index + "'";
                     c3 = new Conn();
                     rs3 = c3.s.executeQuery(query4);
-                    query7 = "SELECT * FROM trains_basic_details WHERE train_no = '" + cancelTrainAdminInfo.getTrainNo() + "'";
+                    query7 = "SELECT * FROM trains_basic_details WHERE train_no = '" + cancelTrainAdminInfo.getTrainNo()
+                            + "'";
                     c6 = new Conn();
                     rs6 = c6.s.executeQuery(query7);
                     rs6.next();
@@ -613,7 +616,7 @@ public class HandleClient implements Runnable {
                         rs4.next();
                         bookingHistory = new BookingHistory();
                         bookingHistory.setPNR(PNR);
-                        bookingHistory.setTrain(cancelTrainAdminInfo.getTrainNo() + " "+rs6.getString("train_name"));
+                        bookingHistory.setTrain(cancelTrainAdminInfo.getTrainNo() + " " + rs6.getString("train_name"));
                         PassengerHistory[] passengerHistory = new PassengerHistory[rs4.getInt("tickets")];
                         bookingHistory.setUserid(rs4.getInt("user_id"));
                         bookingHistory.setDate(rs4.getDate("date"));
@@ -634,12 +637,12 @@ public class HandleClient implements Runnable {
                         while (rs5.next()) {
                             if (rs5.getInt("type") == 1)
                                 passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
-                                        "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
-                                        rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                        "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"), rs5.getInt("age"),
+                                        rs5.getString("gender").charAt(0));
                             if (rs5.getInt("type") == 2)
                                 passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
-                                        "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
-                                        rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                        "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"), rs5.getInt("age"),
+                                        rs5.getString("gender").charAt(0));
 
                             k++;
                         }
@@ -652,7 +655,8 @@ public class HandleClient implements Runnable {
                         c5.s.executeUpdate(query6);
                         for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
                             query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`cancelled`) VALUES ('"
-                                    + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','" + bookingHistory.getTrain() + "' ,'"
+                                    + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','"
+                                    + bookingHistory.getTrain() + "' ,'"
                                     + bookingHistory.getPassengerHistory()[j].getName() + "', '"
                                     + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
                                     + bookingHistory.getPassengerHistory()[j].getGender() + "', '"
@@ -666,9 +670,9 @@ public class HandleClient implements Runnable {
                         break;
                 }
                 query6 = "DELETE FROM `month` WHERE index_no = '" + index + "'";
-                    c3 = new Conn();
-                    c3.s.executeUpdate(query6);
-            }catch(Exception e){
+                c3 = new Conn();
+                c3.s.executeUpdate(query6);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             start = start.plusDays(1);
@@ -764,6 +768,19 @@ public class HandleClient implements Runnable {
         return pnrDetails;
     }
 
+    public String BookMeal(BookAMealInfo bookMeal) {
+        String s = " ";
+        String query = "UPDATE `tickets` SET `meal`='1' WHERE PNR='" + bookMeal.getPnr() + "' AND name='"
+                + bookMeal.getName() + "' AND age=" + bookMeal.getAge() + "";
+        try {
+            c1.s.executeUpdate(query);
+            return "ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -856,8 +873,14 @@ public class HandleClient implements Runnable {
                         os.writeObject(train12);
                         os.flush();
                         break;
+                    case 13:
+                        BookAMealInfo bookMeal = (BookAMealInfo) oi.readObject();
+                        String reply13 = BookMeal(bookMeal);
+                        os.writeUTF(reply13);
+                        os.flush();
+                        break;
                     case 14:
-                        CancelTrainAdminInfo cancelTrainAdminInfo = (CancelTrainAdminInfo)oi.readObject();
+                        CancelTrainAdminInfo cancelTrainAdminInfo = (CancelTrainAdminInfo) oi.readObject();
                         String res = CancelTrains(cancelTrainAdminInfo);
                         os.writeUTF(res);
                         os.flush();
@@ -878,7 +901,8 @@ public class HandleClient implements Runnable {
                         String pnr19 = (String) oi.readUTF();
                         String train19 = GetTrainPassenger(pnr19);
                         os.writeUTF(train19);
-                        if (train19 != " ") {
+                        Integer result19 = train19.compareTo(" ");
+                        if (result19 != -1) {
                             PnrEnquiryFinalInfo pnrDetails = GetPassengerDetails(pnr19, train19);
                             os.writeObject(pnrDetails);
                         }
