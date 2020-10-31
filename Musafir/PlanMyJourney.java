@@ -40,6 +40,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private int[] srcint, destint;
     private String[] trainNo;
     private java.util.Date dt = new java.util.Date();
+    
 
     PlanMyJourney(Connect connection, String name, String[][] cities, int userid) {
         this.name = name;
@@ -252,7 +253,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             departure[i].setBounds(x, y, 150, 30);
             availability.add(departure[i]);
 
-            str = String.valueOf(availabilityInfo.get(i).getDate());
+            str = String.valueOf(availabilityInfo.get(i).getDate().plusDays(availabilityInfo.get(i).getDay1()-1));
             day1[i] = new JLabel(str);
             day1[i].setFont(new Font("Times new roman", Font.BOLD, 12));
             day1[i].setBounds(x - 20, y - 20, 150, 30);
@@ -271,7 +272,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             arrival[i].setBounds(x, y, 150, 30);
             availability.add(arrival[i]);
 
-            str = String.valueOf((availabilityInfo.get(i).getDate()).plusDays(diff));
+            str = String.valueOf((availabilityInfo.get(i).getDate()).plusDays(availabilityInfo.get(i).getDay2()-1));
             day2[i] = new JLabel(str);
             day2[i].setFont(new Font("Times new roman", Font.BOLD, 12));
             day2[i].setBounds(x - 20, y - 20, 150, 30);
@@ -356,10 +357,12 @@ public class PlanMyJourney extends JFrame implements ActionListener {
      * public static void main(String[] args) { String[][] s=
      * {{"as","cs"},{"dfs","dsfs"}}; new PlanMyJourney("asa",s,"adas"); }
      */
+    Vector<AvailabilityInfo> availabilityInfo = null;
     public void actionPerformed(ActionEvent ae) {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
+        
+        
         try {
 
             if (ae.getSource() == back) {
@@ -381,8 +384,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 os.writeObject(scheduleEnq);
                 os.flush();
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                @SuppressWarnings(value = "unchecked")
-                Vector<AvailabilityInfo> availabilityInfo = (Vector<AvailabilityInfo>) oi.readObject();
+                
+                availabilityInfo = (Vector<AvailabilityInfo>) oi.readObject();
                 showTrains(availabilityInfo);
                 availability.revalidate();
                 availability.repaint();
@@ -395,16 +398,16 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                             (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
                             day1[i].getText() + " " + departure[i].getText(),
                             day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                            (Date.valueOf(df.format(dt))).toLocalDate(), fare[i], Integer.parseInt(sl[i].getText()),
-                            userid).setVisible(true);
+                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(sl[i].getText()),
+                            userid,availabilityInfo.get(i).getDay1()).setVisible(true);
 
                 } else if (ae.getSource() == ac[i]) {
                     new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
                             (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
                             day1[i].getText() + " " + departure[i].getText(),
                             day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                            (Date.valueOf(df.format(dt))).toLocalDate(), fare[i], Integer.parseInt(ac[i].getText()),
-                            userid).setVisible(true);
+                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(ac[i].getText()),
+                            userid,availabilityInfo.get(i).getDay1()).setVisible(true);
                 } else if (ae.getSource() == getFare[i]) {
                     new GetFareClient(connection, name, fare[i], userid, trainNo[i]).setVisible(true);
                 }

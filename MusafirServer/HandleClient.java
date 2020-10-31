@@ -174,26 +174,20 @@ public class HandleClient implements Runnable {
         Vector<AvailabilityInfo> availabilityInfo = new Vector<AvailabilityInfo>();
         AvailabilityInfo temp;
         String train;
-        String query = "SELECT * FROM `month` WHERE `date` = '" + scheduleEnq.getDate() + "'", query2, query3;
+        String query = "SELECT * FROM `trains_basic_details`", query2, query3,query4;
         String st1, st2;
         String source = scheduleEnq.getSource();
         String dest = scheduleEnq.getDest();
         String trainName;
         Timestamp dep;
         int day1, fare1, station_no, availsl, availac;
-        System.out.println("in the function");
         try {
-            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4;
+            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4,rs5;
             while (rs1.next()) {
-                train = (String) rs1.getString("train");
-                query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = " + train + " ORDER BY `station_no` ASC";
-                query3 = "SELECT * FROM `trains_basic_details` WHERE `train_no` = " + train + "";
-
-                Conn c3 = new Conn();
-                rs4 = c3.s.executeQuery(query3);
-                rs4.next();
-                trainName = rs4.getString("train_name");
-                Conn c2 = new Conn();
+                train = (String) rs1.getString("train_no");
+                query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + train + "' ORDER BY `station_no` ASC";
+                trainName = rs1.getString("train_name");
+                Conn c2 = new Conn(),c3,c5;
                 rs2 = c2.s.executeQuery(query2);
 
                 while (rs2.next()) {
@@ -210,15 +204,44 @@ public class HandleClient implements Runnable {
                             System.out.println("rs3");
                             st2 = (String) rs3.getString("station");
                             if (dest.equals(st2)) {
-                                availsl = rs1.getInt("Avail_S");
-                                availac = rs1.getInt("Avail_AC");
+                                query3 = "SELECT * FROM month  where date = '"+scheduleEnq.getDate().toLocalDate().minusDays(day1-1)+"'AND train = '" + train + "'";
+                                c3 = new Conn();
+                                rs4=c3.s.executeQuery(query3);
+                                while(rs4.next()){
+                                availsl = rs4.getInt("Avail_S");
+                                availac = rs4.getInt("Avail_AC");
+                                query4 ="SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no") + "'AND type = 1";
+                                c5 = new Conn();
+                                rs5 = c5.s.executeQuery(query4);
+                                while(rs5.next()){
+                                    if(!(((rs5.getInt("dest") > station_no)
+                                    && (rs5.getInt("src") < station_no))
+                                    || ((rs5.getInt("src") < rs3.getInt("station_no"))
+                                            && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
+                                    || (rs5.getInt("dest") == rs3.getInt("station_no"))
+                                    || (rs5.getInt("src") == station_no)))
+                                    availsl++;
+                                }
+                                query4 ="SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no") + "'AND type = 2";
+                                c5 = new Conn();
+                                rs5 = c5.s.executeQuery(query4);
+                                while(rs5.next()){
+                                    if(!(((rs5.getInt("dest") > station_no)
+                                    && (rs5.getInt("src") < station_no))
+                                    || ((rs5.getInt("src") < rs3.getInt("station_no"))
+                                            && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
+                                    || (rs5.getInt("dest") == rs3.getInt("station_no"))
+                                    || (rs5.getInt("src") == station_no)))
+                                    availac++;
+                                }
                                 temp = new AvailabilityInfo(true, train, trainName, availsl, availac,
-                                        rs3.getTimestamp("arrival"), dep, (Date) scheduleEnq.getDate(), day1,
+                                        rs3.getTimestamp("arrival"), dep, scheduleEnq.getDate().toLocalDate().minusDays(day1-1), day1,
                                         rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
                                         rs3.getInt("station_no"));
 
                                 availabilityInfo.add(temp);
                                 System.out.println("added");
+                                }
                                 break;
                             }
                         }

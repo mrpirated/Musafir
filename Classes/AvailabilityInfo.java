@@ -11,10 +11,10 @@ public class AvailabilityInfo implements Serializable {
     private float fare;
     private Timestamp arrival, departure;
     private String trainName, train;
-    private Date date;
+    private LocalDate date;
 
     public AvailabilityInfo(boolean available, String train, String trainName, int sl, int ac, Timestamp arrival,
-            Timestamp departure, Date date, int day1, int day2, float fare,int srcint,int destint) {
+            Timestamp departure, LocalDate date, int day1, int day2, float fare,int srcint,int destint) {
         this.ac = ac;
         this.available = available;
         this.train = train;
@@ -60,7 +60,7 @@ public class AvailabilityInfo implements Serializable {
     }
 
     public LocalDate getDate() {
-        return date.toLocalDate();
+        return date;
     }
 
     public int getDay1() {

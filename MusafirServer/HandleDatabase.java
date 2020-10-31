@@ -136,9 +136,9 @@ public class HandleDatabase {
                             trainno = rs.getString("train_no");
                             int sl = rs.getInt("ts_slr");
                             int ac = rs.getInt("ts_ac");
-                            query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
-                                    + start + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '"
-                                    + ac + "')";
+                            query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`,`Tatkal_S`,`Tatkal_AC`) VALUES ('"
+                                    + start + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + (sl*2/3) + "', '"
+                                    + (ac*2/3) + "','" + (sl/3) + "','" + (sl/3) + "')";
                             c2 = new Conn();
                             c2.s.executeUpdate(query2);
                             System.out.println(start + " inserted");
@@ -278,9 +278,9 @@ public class HandleDatabase {
                     String trainno = rs.getString("train_no");
                     int sl = rs.getInt("ts_slr");
                     int ac = rs.getInt("ts_ac");
-                    query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`) VALUES ('"
-                            + starttrain + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + sl + "', '" + ac
-                            + "')";
+                    query2 = "INSERT INTO `month` ( `date`, `train`, `reroute`, `Total_S`, `Total_AC`, `Avail_S`, `Avail_AC`,`Tatkal_S`,`Tatkal_AC`) VALUES ('"
+                    + date + "','" + trainno + "' , '0', '" + sl + "', '" + ac + "', '" + (sl*2/3) + "', '"
+                    + (ac*2/3) + "','" + (sl/3) + "','" + (sl/3) + "')";
                     Conn c2 = new Conn();
                     c2.s.executeUpdate(query2);
                     System.out.println(starttrain + " inserted");
