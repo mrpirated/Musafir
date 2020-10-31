@@ -7,46 +7,46 @@ import java.util.*;
 import java.io.*;
 import Classes.*;
 
-public class SignUp extends JFrame implements ActionListener{
+public class SignUp extends JFrame implements ActionListener {
 
-    public static String monthtonum(String month){
-        if(month.equals("January"))
-        return "01";
-        if(month.equals("February"))
-        return "02";
-        if(month.equals("March"))
-        return "03";
-        if(month.equals("April"))
-        return "04";
-        if(month.equals("May"))
-        return "05";
-        if(month.equals("June"))
-        return "06";
-        if(month.equals("July"))
-        return "07";
-        if(month.equals("August"))
-        return "08";
-        if(month.equals("September"))
-        return "09";
-        if(month.equals("October"))
-        return "10";
-        if(month.equals("November"))
-        return "11";
-        if(month.equals("December"))
-        return "12";
+    public static String monthtonum(String month) {
+        if (month.equals("January"))
+            return "01";
+        if (month.equals("February"))
+            return "02";
+        if (month.equals("March"))
+            return "03";
+        if (month.equals("April"))
+            return "04";
+        if (month.equals("May"))
+            return "05";
+        if (month.equals("June"))
+            return "06";
+        if (month.equals("July"))
+            return "07";
+        if (month.equals("August"))
+            return "08";
+        if (month.equals("September"))
+            return "09";
+        if (month.equals("October"))
+            return "10";
+        if (month.equals("November"))
+            return "11";
+        if (month.equals("December"))
+            return "12";
 
         return "0";
 
-        
     }
 
     private JLabel head, name, date, phone, dob, month, year, gender, email, pass, cnfpass, cnfpass2;
     private JTextField namet, emailt, phonet;
-    private JPasswordField passt,cnfpasst;
+    private JPasswordField passt, cnfpasst;
     private JRadioButton m, o, fl;
     private JComboBox dd, mm, yy;
-    private JButton done,back;
+    private JButton done, back;
     private Connect connection;
+
     SignUp(Connect connection) {
         this.connection = connection;
         setFont(new Font("System", Font.BOLD, 22));
@@ -203,7 +203,7 @@ public class SignUp extends JFrame implements ActionListener{
         done.setBounds(500, 600, 100, 32);
         add(done);
 
-        back =new JButton("Back");
+        back = new JButton("Back");
         back.setFont(new Font("Times new Roman", Font.BOLD, 20));
         back.setBackground(Color.BLACK);
         back.setForeground(Color.WHITE);
@@ -219,65 +219,60 @@ public class SignUp extends JFrame implements ActionListener{
         setVisible(true);
 
     }
-    public void actionPerformed(ActionEvent ae){
-        try{
-            if(ae.getSource()==done)
-            {
-                
-                String name =namet.getText();
-                String email=emailt.getText();
+
+    public void actionPerformed(ActionEvent ae) {
+        try {
+            if (ae.getSource() == done) {
+
+                String name = namet.getText();
+                String email = emailt.getText();
                 char[] password = passt.getPassword();
-                char[] cnfpass =cnfpasst.getPassword();
-                String p=new String(password);
-                String cp =new String(cnfpass);
-                if(!p.equals(cp))
-                {
+                char[] cnfpass = cnfpasst.getPassword();
+                String p = new String(password);
+                String cp = new String(cnfpass);
+                if (!p.equals(cp)) {
                     JOptionPane.showMessageDialog(null, "Passwords don't match");
-                }else{
-                String phone =phonet.getText();
-                String date = (String)dd.getSelectedItem();
-                String month =(String)mm.getSelectedItem();
-                month=monthtonum(month);
-                String year =(String)yy.getSelectedItem(); 
-                
-                char gender;
-                if(m.isSelected())
-                gender='M';
-                else if(fl.isSelected())
-                gender ='F';
-                else 
-                gender='O';
-                if(name==""||email==""||phone==""||(!m.isSelected()&&!fl.isSelected()&&!o.isSelected()))
-                {
-                    JOptionPane.showMessageDialog(null, "Fill all fields");
-                }
-                UserInfo user=new UserInfo(name,email,phone,gender,password,date,month,year);
-                ObjectOutputStream os =new ObjectOutputStream(connection.socket.getOutputStream());
-                os.writeInt(2);
-                os.writeObject(user);
-                os.flush();
-                ObjectInputStream oi =new ObjectInputStream(connection.socket.getInputStream());
-                Boolean b=(Boolean)oi.readBoolean();
-                if(b){
-                new Login(connection).setVisible(true);
-                setVisible(false);
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Account not created");
-                }
+                } else {
+                    String phone = phonet.getText();
+                    String date = (String) dd.getSelectedItem();
+                    String month = (String) mm.getSelectedItem();
+                    month = monthtonum(month);
+                    String year = (String) yy.getSelectedItem();
+
+                    char gender;
+                    if (m.isSelected())
+                        gender = 'M';
+                    else if (fl.isSelected())
+                        gender = 'F';
+                    else
+                        gender = 'O';
+                    if (name == "" || email == "" || phone == ""
+                            || (!m.isSelected() && !fl.isSelected() && !o.isSelected())) {
+                        JOptionPane.showMessageDialog(null, "Fill all fields");
+                    }
+                    UserInfo user = new UserInfo(name, email, phone, gender, password, date, month, year);
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(2);
+                    os.writeObject(user);
+                    os.flush();
+                    ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                    Boolean b = (Boolean) oi.readBoolean();
+                    if (b) {
+                        new Login(connection).setVisible(true);
+                        setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Account not created");
+                    }
                 }
 
             }
-            if(ae.getSource()==back)
-            {
+            if (ae.getSource() == back) {
                 setVisible(false);
                 new Login(connection).setVisible(true);
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    
 }

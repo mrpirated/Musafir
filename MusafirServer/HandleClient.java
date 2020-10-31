@@ -58,6 +58,35 @@ public class HandleClient implements Runnable {
         return true;
     }
 
+    private Boolean SignupEncrypted(UserInfo userInfo) {
+
+        char[] myPassword = userInfo.getPassword();
+
+        // Generate Salt. The generated value can be stored in DB.
+        String salt = PasswordUtils.getSalt(30);
+
+        // Protect user's password. The generated value can be stored in DB.
+        String mySecurePassword = PasswordUtils.generateSecurePassword(myPassword, salt);
+        System.out.println(salt);
+        System.out.println(mySecurePassword);
+        System.out.println(userInfo.getGender());
+        System.out.println(userInfo.getEmail());
+        System.out.println(userInfo.getPhone());
+
+        String d = userInfo.getMm() + "-" + userInfo.getDd() + "-" + userInfo.getYy();
+        String query = "INSERT INTO `user_info` ( `name`, `dob`, `gender`, `email`, `phone`, `secure_password`, 'salt') VALUES ( '"
+                + userInfo.getName() + "', STR_TO_DATE('" + d + "','%m-%d-%Y'), '" + userInfo.getGender() + "', '"
+                + userInfo.getEmail() + "', '" + userInfo.getPhone() + "', '" + mySecurePassword + "', '" + salt + "')";
+        try {
+            c1.s.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return true;
+    }
+
     private String[][] GetCities() {
         String[][] cities = new String[2][];
         String query = "SELECT COUNT(*) FROM Cities";
@@ -513,7 +542,7 @@ public class HandleClient implements Runnable {
 
                     case 2:
                         UserInfo userInfo = (UserInfo) oi.readObject();
-                        Boolean b = Signup(userInfo);
+                        Boolean b = SignupEncrypted(userInfo);
                         os.writeBoolean(b);
                         os.flush();
                         break;

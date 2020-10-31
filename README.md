@@ -4,7 +4,7 @@
   - [Built With](#built-with)
 - [Features](#features)
   - [Admin Side Features](#admin-side-features)
-  - [Client Side Features](#client-side-features)
+  - [Passenger Side Features](#passenger-side-features)
   - [Advanced Features](#advanced-features)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
@@ -18,7 +18,7 @@
 
 ## About The Project
 
-The project is done for an event named 'Softablitz' under the technical festival 'Avishkar 2020' of Motilal Nehru National Institute of Technology, Allahabad. The project MUSAFIR is an app that provides a medium for both railway authority and passengers. Through this app, the Railway Authority can easily manage all the trains and various other facilities. They can keep an eye on multiple activities such as running trains on a particular day, canceling trains, removing them, rerouteing them, etc. It also eases passengers' lives for booking tickets, sees trains according to their requirements, manages their booking history, checks PNR status, etc.
+The project is done for an event named 'Softablitz' under the technical festival 'Avishkar 2020' of Motilal Nehru National Institute of Technology, Allahabad. The project MUSAFIR is an app that provides a medium for both railway authority and passengers. Through this app, the Railway Authority can easily manage all the trains and various other facilities. They can keep an eye on multiple activities such as running trains on a particular day, canceling trains, removing them, rerouting them, etc. It also eases passengers' lives for booking tickets, sees trains according to their requirements, manages their booking history, checks PNR status, etc.
 
 ### Built With
 
@@ -43,7 +43,7 @@ The project is wholly based on JAVA with an MYSQL database. The concepts of JAVA
 - Cancel trains.
 - Cancel and reroute trains for a certain duration.
 
-### Client Side Features
+### Passenger Side Features
 
 - Able to sign up, login and logout.
 - Can see trains between source and destination.
