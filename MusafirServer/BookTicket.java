@@ -21,7 +21,8 @@ public class BookTicket {
         bookedTicket.setPNR(PNR);
         seatinfo = new int[noofpassengers][3];
         c = new Conn();
-        query = "INSERT INTO `passenger` (`PNR`, `user_id`, `date`, `tickets`) VALUES ('" + PNR + "', '"
+        query = "INSERT INTO `passenger` (`PNR`,`train`, `user_id`, `date`, `tickets`) VALUES ('" + PNR + "','"
+                + passengersDetailForm.getTrainNo() + " " + passengersDetailForm.getTrainName() + "', '"
                 + passengersDetailForm.getUserid() + "', '" + passengersDetailForm.getDate() + "', '"
                 + passengersDetailForm.getNoOfPassenger() + "')";
         try {

@@ -243,7 +243,7 @@ public class HandleClient implements Runnable {
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
-            new HandleDatabase().NewTrain(trainInfo.getTrainNo());
+            //new HandleDatabase().NewTrain(trainInfo.getTrainNo());
             return " ";
         }
 

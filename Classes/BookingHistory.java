@@ -7,10 +7,13 @@ import java.util.Set;
 
 public class BookingHistory implements Serializable{
     private int userid;
-    private String PNR,src,dest;
+    private String PNR,src,dest,train;
     private PassengerHistory[] passengerHistory;
     private Date date;
     
+    public void setTrain(String train) {
+        this.train = train;
+    }
     public void setDate(Date date) {
         this.date = date;
     }
@@ -29,6 +32,9 @@ public class BookingHistory implements Serializable{
     }
     public void setPassengerHistory(PassengerHistory[] passengerHistory) {
         this.passengerHistory = passengerHistory;
+    }
+    public String getTrain() {
+        return train;
     }
     public Date getDate() {
         return date;
