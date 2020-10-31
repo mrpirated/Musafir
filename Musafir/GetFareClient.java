@@ -21,13 +21,18 @@ public class GetFareClient extends JFrame implements ActionListener {
     private JComboBox classType;
     private JLabel[] category;
     private JTextField[] noOfPeople;
+    private boolean dynamic;
+    private int daysDifference;
 
-    public GetFareClient(Connect connection, String name, float fare, int userid, String trainNo) {
+    public GetFareClient(Connect connection, String name, float fare, int userid, String trainNo, boolean dynamic,
+            int daysDifference) {
         this.name = name;
         this.userid = userid;
         this.connection = connection;
         this.fare = fare;
         this.trainNo = trainNo;
+        this.dynamic = dynamic;
+        this.daysDifference = daysDifference;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -174,6 +179,9 @@ public class GetFareClient extends JFrame implements ActionListener {
                 String selectedClass = (String) classType.getSelectedItem();
                 if (selectedClass == "AC") {
                     totalfare *= 3;
+                }
+                if (dynamic) {
+                    totalfare *= (2 - 0.1 * daysDifference);
                 }
                 Fare.setText(String.valueOf(totalfare));
             }

@@ -13,12 +13,12 @@ import java.time.LocalDate;
 
 public class PassengerTicketDetails extends JFrame implements ActionListener {
     private JLabel headLabel, pnrLabel, l1, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18,
-            l19, l20, l21,l22;
+            l19, l20, l21, l22;
     private JPanel p1, p2, panel;
-    private JButton back, submit, form,getfare;
+    private JButton back, submit, form, getfare;
     private JTextField pnrText;
     private String Username, trainname, name, src, dest, datetime1, datetime2, trainNo, duration;
-    private int noOfPassenger = 1,type,avail,srcint,destint, userid,day;
+    private int noOfPassenger = 1, type, avail, srcint, destint, userid, day;
     private float fare;
     private JComboBox noOfPassengers;
     private JTextField[] nameOfPassenger, age;
@@ -26,9 +26,12 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private JLabel[] number;
     private Connect connection;
     private LocalDate date;
+    private boolean dynamic;
+    private int daysDifference;
 
-    public PassengerTicketDetails( Connect connection,  String name, String trainNo, String trainname,int type, String src,int srcint,
-            String dest,int destint, String datetime1, String datetime2, String duration, LocalDate date,float fare,int avail, int userid,int day) {
+    public PassengerTicketDetails(Connect connection, String name, String trainNo, String trainname, int type,
+            String src, int srcint, String dest, int destint, String datetime1, String datetime2, String duration,
+            LocalDate date, float fare, int avail, int userid, int day, boolean dynamic, int daysDifference) {
         this.name = name;
         this.trainNo = trainNo;
         this.trainname = trainname;
@@ -44,8 +47,11 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         this.srcint = srcint;
         this.destint = destint;
         this.day = day;
-        this.userid=userid;
+        this.userid = userid;
         this.connection = connection;
+        this.dynamic = dynamic;
+        this.daysDifference = daysDifference;
+
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -69,13 +75,11 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         panel.setBackground(Color.WHITE);
         add(panel);
 
-        
         p2 = new JPanel();
         p2.setLayout(null);
         p2.setBackground(Color.WHITE);
         p2.setBounds(380, 600, 100, 30);
         add(p2);
-
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/backArrow.png"));
         Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
@@ -231,7 +235,6 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         getfare.setBounds(320, 650, 100, 30);
         add(getfare);
 
-
         form = new JButton("Get Form");
         form.setBackground(Color.BLACK);
         form.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 20));
@@ -255,12 +258,13 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    /*public static void main(String[] args) {
-
-        LocalDate d = LocalDate.now();
-        new PassengerTicketDetails("Deepesh", "00000", "Rajdhani", "Mumbai", "Delhi", "27-10-2020 8:30",
-                "28-10-2020 9:45", "8 hrs 32 min", d,1150);
-    }*/
+    /*
+     * public static void main(String[] args) {
+     * 
+     * LocalDate d = LocalDate.now(); new PassengerTicketDetails("Deepesh", "00000",
+     * "Rajdhani", "Mumbai", "Delhi", "27-10-2020 8:30", "28-10-2020 9:45",
+     * "8 hrs 32 min", d,1150); }
+     */
 
     public void formelements() {
         nameOfPassenger = new JTextField[noOfPassenger];
@@ -313,15 +317,11 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         }
 
     }
-    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
 
-            
-             
-            
             if (ae.getSource() == form) {
                 panel.removeAll();
                 noOfPassenger = Integer.parseInt((String) noOfPassengers.getSelectedItem());
@@ -330,48 +330,49 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 panel.repaint();
 
             }
-            if(ae.getSource()== getfare){
+            if (ae.getSource() == getfare) {
                 p2.removeAll();
                 float totalfare = 0;
                 for (int i = 0; i < noOfPassenger; i++) {
                     String passengerNameSend = nameOfPassenger[i].getText();
                     String agex = age[i].getText();
                     String genderx = (String) gender[i].getSelectedItem();
-                    int agenum= 0;
-                    if(agex.equals("")||passengerNameSend.equals("")){
+                    int agenum = 0;
+                    if (agex.equals("") || passengerNameSend.equals("")) {
                         JOptionPane.showMessageDialog(null, "Fill All Details");
                         submit.setEnabled(false);
                     }
-                    
-                    try{
+
+                    try {
                         agenum = Integer.parseInt(agex);
                         submit.setEnabled(true);
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         submit.setEnabled(false);
                         JOptionPane.showMessageDialog(null, "Enter valid age");
-                        
+
                     }
-                    
-                    if(agenum <= 12){
-                        totalfare += (float)fare/2;
-                    }else if(agenum > 60&&genderx.equals("Male")){
-                        totalfare += (float)fare*0.6;
-                    }else if(agenum > 58&&genderx.equals("Female")){
-                        totalfare += (float)fare/2;
+
+                    if (agenum <= 12) {
+                        totalfare += (float) fare / 2;
+                    } else if (agenum > 60 && genderx.equals("Male")) {
+                        totalfare += (float) fare * 0.6;
+                    } else if (agenum > 58 && genderx.equals("Female")) {
+                        totalfare += (float) fare / 2;
+                    } else
+                        totalfare += (float) fare;
+                    if (dynamic) {
+                        totalfare *= (2 - 0.1 * daysDifference);
                     }
-                    else totalfare += (float)fare;
-                    
-                    
                 }
                 JLabel fare = new JLabel(String.valueOf(totalfare));
-                fare.setBounds(0,0,100,30);
+                fare.setBounds(0, 0, 100, 30);
                 fare.setFont(new Font("Times new roman", Font.BOLD, 20));
                 p2.add(fare);
                 p2.revalidate();
                 p2.repaint();
             }
             if (ae.getSource() == submit) {
-                
+
                 PassengerInfo[] passengerInfo = new PassengerInfo[noOfPassenger];
 
                 for (int i = 0; i < noOfPassenger; i++) {
@@ -383,8 +384,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     String berthPrefSend = (String) preference[i].getSelectedItem();
                     passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend);
                 }
-                PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo,trainname, srcint,
-                        destint, date, noOfPassenger,passengerInfo,type, userid,day);
+                PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo, trainname, srcint,
+                        destint, date, noOfPassenger, passengerInfo, type, userid, day);
 
                 try {
 
@@ -396,10 +397,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     e.printStackTrace();
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                BookedTicket bookedTicket= (BookedTicket) oi.readObject();
-                
-                
-                
+                BookedTicket bookedTicket = (BookedTicket) oi.readObject();
+
             }
 
         } catch (Exception e) {

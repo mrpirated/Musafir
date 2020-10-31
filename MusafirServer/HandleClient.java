@@ -180,11 +180,13 @@ public class HandleClient implements Runnable {
         String dest = scheduleEnq.getDest();
         String trainName;
         Timestamp dep;
+        boolean dynamic;
         int day1, fare1, station_no, availsl, availac;
         try {
             ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4, rs5;
             while (rs1.next()) {
                 train = (String) rs1.getString("train_no");
+                dynamic = rs1.getBoolean("dynamic");
                 query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + train + "' ORDER BY `station_no` ASC";
                 trainName = rs1.getString("train_name");
                 Conn c2 = new Conn(), c3, c5;
@@ -240,7 +242,7 @@ public class HandleClient implements Runnable {
                                             rs3.getTimestamp("arrival"), dep,
                                             scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1), day1,
                                             rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
-                                            rs3.getInt("station_no"));
+                                            rs3.getInt("station_no"), dynamic);
 
                                     availabilityInfo.add(temp);
                                     System.out.println("added");
