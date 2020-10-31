@@ -15,9 +15,9 @@ public class HomePage extends JFrame implements ActionListener {
 
     private String name;
     private int userid;
-    private JLabel home, plan, booking, pnr, cancel, refund, traincancel, reroute, meal, query, train;
+    private JLabel home, plan, booking, pnr, cancel, refund, traincancel, reroute, meal, query, train, tatkal;
     private JButton planbt, bookingbt, pnrbt, cancelbt, refundbt, traincancelbt, reroutebt, mealbt, querybt, logout,
-            trainbt;
+            trainbt, tatkalbt;
     private JPanel p2;
     private ImageIcon i1, i3;
     private Image i2;
@@ -194,6 +194,19 @@ public class HomePage extends JFrame implements ActionListener {
         train.setBounds(75, 705, 200, 24);
         p2.add(train);
 
+        i1 = new ImageIcon(ClassLoader.getSystemResource("Musafir/icons/tatkal.png"));
+        i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        i3 = new ImageIcon(i2);
+        tatkalbt = new JButton(i3);
+        tatkalbt.setBounds(315, 600, 100, 100);
+        p2.add(tatkalbt);
+
+        tatkal = new JLabel("Tatkal Booking");
+        tatkal.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
+        tatkal.setForeground(Color.BLACK);
+        tatkal.setBounds(305, 705, 200, 24);
+        p2.add(tatkal);
+
         planbt.addActionListener(this);
         bookingbt.addActionListener(this);
         pnrbt.addActionListener(this);
@@ -205,6 +218,7 @@ public class HomePage extends JFrame implements ActionListener {
         querybt.addActionListener(this);
         logout.addActionListener(this);
         trainbt.addActionListener(this);
+        tatkalbt.addActionListener(this);
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
@@ -285,6 +299,19 @@ public class HomePage extends JFrame implements ActionListener {
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 Vector<Vector<String>> reply = (Vector<Vector<String>>) oi.readObject();
                 new BotClient(connection, name, userid, reply.get(0), reply.get(1)).setVisible(true);
+                setVisible(false);
+            } else if (ae.getSource() == tatkalbt) {
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(3);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                String[][] cities = (String[][]) oi.readObject();
+                new TatkalClient(connection, name, cities, userid).setVisible(true);
                 setVisible(false);
             }
 
