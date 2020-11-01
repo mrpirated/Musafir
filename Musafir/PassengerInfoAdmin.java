@@ -347,6 +347,14 @@ public class PassengerInfoAdmin extends JFrame implements ActionListener {
         y1 = y1 + 80;
     }
 
+    public void errorDisplay() {
+        JLabel trainNoLabel = new JLabel("No Tickets Booked Yet.");
+        trainNoLabel.setFont(new Font("Times new roman", Font.BOLD, 25));
+        trainNoLabel.setBounds(150, 200, 500, 30);
+        p2.add(trainNoLabel);
+        return;
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
@@ -384,6 +392,9 @@ public class PassengerInfoAdmin extends JFrame implements ActionListener {
                 System.out.println(noOfTickets);
                 for (int i = 0; i < noOfTickets; i++) {
                     showPnrDetails(bookingHistory.get(i));
+                }
+                if (noOfTickets == 0) {
+                    errorDisplay();
                 }
 
                 p2.revalidate();

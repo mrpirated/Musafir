@@ -28,6 +28,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private LocalDate date;
     private boolean dynamic;
     private int daysDifference;
+    private float totalfare = 0;
 
     public PassengerTicketDetails(Connect connection, String name, String trainNo, String trainname, int type,
             String src, int srcint, String dest, int destint, String datetime1, String datetime2, String duration,
@@ -332,7 +333,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
             }
             if (ae.getSource() == getfare) {
                 p2.removeAll();
-                float totalfare = 0;
+                // float totalfare = 0;
                 for (int i = 0; i < noOfPassenger; i++) {
                     String passengerNameSend = nameOfPassenger[i].getText();
                     String agex = age[i].getText();
@@ -385,7 +386,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend);
                 }
                 PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo, trainname, srcint,
-                        destint, date, noOfPassenger, passengerInfo, type, userid, day);
+                        destint, date, noOfPassenger, passengerInfo, type, userid, day, totalfare);
 
                 try {
 
@@ -398,7 +399,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 BookedTicket bookedTicket = (BookedTicket) oi.readObject();
-                new DisplayTicket(bookedTicket,passengerDetailForm).setVisible(true);
+                new DisplayTicket(bookedTicket, passengerDetailForm).setVisible(true);
                 setVisible(false);
 
             }

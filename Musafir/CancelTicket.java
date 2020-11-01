@@ -319,9 +319,8 @@ public class CancelTicket extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String train = (String) oi.readUTF();
-                System.out.println(train);
-                if (train != " ") {
-                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                if (!passengerDetails.getTrainNo().isEmpty()) {
                     showPnrDetails(passengerDetails);
                 } else {
                     errorDisplay();
