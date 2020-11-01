@@ -246,7 +246,16 @@ public class AdminHome extends JFrame implements ActionListener {
                 new RemoveTrainAdmin(connection, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == passengerbt) {
-                new PassengerInfoAdmin(connection).setVisible(true);
+                try {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(12);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                Vector<String> trainList = (Vector<String>) oi.readObject();
+                new PassengerInfoAdmin(connection, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == reroutebt) {
                 try {
@@ -289,7 +298,7 @@ public class AdminHome extends JFrame implements ActionListener {
                 new TrainInfoAdmin(connection, trainList).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == addCitybt) {
-                 new AddCityAdmin(connection).setVisible(true);
+                new AddCityAdmin(connection).setVisible(true);
                 setVisible(false);
             } else if (ae.getSource() == alltrainbt) {
                 new AllTrainsAdmin(connection).setVisible(true);
