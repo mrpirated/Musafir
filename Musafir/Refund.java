@@ -168,15 +168,15 @@ public class Refund extends JFrame implements ActionListener {
         doj1.setBounds(240, y1, 160, 30);
         p2.add(doj1);
 
-        JLabel noOfpass = new JLabel("NO OF PASSENGERS:");
-        noOfpass.setFont(new Font("Times new roman", Font.BOLD, 18));
-        noOfpass.setBounds(370, y1, 250, 30);
-        p2.add(noOfpass);
+        // JLabel noOfpass = new JLabel("NO OF PASSENGERS:");
+        // noOfpass.setFont(new Font("Times new roman", Font.BOLD, 18));
+        // noOfpass.setBounds(370, y1, 250, 30);
+        // p2.add(noOfpass);
 
-        JLabel noOfpass1 = new JLabel(noOfPassengers.toString());
-        noOfpass1.setFont(new Font("Times new roman", Font.PLAIN, 18));
-        noOfpass1.setBounds(595, y1, 160, 30);
-        p2.add(noOfpass1);
+        // JLabel noOfpass1 = new JLabel(noOfPassengers.toString());
+        // noOfpass1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        // noOfpass1.setBounds(595, y1, 160, 30);
+        // p2.add(noOfpass1);
 
         y1 += 60;
         JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
