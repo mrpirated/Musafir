@@ -101,7 +101,7 @@ public class DisplayTicket extends JFrame implements ActionListener {
         fare = new JLabel(fareText);
         fare.setFont(new Font("TIMES NEW ROMAN", Font.PLAIN, 22));
         fare.setForeground(Color.BLACK);
-        fare.setBounds(130, 180, 200, 30);
+        fare.setBounds(130, 580, 200, 30);
         panel.add(fare);
 
         date = new JLabel("Date Of Journey:");

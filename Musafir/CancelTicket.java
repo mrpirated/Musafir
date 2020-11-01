@@ -307,7 +307,6 @@ public class CancelTicket extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
-                
                 pnr = pnrText.getText();
                 try {
 
@@ -320,8 +319,9 @@ public class CancelTicket extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String train = (String) oi.readUTF();
-                passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
-                if (!passengerDetails.getTrainNo().isEmpty()) {
+                System.out.println(train);
+                if (train != " ") {
+                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
                     showPnrDetails(passengerDetails);
                 } else {
                     errorDisplay();
@@ -330,44 +330,24 @@ public class CancelTicket extends JFrame implements ActionListener {
                 p2.repaint();
             }
             for (int i = 0; i < noOfPassengers; i++) {
-                p2.removeAll();
-
                 CancelTicketInfo cancelTicketInfo = new CancelTicketInfo(pnr,
                         passengerDetails.getPassengersInfo().get(i).getName(), userid);
                 cancelTicketInfo.setDate(passengerDetails.getDoj());
                 cancelTicketInfo.setDest(passengerDetails.getDest());
                 cancelTicketInfo.setSrc(passengerDetails.getSrc());
                 cancelTicketInfo.setTrain(passengerDetails.getTrainNo());
+                cancelTicketInfo.setTrainname(passengerDetails.getTrainName());
                 if (ae.getSource() == cancel[i]) {
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(21);
                     os.writeObject(cancelTicketInfo);
                     os.flush();
+                    new HomePage(connection, name, userid).setVisible(true);
+                setVisible(false);
                 }
-                try {
-
-                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
-                    os.writeInt(19);
-                    os.writeUTF(pnr);
-                    os.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                String train = (String) oi.readUTF();
-                System.out.println(train);
-                if (train != " ") {
-                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
-                    showPnrDetails(passengerDetails);
-                } else {
-                    errorDisplay();
-                }
-                p2.revalidate();
-                p2.repaint();
+                
             }
             if (ae.getSource() == cancelallbt) {
-                p2.removeAll();
-
                 for (int i = 0; i < noOfPassengers; i++) {
                     CancelTicketInfo cancelTicketInfo = new CancelTicketInfo(pnr,
                             passengerDetails.getPassengersInfo().get(i).getName(), userid);
@@ -375,33 +355,15 @@ public class CancelTicket extends JFrame implements ActionListener {
                     cancelTicketInfo.setDest(passengerDetails.getDest());
                     cancelTicketInfo.setSrc(passengerDetails.getSrc());
                     cancelTicketInfo.setTrain(passengerDetails.getTrainNo());
-
+                    cancelTicketInfo.setTrainname(passengerDetails.getTrainName());
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                     os.writeInt(21);
                     os.writeObject(cancelTicketInfo);
                     os.flush();
 
                 }
-                try {
-
-                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
-                    os.writeInt(19);
-                    os.writeUTF(pnr);
-                    os.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                String train = (String) oi.readUTF();
-                System.out.println(train);
-                if (train != " ") {
-                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
-                    showPnrDetails(passengerDetails);
-                } else {
-                    errorDisplay();
-                }
-                p2.revalidate();
-                p2.repaint();
+                new HomePage(connection, name, userid).setVisible(true);
+                setVisible(false);
             }
 
         } catch (Exception e) {

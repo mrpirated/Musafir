@@ -356,17 +356,17 @@ public class HandleClient implements Runnable {
 
     private String AddTrain(AddTrainAdminInfo trainInfo) {
 
-        String query = "INSERT INTO `trains_basic_details`(`train_no`, `train_name`, `ts_slr`, `ts_ac`, `src`, `dest`, `runningDays`) VALUES ( '"
+        String query = "INSERT INTO `trains_basic_details`(`train_no`, `train_name`, `ts_slr`, `ts_ac`, `src`, `dest`, `runningDays`,`dynamic`) VALUES ( '"
                 + trainInfo.getTrainNo() + "', '" + trainInfo.getTrainName() + "', " + trainInfo.getTs_slr() + ", "
                 + trainInfo.getTs_ac() + ", '" + trainInfo.getSrc() + "', '" + trainInfo.getDest() + "', '"
-                + trainInfo.getRunningDays() + "' )";
+                + trainInfo.getRunningDays() + "',0 )";
 
         try {
             c1.s.executeUpdate(query);
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
-            new HandleDatabase().NewTrain(trainInfo.getTrainNo(), trainInfo.getDate().toLocalDate());
+            //new HandleDatabase().NewTrain(trainInfo.getTrainNo(), trainInfo.getDate().toLocalDate());
             return " ";
         }
 
@@ -1031,7 +1031,7 @@ public class HandleClient implements Runnable {
         bookingHistory.setDate(cancelTicket.getDate());
         bookingHistory.setDest(cancelTicket.getDest());
         bookingHistory.setSrc(cancelTicket.getSrc());
-        bookingHistory.setTrain(cancelTicket.getTrain());
+        bookingHistory.setTrain(cancelTicket.getTrain() + " " +cancelTicket.getTrainname());
         if (cancelTicket.getName() != null) {
             PassengerHistory[] passengerHistory = new PassengerHistory[1];
 
@@ -1115,6 +1115,14 @@ public class HandleClient implements Runnable {
                 query4 = "DELETE FROM tickets WHERE PNR ='" + PNR + "' AND name = '" + cancelTicket.getName() + "' ";
                 c4 = new Conn();
                 c4.s.executeUpdate(query4);
+                query1 = "SELECT * FROM tickets WHERE PNR ='" + PNR + "'";
+                c1 = new Conn();
+                rs1 = c1.s.executeQuery(query1);
+                if(rs1.next()==false){
+                    query4 = "DELETE FROM passenger WHERE PNR ='" + PNR + "'";
+                    c4 = new Conn();
+                c4.s.executeUpdate(query4);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

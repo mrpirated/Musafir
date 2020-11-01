@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class CancelTicketInfo implements Serializable{
-    private String PNR,name,src,dest,train;
+    private String PNR,name,src,dest,train,trainname;
     private int userid;
     private Date date;
     
@@ -14,7 +14,9 @@ public class CancelTicketInfo implements Serializable{
         this.userid = userid;
     }
     
-    
+    public void setTrainname(String trainname) {
+        this.trainname = trainname;
+    }
     public void setDate(Date date) {
         this.date = date;
     }
@@ -47,6 +49,9 @@ public class CancelTicketInfo implements Serializable{
     }
     public Date getDate() {
         return date;
+    }
+    public String getTrainname() {
+        return trainname;
     }
     
 
