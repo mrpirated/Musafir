@@ -167,32 +167,32 @@ public class PnrEnquiry extends JFrame implements ActionListener {
 
         JLabel doj = new JLabel("DATE OF JOURNEY:");
         doj.setFont(new Font("Times new roman", Font.BOLD, 18));
-        doj.setBounds(15, 65, 250, 30);
+        doj.setBounds(15, 95, 250, 30);
         p2.add(doj);
 
         JLabel doj1 = new JLabel(passengerDetails.getDoj().toString());
         doj1.setFont(new Font("Times new roman", Font.PLAIN, 18));
-        doj1.setBounds(240, 65, 160, 30);
+        doj1.setBounds(240, 95, 160, 30);
         p2.add(doj1);
 
         JLabel noOfpass = new JLabel("NO OF PASSENGERS:");
         noOfpass.setFont(new Font("Times new roman", Font.BOLD, 18));
-        noOfpass.setBounds(370, 65, 250, 30);
+        noOfpass.setBounds(370, 95, 250, 30);
         p2.add(noOfpass);
 
         JLabel noOfpass1 = new JLabel(noOfPassengers.toString());
         noOfpass1.setFont(new Font("Times new roman", Font.PLAIN, 18));
-        noOfpass1.setBounds(595, 65, 160, 30);
+        noOfpass1.setBounds(595, 95, 160, 30);
         p2.add(noOfpass1);
 
         JLabel pnrLabel = new JLabel("PNR:");
         pnrLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
-        pnrLabel.setBounds(15, 95, 250, 30);
+        pnrLabel.setBounds(15, 65, 250, 30);
         p2.add(pnrLabel);
 
         JLabel pnrLabel1 = new JLabel(passengerDetails.getPnr());
         pnrLabel1.setFont(new Font("Times new roman", Font.PLAIN, 18));
-        pnrLabel1.setBounds(240, 95, 160, 30);
+        pnrLabel1.setBounds(90, 65, 160, 30);
         p2.add(pnrLabel1);
 
         JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
