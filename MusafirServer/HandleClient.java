@@ -243,7 +243,7 @@ public class HandleClient implements Runnable {
                                             rs3.getTimestamp("arrival"), dep,
                                             scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1), day1,
                                             rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
-                                            rs3.getInt("station_no"),false, dynamic);
+                                            rs3.getInt("station_no"), false, dynamic);
 
                                     availabilityInfo.add(temp);
                                     System.out.println("added");
@@ -310,7 +310,8 @@ public class HandleClient implements Runnable {
                                             + "'AND type = 1";
                                     c5 = new Conn();
                                     rs5 = c5.s.executeQuery(query4);
-                                    while (rs5.next()&&((rs5.getInt("coach_no")-1)*72+rs5.getInt("seat_no") > 2*availsl)) {
+                                    while (rs5.next() && ((rs5.getInt("coach_no") - 1) * 72 + rs5.getInt("seat_no") > 2
+                                            * availsl)) {
                                         if (!(((rs5.getInt("dest") > station_no) && (rs5.getInt("src") < station_no))
                                                 || ((rs5.getInt("src") < rs3.getInt("station_no"))
                                                         && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
@@ -322,7 +323,8 @@ public class HandleClient implements Runnable {
                                             + "'AND type = 2";
                                     c5 = new Conn();
                                     rs5 = c5.s.executeQuery(query4);
-                                    while (rs5.next()&&((rs5.getInt("coach_no")-1)*72+rs5.getInt("seat_no") > 2*availac)) {
+                                    while (rs5.next() && ((rs5.getInt("coach_no") - 1) * 72 + rs5.getInt("seat_no") > 2
+                                            * availac)) {
                                         if (!(((rs5.getInt("dest") > station_no) && (rs5.getInt("src") < station_no))
                                                 || ((rs5.getInt("src") < rs3.getInt("station_no"))
                                                         && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
@@ -334,7 +336,7 @@ public class HandleClient implements Runnable {
                                             rs3.getTimestamp("arrival"), dep,
                                             scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1), day1,
                                             rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
-                                            rs3.getInt("station_no"),false, dynamic);
+                                            rs3.getInt("station_no"), false, dynamic);
 
                                     availabilityInfo.add(temp);
                                     System.out.println("added");
@@ -351,7 +353,6 @@ public class HandleClient implements Runnable {
         }
         return availabilityInfo;
     }
-
 
     private String AddTrain(AddTrainAdminInfo trainInfo) {
 
@@ -864,7 +865,7 @@ public class HandleClient implements Runnable {
             e.printStackTrace();
         }
 
-        pnrDetails = new PnrEnquiryFinalInfo(trainNo, trainName, src, dest, passengersDetails, doj);
+        pnrDetails = new PnrEnquiryFinalInfo(trainNo, trainName, src, dest, passengersDetails, doj, pnr);
 
         return pnrDetails;
     }
@@ -953,7 +954,7 @@ public class HandleClient implements Runnable {
             e.printStackTrace();
         }
 
-        pnrDetails = new BookingHistory2FinalInfo(trainNo, trainName, src, dest, passengersDetails, doj);
+        pnrDetails = new BookingHistory2FinalInfo(trainNo, trainName, src, dest, passengersDetails, doj, pnr);
 
         return pnrDetails;
     }
