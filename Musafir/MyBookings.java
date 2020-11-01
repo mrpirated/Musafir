@@ -399,7 +399,7 @@ public class MyBookings extends JFrame implements ActionListener {
 
         int x;
         y1 = y1 + 50;
-        for (int i = 0; i < noOfPassengers; i++) {
+        for (int i = 0; i < noOfPassengers2; i++) {
             x = 2;
             Integer srNo = i + 1;
             JLabel srNo1 = new JLabel(srNo.toString() + ".");
@@ -428,7 +428,14 @@ public class MyBookings extends JFrame implements ActionListener {
             p2.add(berthLabel);
 
             x = 535;
-            JLabel berth1Label = new JLabel(passengerDetails.getPassengersInfo().get(i).getSeat());
+            Integer cancelled = passengerDetails.getPassengersInfo().get(i).getCancelled();
+            String seatText;
+            if (cancelled == 2) {
+                seatText = "Train Cancelled";
+            } else {
+                seatText = passengerDetails.getPassengersInfo().get(i).getSeat();
+            }
+            JLabel berth1Label = new JLabel(seatText);
             berth1Label.setFont(new Font("Times new roman", Font.PLAIN, 18));
             berth1Label.setBounds(x, y1, 160, 30);
             p2.add(berth1Label);
@@ -523,7 +530,6 @@ public class MyBookings extends JFrame implements ActionListener {
                 Vector<BookingHistory2FinalInfo> bookingHistory2 = (Vector<BookingHistory2FinalInfo>) oi.readObject();
                 noOfTickets2 = bookingHistory2.size();
                 noOfTickets += noOfTickets2;
-                System.out.println(noOfTickets2);
                 for (int i = 0; i < noOfTickets2; i++) {
                     showPnrDetails2(bookingHistory2.get(i));
                 }
