@@ -35,7 +35,7 @@ public class MyBookings extends JFrame implements ActionListener {
         int w = z / y;
         String pad = "";
         pad = String.format("%" + w * 2.5 + "s", pad);
-        setTitle(pad + "PNR ENQUIRY");
+        setTitle(pad + "BOOKING HISTORY");
 
         p1 = new JPanel();
         p1.setLayout(null);
@@ -53,7 +53,7 @@ public class MyBookings extends JFrame implements ActionListener {
         back.setBounds(5, 8, 30, 30);
         p1.add(back);
 
-        headLabel = new JLabel("PNR ENQUIRY");
+        headLabel = new JLabel("BOOKING HISTORY");
         headLabel.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 30));
         headLabel.setForeground(Color.WHITE);
         headLabel.setBounds(250, 10, 400, 30);
@@ -92,7 +92,7 @@ public class MyBookings extends JFrame implements ActionListener {
         @Override
         public Dimension getPreferredSize() {
             if (noOfTickets > 2)
-                return new Dimension(670, 1000 + 1000 * (noOfTickets - 2));
+                return new Dimension(670, 1000 + 700 * (noOfTickets - 2));
             else
                 return new Dimension(670, 1000);
         }
