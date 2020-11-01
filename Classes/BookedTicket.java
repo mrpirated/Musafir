@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class BookedTicket implements Serializable{
     private String PNR;
     private int noofpassengers;
+    
     private int[][] seats;
     private boolean gotseat = false,tatkal=false;
     
