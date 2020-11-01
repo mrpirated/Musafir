@@ -29,18 +29,18 @@ public class PlanMyJourney extends JFrame implements ActionListener {
     private JComboBox from, to;
     private JXDatePicker picker;
     private String name;
-    private int userid;
+    private int userid, count = 0;
     private Connect connection;
     private int trains = 0;
     private Panel availability;
     private JScrollPane scroll;
-    private JLabel[] arrival, departure, trainName, train, srno, day1, day2, duration;
+    private JLabel[] arrival, departure, trainName, train, srno, day1, day2, duration, dynamic;
     private JButton[] sl, ac, getFare;
     private float[] fare;
+    private boolean[] dynamicbool;
     private int[] srcint, destint;
     private String[] trainNo;
     private java.util.Date dt = new java.util.Date();
-    
 
     PlanMyJourney(Connect connection, String name, String[][] cities, int userid) {
         this.name = name;
@@ -217,6 +217,8 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         srcint = new int[trains];
         destint = new int[trains];
         getFare = new JButton[trains];
+        dynamic = new JLabel[trains];
+        dynamicbool = new boolean[trains];
 
         String str;
         int seats;
@@ -253,7 +255,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             departure[i].setBounds(x, y, 150, 30);
             availability.add(departure[i]);
 
-            str = String.valueOf(availabilityInfo.get(i).getDate().plusDays(availabilityInfo.get(i).getDay1()-1));
+            str = String.valueOf(availabilityInfo.get(i).getDate().plusDays(availabilityInfo.get(i).getDay1() - 1));
             day1[i] = new JLabel(str);
             day1[i].setFont(new Font("Times new roman", Font.BOLD, 12));
             day1[i].setBounds(x - 20, y - 20, 150, 30);
@@ -272,7 +274,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
             arrival[i].setBounds(x, y, 150, 30);
             availability.add(arrival[i]);
 
-            str = String.valueOf((availabilityInfo.get(i).getDate()).plusDays(availabilityInfo.get(i).getDay2()-1));
+            str = String.valueOf((availabilityInfo.get(i).getDate()).plusDays(availabilityInfo.get(i).getDay2() - 1));
             day2[i] = new JLabel(str);
             day2[i].setFont(new Font("Times new roman", Font.BOLD, 12));
             day2[i].setBounds(x - 20, y - 20, 150, 30);
@@ -308,14 +310,22 @@ public class PlanMyJourney extends JFrame implements ActionListener {
 
             x = 515;
             getFare[i] = new JButton("Get Fare");
-            getFare[i].setFont(new Font("Times new roman", Font.BOLD, 18));
+            getFare[i].setFont(new Font("Times new roman", Font.BOLD, 20));
             getFare[i].setBounds(x, y + 15, 140, 20);
             getFare[i].setBackground(Color.BLACK);
             getFare[i].setForeground(Color.WHITE);
             availability.add(getFare[i]);
             getFare[i].addActionListener(this);
 
-            y = y + 50;
+            dynamicbool[i] = availabilityInfo.get(i).getDynamic();
+            if (dynamicbool[i]) {
+                dynamic[i] = new JLabel("Dynamic Price Applied");
+                dynamic[i].setFont(new Font("Times new roman", Font.BOLD, 15));
+                dynamic[i].setBounds(x, y + 30, 150, 30);
+                availability.add(dynamic[i]);
+            }
+
+            y = y + 70;
             fare[i] = availabilityInfo.get(i).getFare();
             srcint[i] = availabilityInfo.get(i).getSrcint();
             destint[i] = availabilityInfo.get(i).getDestint();
@@ -355,11 +365,11 @@ public class PlanMyJourney extends JFrame implements ActionListener {
 
     
     Vector<AvailabilityInfo> availabilityInfo = null;
+
     public void actionPerformed(ActionEvent ae) {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        
-        
+
         try {
 
             if (ae.getSource() == back) {
@@ -374,13 +384,24 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                 dt = picker.getDate();
                 String d = df.format(dt);
                 Date date = Date.valueOf(d);
+                long e = System.currentTimeMillis();
+                java.sql.Date todayDate = new Date(e);
+                LocalDate todaydate = todayDate.toLocalDate();
+                LocalDate bookDate = date.toLocalDate();
+
+                while (todaydate.compareTo(bookDate) < 0) {
+                    todaydate = todaydate.plusDays(1);
+                    count++;
+                }
+
+                System.out.println(count + " Days left");
                 ScheduleEnq scheduleEnq = new ScheduleEnq(source, dest, date);
                 ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
                 os.writeInt(5);
                 os.writeObject(scheduleEnq);
                 os.flush();
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
-                
+
                 availabilityInfo = (Vector<AvailabilityInfo>) oi.readObject();
                 showTrains(availabilityInfo);
                 availability.revalidate();
@@ -394,18 +415,19 @@ public class PlanMyJourney extends JFrame implements ActionListener {
                             (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
                             day1[i].getText() + " " + departure[i].getText(),
                             day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(sl[i].getText()),
-                            userid,availabilityInfo.get(i).getDay1()).setVisible(true);
+                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(sl[i].getText()), userid,
+                            availabilityInfo.get(i).getDay1(), dynamicbool[i], count).setVisible(true);
 
                 } else if (ae.getSource() == ac[i]) {
                     new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
                             (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
                             day1[i].getText() + " " + departure[i].getText(),
                             day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(ac[i].getText()),
-                            userid,availabilityInfo.get(i).getDay1()).setVisible(true);
+                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(ac[i].getText()), userid,
+                            availabilityInfo.get(i).getDay1(), dynamicbool[i], count).setVisible(true);
                 } else if (ae.getSource() == getFare[i]) {
-                    new GetFareClient(connection, name, fare[i], userid, trainNo[i]).setVisible(true);
+                    new GetFareClient(connection, name, fare[i], userid, trainNo[i], dynamicbool[i], count)
+                            .setVisible(true);
                 }
             }
 

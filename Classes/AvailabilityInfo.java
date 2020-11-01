@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class AvailabilityInfo implements Serializable {
-    private boolean available = false;
+    private boolean available = false, dynamic;
     private int sl, ac, day1, day2, srcint, destint;
     private float fare;
     private Timestamp arrival, departure;
@@ -14,7 +14,7 @@ public class AvailabilityInfo implements Serializable {
     private LocalDate date;
 
     public AvailabilityInfo(boolean available, String train, String trainName, int sl, int ac, Timestamp arrival,
-            Timestamp departure, LocalDate date, int day1, int day2, float fare,int srcint,int destint) {
+            Timestamp departure, LocalDate date, int day1, int day2, float fare, int srcint, int destint) {
         this.ac = ac;
         this.available = available;
         this.train = train;
@@ -29,6 +29,26 @@ public class AvailabilityInfo implements Serializable {
         this.fare = fare;
         this.srcint = srcint;
         this.destint = destint;
+    }
+
+    public AvailabilityInfo(boolean available, String train, String trainName, int sl, int ac, Timestamp arrival,
+            Timestamp departure, LocalDate date, int day1, int day2, float fare, int srcint, int destint,
+            boolean dynamic) {
+        this.ac = ac;
+        this.available = available;
+        this.train = train;
+        this.sl = sl;
+        this.ac = ac;
+        this.arrival = arrival;
+        this.departure = departure;
+        this.trainName = trainName;
+        this.date = date;
+        this.day1 = day1;
+        this.day2 = day2;
+        this.fare = fare;
+        this.srcint = srcint;
+        this.destint = destint;
+        this.dynamic = dynamic;
     }
 
     public int getAc() {
@@ -74,10 +94,16 @@ public class AvailabilityInfo implements Serializable {
     public float getFare() {
         return fare;
     }
+
     public int getDestint() {
         return destint;
     }
+
     public int getSrcint() {
         return srcint;
+    }
+
+    public boolean getDynamic() {
+        return dynamic;
     }
 }

@@ -377,24 +377,31 @@ public class TatkalClient extends JFrame implements ActionListener {
 
             }
             for (int i = 0; i < trains; i++) {
-                if (ae.getSource() == sl[i]) {
-                    new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 1,
-                            (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
-                            day1[i].getText() + " " + departure[i].getText(),
-                            day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(sl[i].getText()), userid,
-                            availabilityInfo.get(i).getDay1()).setVisible(true);
+                // if (ae.getSource() == sl[i]) {
+                // new PassengerTicketDetails(connection, name, train[i].getText(),
+                // trainName[i].getText(), 1,
+                // (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(),
+                // destint[i],
+                // day1[i].getText() + " " + departure[i].getText(),
+                // day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
+                // availabilityInfo.get(i).getDate(), fare[i],
+                // Integer.parseInt(sl[i].getText()), userid,
+                // availabilityInfo.get(i).getDay1()).setVisible(true);
 
-                } else if (ae.getSource() == ac[i]) {
-                    new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
-                            (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(), destint[i],
-                            day1[i].getText() + " " + departure[i].getText(),
-                            day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
-                            availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(ac[i].getText()), userid,
-                            availabilityInfo.get(i).getDay1()).setVisible(true);
-                } else if (ae.getSource() == getFare[i]) {
-                    new GetFareClient(connection, name, fare[i], userid, trainNo[i]).setVisible(true);
-                }
+                // } else if (ae.getSource() == ac[i]) {
+                // new PassengerTicketDetails(connection, name, train[i].getText(),
+                // trainName[i].getText(), 2,
+                // (String) from.getSelectedItem(), srcint[i], (String) to.getSelectedItem(),
+                // destint[i],
+                // day1[i].getText() + " " + departure[i].getText(),
+                // day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
+                // availabilityInfo.get(i).getDate(), fare[i],
+                // Integer.parseInt(ac[i].getText()), userid,
+                // availabilityInfo.get(i).getDay1()).setVisible(true);
+                // } else if (ae.getSource() == getFare[i]) {
+                // new GetFareClient(connection, name, fare[i], userid,
+                // trainNo[i]).setVisible(true);
+                // }
             }
 
         } catch (Exception e) {
