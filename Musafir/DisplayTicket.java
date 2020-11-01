@@ -14,9 +14,10 @@ import java.awt.image.BufferedImage;
 
 public class DisplayTicket extends JFrame implements ActionListener {
     private JLabel PNR, seat, berth, name, trainno, trainname, quota, date, fare, musafir, dest, src, age, gender, srno,
-            status;
+            status, totalFareLabel;
     private JPanel panel;
     private JButton print;
+    private float totalFare;
 
     public DisplayTicket(BookedTicket bookedTicket, PassengersDetailForm passengersDetailForm) {
         setFont(new Font("System", Font.BOLD, 22));
@@ -95,7 +96,9 @@ public class DisplayTicket extends JFrame implements ActionListener {
         fare.setBounds(50, 180, 200, 30);
         panel.add(fare);
 
-        fare = new JLabel("1248.21");
+        totalFare = passengersDetailForm.getTotalfare();
+        String fareText = Float.toString(totalFare);
+        fare = new JLabel(fareText);
         fare.setFont(new Font("TIMES NEW ROMAN", Font.PLAIN, 22));
         fare.setForeground(Color.BLACK);
         fare.setBounds(130, 180, 200, 30);

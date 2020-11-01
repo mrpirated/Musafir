@@ -345,8 +345,8 @@ public class PnrEnquiry extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String train = (String) oi.readUTF();
-                if (train != " ") {
-                    PnrEnquiryFinalInfo passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                PnrEnquiryFinalInfo passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                if (!passengerDetails.getTrainNo().isEmpty()) {
                     showPnrDetails(passengerDetails);
                 } else {
                     errorDisplay();

@@ -302,6 +302,7 @@ public class BookAMeal extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
+                p2.removeAll();
                 String pnr = pnrText.getText();
                 try {
 
@@ -314,8 +315,8 @@ public class BookAMeal extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 String train = (String) oi.readUTF();
-                if (train != " ") {
-                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                if (!passengerDetails.getTrainNo().isEmpty()) {
                     showPnrDetails(passengerDetails);
                 } else {
                     errorDisplay();
