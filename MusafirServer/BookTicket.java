@@ -84,6 +84,12 @@ public class BookTicket {
     }
 
     private BookedTicket Waiting(BookedTicket bookedTicket) {
+        String queryc="";
+        if (passengersDetailForm.getType() == 1) {
+            queryc = "UPDATE month SET Avail_S = '" + (available - 1) + "' WHERE index_no = '" + index + "'";
+        } else if (passengersDetailForm.getType() == 2) {
+            queryc = "UPDATE month SET Avail_AC = '" + (available - 1) + "' WHERE index_no = '" + index + "'";
+        }
         String query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                 + passengersDetailForm.getPassengerInfo()[x].getName() + "', NULL, NULL,'" + (Math.abs(available)+1)
@@ -94,6 +100,8 @@ public class BookTicket {
         try {
             c4.s.executeUpdate(query3);
             bookedTicket.setGotseat(true);
+            c5 = new Conn();
+            c5.s.executeUpdate(queryc);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -14,7 +14,7 @@ public class HandleDatabase {
         int index;
         Timestamp now = Timestamp.valueOf(ldt), dept;
         String PNR,trainno;
-        String query = "SELECT * FROM lastupdated ", query2, query3, query4, query5, query6,query7;
+        String query = "SELECT * FROM lastupdated", query2, query3, query4, query5, query6,query7;
         try {
             long d = System.currentTimeMillis();
             Date td = new Date(d);
