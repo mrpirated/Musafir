@@ -80,11 +80,11 @@ public class HandleDatabase {
                                 if (rs5.getInt("type") == 1)
                                     passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
                                             "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
-                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0),rs5.getFloat("fare"));
                                 if (rs5.getInt("type") == 2)
                                     passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
                                             "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
-                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0),rs5.getFloat("fare"));
 
                                 k++;
                             }
@@ -96,14 +96,14 @@ public class HandleDatabase {
                             c5 = new Conn();
                             c5.s.executeUpdate(query6);
                             for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
-                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`) VALUES ('"
+                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`fare`) VALUES ('"
                                         + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','" + bookingHistory.getTrain() + "' ,'"
                                         + bookingHistory.getPassengerHistory()[j].getName() + "', '"
                                         + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
                                         + bookingHistory.getPassengerHistory()[j].getGender() + "', '"
                                         + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
                                         + bookingHistory.getDate() + "', '"
-                                        + bookingHistory.getPassengerHistory()[j].getSeat() + "')";
+                                        + bookingHistory.getPassengerHistory()[j].getSeat() + "','"+bookingHistory.getPassengerHistory()[j].getFare()+"')";
                                 c5 = new Conn();
                                 c5.s.executeUpdate(query6);
                             }
@@ -203,11 +203,11 @@ public class HandleDatabase {
                                 if (rs5.getInt("type") == 1)
                                     passengerHistory[i] = new PassengerHistory(rs5.getString("name"),
                                             "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
-                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0),rs5.getFloat("fare"));
                                 if (rs5.getInt("type") == 2)
                                     passengerHistory[i] = new PassengerHistory(rs5.getString("name"),
                                             "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"),
-                                            rs5.getInt("age"), rs5.getString("gender").charAt(0));
+                                            rs5.getInt("age"), rs5.getString("gender").charAt(0),rs5.getFloat("fare"));
 
                                 i++;
                             }
@@ -219,14 +219,14 @@ public class HandleDatabase {
                             c5 = new Conn();
                             c5.s.executeUpdate(query6);
                             for (int j = 0; j < bookingHistory.getPassengerHistory().length; j++) {
-                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`) VALUES ("
+                                query6 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`fare`) VALUES ("
                                         + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','" + bookingHistory.getTrain() + "' ,'"
                                         + bookingHistory.getPassengerHistory()[j].getName() + "', '"
                                         + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
                                         + bookingHistory.getPassengerHistory()[j].getGender() + "', '"
                                         + bookingHistory.getSrc() + "', '" + bookingHistory.getDest() + "', '"
                                         + bookingHistory.getDate() + "', '"
-                                        + bookingHistory.getPassengerHistory()[j].getSeat() + "')";
+                                        + bookingHistory.getPassengerHistory()[j].getSeat() + "','"+bookingHistory.getPassengerHistory()[j].getFare()+"')";
                                 c5 = new Conn();
                                 c5.s.executeUpdate(query6);
                             }

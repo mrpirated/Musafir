@@ -388,7 +388,7 @@ public class TatkalClient extends JFrame implements ActionListener {
                             day1[i].getText() + " " + departure[i].getText(),
                             day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
                             availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(sl[i].getText()), userid,
-                            availabilityInfo.get(i).getDay1(), dynamicbool[i], count).setVisible(true);
+                            availabilityInfo.get(i).getDay1(), dynamicbool[i], count,true).setVisible(true);
 
                 } else if (ae.getSource() == ac[i]) {
                     new PassengerTicketDetails(connection, name, train[i].getText(), trainName[i].getText(), 2,
@@ -396,7 +396,7 @@ public class TatkalClient extends JFrame implements ActionListener {
                             day1[i].getText() + " " + departure[i].getText(),
                             day2[i].getText() + " " + arrival[i].getText(), duration[i].getText(),
                             availabilityInfo.get(i).getDate(), fare[i], Integer.parseInt(ac[i].getText()), userid,
-                            availabilityInfo.get(i).getDay1(), dynamicbool[i], count).setVisible(true);
+                            availabilityInfo.get(i).getDay1(), dynamicbool[i], count,true).setVisible(true);
                 } else if (ae.getSource() == getFare[i]) {
                     new GetFareClient(connection, name, fare[i], userid, trainNo[i], dynamicbool[i], count)
                             .setVisible(true);

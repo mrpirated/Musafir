@@ -18,11 +18,27 @@ public class BookTicket {
         this.passengersDetailForm = passengersDetailForm;
         noofpassengers = passengersDetailForm.getNoOfPassenger();
         bookedTicket = new BookedTicket(noofpassengers);
-        PNR = PNR();
-        bookedTicket.setPNR(PNR);
-        seats = new int[noofpassengers];
-        coach = new int[noofpassengers];
-        name = new String[noofpassengers];
+
+        boolean check = true;
+        c = new Conn();
+        query = "SELECT * FROM passenger";
+        try {
+            rs1 = c.s.executeQuery(query);
+            while (check) {
+                PNR = PNR();
+                check = false;
+                while (rs1.next()) {
+                    if (rs1.getString("PNR").equals(PNR)) {
+                        check = true;
+                        break;
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         c = new Conn();
         query = "INSERT INTO `passenger` (`PNR`,`train`, `user_id`, `date`, `tickets`) VALUES ('" + PNR + "','"
                 + passengersDetailForm.getTrainNo() + " " + passengersDetailForm.getTrainName() + "', '"
@@ -34,7 +50,10 @@ public class BookTicket {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        bookedTicket.setPNR(PNR);
+        seats = new int[noofpassengers];
+        coach = new int[noofpassengers];
+        name = new String[noofpassengers];
         query = "SELECT * FROM `month` WHERE `date` = '" + passengersDetailForm.getDate() + "' AND `train` = '"
                 + passengersDetailForm.getTrainNo() + "' ORDER BY `date` ASC";
         try {
@@ -100,12 +119,12 @@ public class BookTicket {
         } else if (passengersDetailForm.getType() == 2) {
             queryc = "UPDATE month SET Avail_AC = '" + (available - 1) + "' WHERE index_no = '" + index + "'";
         }
-        String query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+        String query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                 + passengersDetailForm.getPassengerInfo()[x].getName() + "', NULL, NULL,'" + (Math.abs(available) + 1)
                 + "' , '" + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
         c4 = new Conn();
         try {
             c4.s.executeUpdate(query3);
@@ -169,22 +188,20 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
-                            
+
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
 
                             bookedTicket.setGotseat(true);
-                            
 
                             return bookedTicket;
                         }
@@ -200,20 +217,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            
-                        coach[x] = i / 72 + 1;
-                        seats[x] = i % 72 + 1;
-                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
+
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -255,21 +272,19 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
 
                             bookedTicket.setGotseat(true);
-                            
 
                             return bookedTicket;
                         }
@@ -287,20 +302,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            
-                        coach[x] = i / 72 + 1;
-                        seats[x] = i % 72 + 1;
-                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
+
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -343,21 +358,19 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
 
                             bookedTicket.setGotseat(true);
-                            
 
                             return bookedTicket;
                         }
@@ -375,20 +388,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            
+
                             coach[x] = i / 72 + 1;
                             seats[x] = i % 72 + 1;
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -428,21 +441,19 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
 
                             bookedTicket.setGotseat(true);
-                            
 
                             return bookedTicket;
                         }
@@ -458,20 +469,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            
-                        coach[x] = i / 72 + 1;
-                        seats[x] = i % 72 + 1;
-                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
+
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -534,18 +545,17 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
 
                             bookedTicket.setGotseat(true);
 
@@ -563,20 +573,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
 
                             coach[x] = i / 72 + 1;
                             seats[x] = i % 72 + 1;
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                           
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -619,18 +629,18 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
 
                             return bookedTicket;
@@ -649,20 +659,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
 
                             coach[x] = i / 72 + 1;
                             seats[x] = i % 72 + 1;
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -706,18 +716,17 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
 
                             bookedTicket.setGotseat(true);
 
@@ -737,20 +746,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
 
                             coach[x] = i / 72 + 1;
                             seats[x] = i % 72 + 1;
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -791,18 +800,17 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                           
 
                             bookedTicket.setGotseat(true);
 
@@ -820,20 +828,20 @@ public class BookTicket {
                         c3 = new Conn();
                         rs3 = c3.s.executeQuery(query2);
                         if (rs3.next() == false) {
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1)
                                     + "', '" + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                     + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
 
                             coach[x] = i / 72 + 1;
                             seats[x] = i % 72 + 1;
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -895,18 +903,18 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
 
                             return bookedTicket;
@@ -922,20 +930,20 @@ public class BookTicket {
                     c3 = new Conn();
                     rs3 = c3.s.executeQuery(query2);
                     if (rs3.next() == false) {
-                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                 + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1) + "', '"
                                 + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                 + passengersDetailForm.getDest() + "', '"
                                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
 
                         coach[x] = i / 72 + 1;
                         seats[x] = i % 72 + 1;
                         name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
+
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);
@@ -976,18 +984,18 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
 
                             return bookedTicket;
@@ -1004,20 +1012,20 @@ public class BookTicket {
                     c3 = new Conn();
                     rs3 = c3.s.executeQuery(query2);
                     if (rs3.next() == false) {
-                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                 + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1) + "', '"
                                 + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                 + passengersDetailForm.getDest() + "', '"
                                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
 
                         coach[x] = i / 72 + 1;
                         seats[x] = i % 72 + 1;
                         name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
+
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);
@@ -1059,18 +1067,18 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
+
                             bookedTicket.setGotseat(true);
 
                             return bookedTicket;
@@ -1087,20 +1095,20 @@ public class BookTicket {
                     c3 = new Conn();
                     rs3 = c3.s.executeQuery(query2);
                     if (rs3.next() == false) {
-                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                 + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1) + "', '"
                                 + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                 + passengersDetailForm.getDest() + "', '"
                                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
 
                         coach[x] = i / 72 + 1;
                         seats[x] = i % 72 + 1;
                         name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
+
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);
@@ -1140,18 +1148,17 @@ public class BookTicket {
                         System.out.println("Came here " + flag);
                         if (flag) {
                             c4 = new Conn();
-                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                            query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                     + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                     + passengersDetailForm.getPassengerInfo()[x].getName() + "', '"
                                     + rs3.getInt("coach_no") + "', '" + rs3.getInt("seat_no") + "', NULL, '"
                                     + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                    + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                             c4.s.executeUpdate(query3);
                             coach[x] = rs3.getInt("coach_no");
                             seats[x] = rs3.getInt("seat_no");
                             name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                            
 
                             bookedTicket.setGotseat(true);
 
@@ -1168,20 +1175,20 @@ public class BookTicket {
                     c3 = new Conn();
                     rs3 = c3.s.executeQuery(query2);
                     if (rs3.next() == false) {
-                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
+                        query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`,`fare`) VALUES ('"
                                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
                                 + passengersDetailForm.getPassengerInfo()[x].getName() + "', '" + (i / 72 + 1) + "', '"
                                 + (i % 72 + 1) + "', NULL, '" + passengersDetailForm.getSrc() + "', '"
                                 + passengersDetailForm.getDest() + "', '"
                                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
-                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
+                                + passengersDetailForm.getPassengerInfo()[x].getGender() + "','"+passengersDetailForm.getPassengerInfo()[x].getFare()+"')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
 
                         coach[x] = i / 72 + 1;
                         seats[x] = i % 72 + 1;
                         name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
-                        
+
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);

@@ -6,21 +6,16 @@ public class PassengerInfo implements Serializable{
     private String name, berthPreference;
     private Integer age;
     private Character gender;
-    private Boolean full = true;
+    private float fare;
 
-    public PassengerInfo(String name, Integer age, Character gender, String berthPreference) {
+    public PassengerInfo(String name, Integer age, Character gender, String berthPreference,float fare) {
         this.name = name;
         this.age = age;
         this.berthPreference = berthPreference;
         this.gender = gender;
+        this.fare = fare;
     }
-    public PassengerInfo(String name, Integer age, Character gender, String berthPreference, Boolean full) {
-        this.name = name;
-        this.age = age;
-        this.berthPreference = berthPreference;
-        this.gender = gender;
-        this.full = full;
-    }
+    
 
     public Integer getAge() {
         return age;
@@ -37,8 +32,8 @@ public class PassengerInfo implements Serializable{
     public String getName() {
         return name;
     }
-    public Boolean getFull() {
-        return full;
+    public float getFare() {
+        return fare;
     }
     public Boolean isSenior(){
         if(age >=58 && gender.equals('F'))
