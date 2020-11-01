@@ -173,6 +173,7 @@ public class HandleClient implements Runnable {
     private Vector<AvailabilityInfo> ScheduleEnq(ScheduleEnq scheduleEnq) {
         Vector<AvailabilityInfo> availabilityInfo = new Vector<AvailabilityInfo>();
         AvailabilityInfo temp;
+        boolean tatkal = scheduleEnq.getTatkal();
         String train;
         String query = "SELECT * FROM `trains_basic_details`", query2, query3, query4;
         String st1, st2;
@@ -242,7 +243,7 @@ public class HandleClient implements Runnable {
                                             rs3.getTimestamp("arrival"), dep,
                                             scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1), day1,
                                             rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
-                                            rs3.getInt("station_no"), dynamic);
+                                            rs3.getInt("station_no"),false, dynamic);
 
                                     availabilityInfo.add(temp);
                                     System.out.println("added");
@@ -259,6 +260,98 @@ public class HandleClient implements Runnable {
         }
         return availabilityInfo;
     }
+
+    private Vector<AvailabilityInfo> ScheduleEnqtatkal(ScheduleEnq scheduleEnq) {
+        Vector<AvailabilityInfo> availabilityInfo = new Vector<AvailabilityInfo>();
+        AvailabilityInfo temp;
+        boolean tatkal = scheduleEnq.getTatkal();
+        String train;
+        String query = "SELECT * FROM `trains_basic_details`", query2, query3, query4;
+        String st1, st2;
+        String source = scheduleEnq.getSource();
+        String dest = scheduleEnq.getDest();
+        String trainName;
+        Timestamp dep;
+        boolean dynamic;
+        int day1, fare1, station_no, availsl, availac;
+        try {
+            ResultSet rs1 = c1.s.executeQuery(query), rs2, rs3, rs4, rs5;
+            while (rs1.next()) {
+                train = (String) rs1.getString("train_no");
+                dynamic = rs1.getBoolean("dynamic");
+                query2 = "SELECT * FROM `src_dest_table` WHERE `train_no` = '" + train + "' ORDER BY `station_no` ASC";
+                trainName = rs1.getString("train_name");
+                Conn c2 = new Conn(), c3, c5;
+                rs2 = c2.s.executeQuery(query2);
+
+                while (rs2.next()) {
+
+                    st1 = (String) rs2.getString("station");
+                    if (source.equals(st1)) {
+                        rs3 = rs2;
+                        dep = rs2.getTimestamp("departure");
+                        day1 = rs2.getInt("day");
+                        fare1 = rs2.getInt("fare");
+                        station_no = rs2.getInt("station_no");
+                        System.out.println("equals");
+                        while (rs3.next()) {
+                            System.out.println("rs3");
+                            st2 = (String) rs3.getString("station");
+                            if (dest.equals(st2)) {
+                                query3 = "SELECT * FROM month  where date = '"
+                                        + scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1) + "'AND train = '"
+                                        + train + "'";
+                                c3 = new Conn();
+                                rs4 = c3.s.executeQuery(query3);
+                                while (rs4.next()) {
+                                    availsl = rs4.getInt("Tatkal_S");
+                                    availac = rs4.getInt("Tatkal_AC");
+                                    query4 = "SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no")
+                                            + "'AND type = 1";
+                                    c5 = new Conn();
+                                    rs5 = c5.s.executeQuery(query4);
+                                    while (rs5.next()&&((rs5.getInt("coach_no")-1)*72+rs5.getInt("seat_no") > 2*availsl)) {
+                                        if (!(((rs5.getInt("dest") > station_no) && (rs5.getInt("src") < station_no))
+                                                || ((rs5.getInt("src") < rs3.getInt("station_no"))
+                                                        && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
+                                                || (rs5.getInt("dest") == rs3.getInt("station_no"))
+                                                || (rs5.getInt("src") == station_no)))
+                                            availsl++;
+                                    }
+                                    query4 = "SELECT * FROM `tickets` WHERE index_no = '" + rs4.getInt("index_no")
+                                            + "'AND type = 2";
+                                    c5 = new Conn();
+                                    rs5 = c5.s.executeQuery(query4);
+                                    while (rs5.next()&&((rs5.getInt("coach_no")-1)*72+rs5.getInt("seat_no") > 2*availac)) {
+                                        if (!(((rs5.getInt("dest") > station_no) && (rs5.getInt("src") < station_no))
+                                                || ((rs5.getInt("src") < rs3.getInt("station_no"))
+                                                        && ((rs5.getInt("dest") > rs3.getInt("station_no"))))
+                                                || (rs5.getInt("dest") == rs3.getInt("station_no"))
+                                                || (rs5.getInt("src") == station_no)))
+                                            availac++;
+                                    }
+                                    temp = new AvailabilityInfo(true, train, trainName, availsl, availac,
+                                            rs3.getTimestamp("arrival"), dep,
+                                            scheduleEnq.getDate().toLocalDate().minusDays(day1 - 1), day1,
+                                            rs3.getInt("day"), rs3.getInt("fare") - fare1, station_no,
+                                            rs3.getInt("station_no"),false, dynamic);
+
+                                    availabilityInfo.add(temp);
+                                    System.out.println("added");
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return availabilityInfo;
+    }
+
 
     private String AddTrain(AddTrainAdminInfo trainInfo) {
 
@@ -1192,6 +1285,19 @@ public class HandleClient implements Runnable {
                         CancelTrainAdminInfo cancelTrainAdminInfo = (CancelTrainAdminInfo) oi.readObject();
                         String res = CancelTrains(cancelTrainAdminInfo);
                         os.writeUTF(res);
+                        os.flush();
+                        break;
+                    case 15:
+                        ScheduleEnq scheduleEnqtatkal = (ScheduleEnq) oi.readObject();
+                        Vector<AvailabilityInfo> availabilityInfotatkal = ScheduleEnqtatkal(scheduleEnqtatkal);
+                        os.writeObject(availabilityInfotatkal);
+                        os.flush();
+                        break;
+                    case 16:
+                        PassengersDetailForm passengersDetailFormtatkal = (PassengersDetailForm) oi.readObject();
+                        System.out.println(passengersDetailFormtatkal.getDate());
+                        BookedTicket bookedTickettatkal = new BookTatkal(passengersDetailFormtatkal).getBookedTicket();
+                        os.writeObject(bookedTickettatkal);
                         os.flush();
                         break;
 
