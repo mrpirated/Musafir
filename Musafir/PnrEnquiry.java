@@ -185,8 +185,18 @@ public class PnrEnquiry extends JFrame implements ActionListener {
         noOfpass1.setBounds(595, 65, 160, 30);
         p2.add(noOfpass1);
 
+        JLabel pnrLabel = new JLabel("PNR:");
+        pnrLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+        pnrLabel.setBounds(15, 95, 250, 30);
+        p2.add(pnrLabel);
+
+        JLabel pnrLabel1 = new JLabel(passengerDetails.getPnr());
+        pnrLabel1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        pnrLabel1.setBounds(240, 95, 160, 30);
+        p2.add(pnrLabel1);
+
         JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
-        passengerLabel.setFont(new Font("Times new roman", Font.BOLD, 20));
+        passengerLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
         passengerLabel.setBounds(240, 120, 300, 30);
         p2.add(passengerLabel);
 
