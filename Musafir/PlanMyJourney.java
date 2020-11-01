@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.xml.crypto.Data;
 
-import com.mysql.jdbc.log.Slf4JLogger;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;

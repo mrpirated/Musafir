@@ -398,7 +398,8 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 }
                 ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
                 BookedTicket bookedTicket = (BookedTicket) oi.readObject();
-                
+                new DisplayTicket(bookedTicket,passengerDetailForm).setVisible(true);
+                setVisible(false);
 
             }
 

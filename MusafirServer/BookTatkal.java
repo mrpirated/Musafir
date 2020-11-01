@@ -10,6 +10,7 @@ public class BookTatkal {
     private int noofpassengers, index, total, available, x;
     private String PNR, query;
     private int[][] seatinfo;
+    private String [] name;
     private Conn c, c1, c2, c3, c4, c5, c6;
     private ResultSet rs1, rs2, rs3, rs5;
 
@@ -144,12 +145,13 @@ public class BookTatkal {
                                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                 + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                         c4.s.executeUpdate(query3);
-                        seatinfo[0][0] = passengersDetailForm.getType();
-                        seatinfo[0][1] = rs3.getInt("coach_no");
-                        seatinfo[0][2] = rs3.getInt("seat_no");
+                        seatinfo[x][0] = passengersDetailForm.getType();
+                        seatinfo[x][1] = rs3.getInt("coach_no");
+                        seatinfo[x][2] = rs3.getInt("seat_no");
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        bookedTicket.setName(name);
                         bookedTicket.setGotseat(true);
-                        bookedTicket.setSeats(seatinfo);
-
+                        
                         return bookedTicket;
                     }
                 }
@@ -171,10 +173,12 @@ public class BookTatkal {
                             + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                     c4 = new Conn();
                     c4.s.executeUpdate(query3);
-                    seatinfo[0][0] = passengersDetailForm.getType();
-                    seatinfo[0][1] = i / 72 + 1;
-                    seatinfo[0][2] = i % 72 + 1;
-                    bookedTicket.setSeats(seatinfo);
+                    seatinfo[x][0] = passengersDetailForm.getType();
+                        seatinfo[x][1] = rs3.getInt("coach_no");
+                        seatinfo[x][2] = rs3.getInt("seat_no");
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        bookedTicket.setName(name);
+                    
                     bookedTicket.setGotseat(true);
                     c6 = new Conn();
                     c6.s.executeUpdate(queryc);

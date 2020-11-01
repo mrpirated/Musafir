@@ -9,7 +9,8 @@ public class BookTicket {
     private BookedTicket bookedTicket;
     private int noofpassengers, index, total, available, x;
     private String PNR, query;
-    private int[][] seatinfo;
+    private int[] seats, coach;
+    private String[] name;
     private Conn c, c1, c2, c3, c4, c5, c6;
     private ResultSet rs1, rs2, rs3, rs5;
 
@@ -19,11 +20,14 @@ public class BookTicket {
         bookedTicket = new BookedTicket(noofpassengers);
         PNR = PNR();
         bookedTicket.setPNR(PNR);
-        seatinfo = new int[noofpassengers][3];
+        seats = new int[noofpassengers];
+        coach = new int[noofpassengers];
+        name = new String[noofpassengers];
         c = new Conn();
         query = "INSERT INTO `passenger` (`PNR`,`train`, `user_id`, `date`, `tickets`) VALUES ('" + PNR + "','"
                 + passengersDetailForm.getTrainNo() + " " + passengersDetailForm.getTrainName() + "', '"
-                + passengersDetailForm.getUserid() + "', '" + (passengersDetailForm.getDate().plusDays(passengersDetailForm.getDay()-1)) + "', '"
+                + passengersDetailForm.getUserid() + "', '"
+                + (passengersDetailForm.getDate().plusDays(passengersDetailForm.getDay() - 1)) + "', '"
                 + passengersDetailForm.getNoOfPassenger() + "')";
         try {
             c.s.executeUpdate(query);
@@ -46,10 +50,12 @@ public class BookTicket {
                 if (passengersDetailForm.getType() == 1) {
                     total = rs2.getInt("Total_S") * 2 / 3;
                     available = rs2.getInt("Avail_S");
+                    bookedTicket.setType(1);
 
                 } else if (passengersDetailForm.getType() == 2) {
                     total = rs2.getInt("Total_AC") * 2 / 3;
                     available = rs2.getInt("Avail_AC");
+                    bookedTicket.setType(2);
                 }
                 rs2.close();
                 if (available > 0) {
@@ -75,6 +81,10 @@ public class BookTicket {
                 } else {
                     bookedTicket = Waiting(bookedTicket);
                 }
+                bookedTicket.setName(name);
+                bookedTicket.setCoach(coach);
+                bookedTicket.setSeats(seats);
+
             }
 
         } catch (Exception e) {
@@ -84,7 +94,7 @@ public class BookTicket {
     }
 
     private BookedTicket Waiting(BookedTicket bookedTicket) {
-        String queryc="";
+        String queryc = "";
         if (passengersDetailForm.getType() == 1) {
             queryc = "UPDATE month SET Avail_S = '" + (available - 1) + "' WHERE index_no = '" + index + "'";
         } else if (passengersDetailForm.getType() == 2) {
@@ -92,13 +102,20 @@ public class BookTicket {
         }
         String query3 = "INSERT INTO `tickets` (`index_no`, `PNR`, `type`,`name`, `coach_no`, `seat_no`, `waiting`, `src`, `dest`, `age`, `gender`) VALUES ('"
                 + index + "', '" + PNR + "', '" + passengersDetailForm.getType() + "','"
-                + passengersDetailForm.getPassengerInfo()[x].getName() + "', NULL, NULL,'" + (Math.abs(available)+1)
+                + passengersDetailForm.getPassengerInfo()[x].getName() + "', NULL, NULL,'" + (Math.abs(available) + 1)
                 + "' , '" + passengersDetailForm.getSrc() + "', '" + passengersDetailForm.getDest() + "', '"
                 + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                 + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
         c4 = new Conn();
         try {
             c4.s.executeUpdate(query3);
+
+            seats[x] = Math.abs(available) + 1;
+            coach[x] = 0;
+            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+            bookedTicket.setName(name);
+            bookedTicket.setCoach(coach);
+            bookedTicket.setSeats(seats);
             bookedTicket.setGotseat(true);
             c5 = new Conn();
             c5.s.executeUpdate(queryc);
@@ -160,11 +177,14 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
+                            
 
                             return bookedTicket;
                         }
@@ -189,10 +209,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+                            
+                        coach[x] = i / 72 + 1;
+                        seats[x] = i % 72 + 1;
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -242,11 +263,13 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
+                            
 
                             return bookedTicket;
                         }
@@ -273,10 +296,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+                            
+                        coach[x] = i / 72 + 1;
+                        seats[x] = i % 72 + 1;
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -327,11 +351,13 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
+                            
 
                             return bookedTicket;
                         }
@@ -358,10 +384,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+                            
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -409,11 +436,13 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
+                            
 
                             return bookedTicket;
                         }
@@ -438,10 +467,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+                            
+                        coach[x] = i / 72 + 1;
+                        seats[x] = i % 72 + 1;
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -512,11 +542,12 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -541,10 +572,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                           
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -595,11 +627,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -626,10 +658,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -681,11 +714,12 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -712,10 +746,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -764,11 +799,12 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                           
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -793,10 +829,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4 = new Conn();
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = i / 72 + 1;
-                            seatinfo[0][2] = i % 72 + 1;
-                            bookedTicket.setSeats(seatinfo);
+
+                            coach[x] = i / 72 + 1;
+                            seats[x] = i % 72 + 1;
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
                             c6 = new Conn();
                             c6.s.executeUpdate(queryc);
@@ -866,11 +903,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -894,10 +931,11 @@ public class BookTicket {
                                 + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
-                        seatinfo[0][0] = passengersDetailForm.getType();
-                        seatinfo[0][1] = i / 72 + 1;
-                        seatinfo[0][2] = i % 72 + 1;
-                        bookedTicket.setSeats(seatinfo);
+
+                        coach[x] = i / 72 + 1;
+                        seats[x] = i % 72 + 1;
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);
@@ -946,11 +984,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -975,10 +1013,11 @@ public class BookTicket {
                                 + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
-                        seatinfo[0][0] = passengersDetailForm.getType();
-                        seatinfo[0][1] = i / 72 + 1;
-                        seatinfo[0][2] = i % 72 + 1;
-                        bookedTicket.setSeats(seatinfo);
+
+                        coach[x] = i / 72 + 1;
+                        seats[x] = i % 72 + 1;
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);
@@ -1028,11 +1067,11 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -1057,10 +1096,11 @@ public class BookTicket {
                                 + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
-                        seatinfo[0][0] = passengersDetailForm.getType();
-                        seatinfo[0][1] = i / 72 + 1;
-                        seatinfo[0][2] = i % 72 + 1;
-                        bookedTicket.setSeats(seatinfo);
+
+                        coach[x] = i / 72 + 1;
+                        seats[x] = i % 72 + 1;
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);
@@ -1108,11 +1148,12 @@ public class BookTicket {
                                     + passengersDetailForm.getPassengerInfo()[x].getAge() + "', '"
                                     + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                             c4.s.executeUpdate(query3);
-                            seatinfo[0][0] = passengersDetailForm.getType();
-                            seatinfo[0][1] = rs3.getInt("coach_no");
-                            seatinfo[0][2] = rs3.getInt("seat_no");
+                            coach[x] = rs3.getInt("coach_no");
+                            seats[x] = rs3.getInt("seat_no");
+                            name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                            
+
                             bookedTicket.setGotseat(true);
-                            bookedTicket.setSeats(seatinfo);
 
                             return bookedTicket;
                         }
@@ -1136,10 +1177,11 @@ public class BookTicket {
                                 + passengersDetailForm.getPassengerInfo()[x].getGender() + "')";
                         c4 = new Conn();
                         c4.s.executeUpdate(query3);
-                        seatinfo[0][0] = passengersDetailForm.getType();
-                        seatinfo[0][1] = i / 72 + 1;
-                        seatinfo[0][2] = i % 72 + 1;
-                        bookedTicket.setSeats(seatinfo);
+
+                        coach[x] = i / 72 + 1;
+                        seats[x] = i % 72 + 1;
+                        name[x] = passengersDetailForm.getPassengerInfo()[x].getName();
+                        
                         bookedTicket.setGotseat(true);
                         c6 = new Conn();
                         c6.s.executeUpdate(queryc);
