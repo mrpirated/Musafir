@@ -353,10 +353,7 @@ public class PlanMyJourney extends JFrame implements ActionListener {
         }
     }
 
-    /*
-     * public static void main(String[] args) { String[][] s=
-     * {{"as","cs"},{"dfs","dsfs"}}; new PlanMyJourney("asa",s,"adas"); }
-     */
+    
     Vector<AvailabilityInfo> availabilityInfo = null;
     public void actionPerformed(ActionEvent ae) {
 
