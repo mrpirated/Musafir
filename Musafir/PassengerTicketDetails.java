@@ -26,12 +26,12 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
     private JLabel[] number;
     private Connect connection;
     private LocalDate date;
-    private boolean dynamic;
+    private boolean dynamic,tatkal;
     private int daysDifference;
 
     public PassengerTicketDetails(Connect connection, String name, String trainNo, String trainname, int type,
             String src, int srcint, String dest, int destint, String datetime1, String datetime2, String duration,
-            LocalDate date, float fare, int avail, int userid, int day, boolean dynamic, int daysDifference) {
+            LocalDate date, float fare, int avail, int userid, int day, boolean dynamic, int daysDifference,boolean tatkal) {
         this.name = name;
         this.trainNo = trainNo;
         this.trainname = trainname;
@@ -51,6 +51,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         this.connection = connection;
         this.dynamic = dynamic;
         this.daysDifference = daysDifference;
+        this.tatkal = tatkal;
 
         setFont(new Font("System", Font.BOLD, 22));
         Font f = getFont();
@@ -401,7 +402,9 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                 try {
 
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    if(tatkal==false)
                     os.writeInt(10);
+                    else os.writeInt(16);
                     os.writeObject(passengerDetailForm);
                     os.flush();
                 } catch (Exception e) {
