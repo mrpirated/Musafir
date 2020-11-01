@@ -102,7 +102,7 @@ public class BotClient extends JFrame implements ActionListener {
         i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         bot0 = new JButton(i3);
-        bot0.setBackground(Color.WHITE);
+        bot0.setBackground(new Color(136, 217, 212));
         bot0.setBounds(15, 90, 50, 50);
         p2.add(bot0);
 
@@ -125,12 +125,12 @@ public class BotClient extends JFrame implements ActionListener {
         i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
         i3 = new ImageIcon(i2);
         bot1 = new JButton(i3);
-        bot1.setBackground(Color.WHITE);
+        bot1.setBackground(new Color(136, 217, 212));
         bot1.setBounds(15, 265, 50, 50);
         p2.add(bot1);
 
         p5 = new JPanel();
-        p5.setBackground(Color.BLACK);
+        p5.setBackground(new Color(136, 217, 212));
         p5.setBounds(70, 265, 420, 600);
         p2.add(p5);
 
@@ -142,7 +142,7 @@ public class BotClient extends JFrame implements ActionListener {
             reply3Label[i] = new JLabel(str1, JLabel.LEFT);
             reply3Label[i].setFont(new Font("Times new roman", Font.BOLD, 25));
             reply3Label[i].setBounds(x2, y2, 420, 30);
-            reply3Label[i].setForeground(Color.WHITE);
+            reply3Label[i].setForeground(Color.BLACK);
             p5.add(reply3Label[i]);
             y2 = y2 + 40;
         }
@@ -206,7 +206,7 @@ public class BotClient extends JFrame implements ActionListener {
         Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JButton user = new JButton(i3);
-        user.setBackground(Color.WHITE);
+        user.setBackground(new Color(136, 217, 212));
         user.setBounds(640, yFinal, 35, 35);
         p2.add(user);
 
@@ -223,7 +223,7 @@ public class BotClient extends JFrame implements ActionListener {
         Image i2 = i1.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         bot1 = new JButton(i3);
-        bot1.setBackground(Color.black);
+        bot1.setBackground(new Color(136, 217, 212));
         bot1.setBounds(15, yFinal, 50, 50);
         p2.add(bot1);
 
