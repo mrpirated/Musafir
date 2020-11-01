@@ -236,7 +236,7 @@ public class DisplayTicket extends JFrame implements ActionListener {
                 } else
                     seat = new JLabel(
                             String.valueOf("B" + bookedTicket.getCoach()[i] + "/" + bookedTicket.getSeats()[i]));
-                
+
                 if (bookedTicket.getSeats()[i] % 8 == 1 || bookedTicket.getSeats()[i] % 8 == 4) {
                     berth = new JLabel("LB");
                 } else if (bookedTicket.getSeats()[i] % 8 == 2 || bookedTicket.getSeats()[i] % 8 == 5) {
@@ -248,31 +248,30 @@ public class DisplayTicket extends JFrame implements ActionListener {
                 } else {
                     berth = new JLabel("SUB");
                 }
-                
 
                 status = new JLabel("CNF");
                 status.setForeground(Color.GREEN);
-                
-            }else{
+
+            } else {
                 seat = new JLabel("--");
                 berth = new JLabel("--");
-                status = new JLabel("WL/" +bookedTicket.getSeats()[i]);
+                status = new JLabel("WL/" + bookedTicket.getSeats()[i]);
                 status.setForeground(Color.RED);
             }
             seat.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 22));
-                seat.setForeground(Color.BLACK);
-                seat.setBounds(440, y1, 200, 30);
-                panel.add(seat);
+            seat.setForeground(Color.BLACK);
+            seat.setBounds(440, y1, 200, 30);
+            panel.add(seat);
 
-                berth.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 22));
-                berth.setForeground(Color.BLACK);
-                berth.setBounds(530, y1, 200, 30);
-                panel.add(berth);
+            berth.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 22));
+            berth.setForeground(Color.BLACK);
+            berth.setBounds(530, y1, 200, 30);
+            panel.add(berth);
 
-                status.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 22));
-                
-                status.setBounds(600, y1, 200, 30);
-                panel.add(status);
+            status.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 22));
+
+            status.setBounds(600, y1, 200, 30);
+            panel.add(status);
             y1 = y1 + 50;
         }
         print = new JButton("Print");
@@ -296,10 +295,27 @@ public class DisplayTicket extends JFrame implements ActionListener {
 
     // }
 
+    public static BufferedImage getScreenShot(Component component) {
+        BufferedImage image = new BufferedImage(component.getWidth(), component.getHeight(),
+                BufferedImage.TYPE_INT_RGB);
+        component.paint(image.getGraphics());
+        return image;
+    }
+
+    public static void SaveScreenShot(Component component, String filename) throws Exception {
+        BufferedImage img = getScreenShot(component);
+        ImageIO.write(img, "png", new File(filename));
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == print) {
+            try {
+                SaveScreenShot(panel, "TicketPrint");
 
+            } catch (Exception e) {
+
+            }
         }
 
     }

@@ -145,6 +145,17 @@ public class MyBookings extends JFrame implements ActionListener {
         p2.add(dest1);
 
         y1 += 30;
+        JLabel pnrLabel = new JLabel("PNR:");
+        pnrLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+        pnrLabel.setBounds(15, y1, 250, 30);
+        p2.add(pnrLabel);
+
+        JLabel pnrLabel1 = new JLabel(passengerDetails.getPnr());
+        pnrLabel1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        pnrLabel1.setBounds(90, y1, 160, 30);
+        p2.add(pnrLabel1);
+
+        y1 += 30;
         JLabel doj = new JLabel("DATE OF JOURNEY:");
         doj.setFont(new Font("Times new roman", Font.BOLD, 18));
         doj.setBounds(15, y1, 250, 30);
@@ -164,17 +175,6 @@ public class MyBookings extends JFrame implements ActionListener {
         noOfpass1.setFont(new Font("Times new roman", Font.PLAIN, 18));
         noOfpass1.setBounds(595, y1, 160, 30);
         p2.add(noOfpass1);
-
-        y1 += 30;
-        JLabel pnrLabel = new JLabel("PNR:");
-        pnrLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
-        pnrLabel.setBounds(15, y1, 250, 30);
-        p2.add(pnrLabel);
-
-        JLabel pnrLabel1 = new JLabel(passengerDetails.getPnr());
-        pnrLabel1.setFont(new Font("Times new roman", Font.PLAIN, 18));
-        pnrLabel1.setBounds(240, y1, 160, 30);
-        p2.add(pnrLabel1);
 
         y1 += 60;
         JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
@@ -360,6 +360,17 @@ public class MyBookings extends JFrame implements ActionListener {
         p2.add(dest1);
 
         y1 += 30;
+        JLabel pnrLabel = new JLabel("PNR:");
+        pnrLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
+        pnrLabel.setBounds(15, y1, 250, 30);
+        p2.add(pnrLabel);
+
+        JLabel pnrLabel1 = new JLabel(passengerDetails.getPnr());
+        pnrLabel1.setFont(new Font("Times new roman", Font.PLAIN, 18));
+        pnrLabel1.setBounds(90, y1, 160, 30);
+        p2.add(pnrLabel1);
+
+        y1 += 30;
         JLabel doj = new JLabel("DATE OF JOURNEY:");
         doj.setFont(new Font("Times new roman", Font.BOLD, 18));
         doj.setBounds(15, y1, 250, 30);
@@ -379,17 +390,6 @@ public class MyBookings extends JFrame implements ActionListener {
         noOfpass1.setFont(new Font("Times new roman", Font.PLAIN, 18));
         noOfpass1.setBounds(595, y1, 160, 30);
         p2.add(noOfpass1);
-
-        y1 += 30;
-        JLabel pnrLabel = new JLabel("PNR:");
-        pnrLabel.setFont(new Font("Times new roman", Font.BOLD, 18));
-        pnrLabel.setBounds(15, y1, 250, 30);
-        p2.add(pnrLabel);
-
-        JLabel pnrLabel1 = new JLabel(passengerDetails.getPnr());
-        pnrLabel1.setFont(new Font("Times new roman", Font.PLAIN, 18));
-        pnrLabel1.setBounds(240, y1, 160, 30);
-        p2.add(pnrLabel1);
 
         y1 += 60;
         JLabel passengerLabel = new JLabel("PASSENGER DETAILS");
