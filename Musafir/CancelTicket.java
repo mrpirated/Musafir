@@ -16,11 +16,11 @@ public class CancelTicket extends JFrame implements ActionListener {
     private JPanel p1, p2, panel;
     private JButton back, submit, cancelallbt;
     private JTextField pnrText;
-    private String name, Username;
+    private String name, Username, pnr;
     private Connect connection;
     private JScrollPane scroll;
     private Integer noOfPassengers = 0;
-    private JButton[] cancelTicket;
+    private JButton[] cancel;
     PnrEnquiryFinalInfo passengerDetails;
 
     public CancelTicket(Connect connection, String name, int userid) {
@@ -209,7 +209,7 @@ public class CancelTicket extends JFrame implements ActionListener {
         cancelallbt.setBounds(500, 150, 150, 20);
         p2.add(cancelallbt);
 
-        cancelTicket = new JButton[noOfPassengers];
+        cancel = new JButton[noOfPassengers];
 
         int x, y = 190;
         for (int i = 0; i < noOfPassengers; i++) {
@@ -288,11 +288,11 @@ public class CancelTicket extends JFrame implements ActionListener {
 
             x = 200;
             Integer count = i + 1;
-            cancelTicket[i] = new JButton("Cancel Ticket for Passenger " + count.toString());
-            cancelTicket[i].setFont(new Font("Times new roman", Font.BOLD, 15));
-            cancelTicket[i].setBounds(x, y + 60, 250, 20);
-            p2.add(cancelTicket[i]);
-            cancelTicket[i].addActionListener(this);
+            cancel[i] = new JButton("Cancel Ticket for Passenger " + count.toString());
+            cancel[i].setFont(new Font("Times new roman", Font.BOLD, 15));
+            cancel[i].setBounds(x, y + 60, 250, 20);
+            p2.add(cancel[i]);
+            cancel[i].addActionListener(this);
             y = y + 100;
         }
     }
@@ -307,7 +307,8 @@ public class CancelTicket extends JFrame implements ActionListener {
             }
 
             else if (ae.getSource() == submit) {
-                String pnr = pnrText.getText();
+                
+                pnr = pnrText.getText();
                 try {
 
                     ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
@@ -330,9 +331,78 @@ public class CancelTicket extends JFrame implements ActionListener {
                 p2.repaint();
             }
             for (int i = 0; i < noOfPassengers; i++) {
-                if (ae.getSource() == cancelTicket[i]) {
+                p2.removeAll();
+
+                CancelTicketInfo cancelTicketInfo = new CancelTicketInfo(pnr,
+                        passengerDetails.getPassengersInfo().get(i).getName(), userid);
+                cancelTicketInfo.setDate(passengerDetails.getDoj());
+                cancelTicketInfo.setDest(passengerDetails.getDest());
+                cancelTicketInfo.setSrc(passengerDetails.getSrc());
+                cancelTicketInfo.setTrain(passengerDetails.getTrainNo());
+                if (ae.getSource() == cancel[i]) {
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(21);
+                    os.writeObject(cancelTicketInfo);
+                    os.flush();
+                }
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(19);
+                    os.writeUTF(pnr);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                String train = (String) oi.readUTF();
+                System.out.println(train);
+                if (train != " ") {
+                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                    showPnrDetails(passengerDetails);
+                } else {
+                    errorDisplay();
+                }
+                p2.revalidate();
+                p2.repaint();
+            }
+            if (ae.getSource() == cancelallbt) {
+                p2.removeAll();
+
+                for (int i = 0; i < noOfPassengers; i++) {
+                    CancelTicketInfo cancelTicketInfo = new CancelTicketInfo(pnr,
+                            passengerDetails.getPassengersInfo().get(i).getName(), userid);
+                    cancelTicketInfo.setDate(passengerDetails.getDoj());
+                    cancelTicketInfo.setDest(passengerDetails.getDest());
+                    cancelTicketInfo.setSrc(passengerDetails.getSrc());
+                    cancelTicketInfo.setTrain(passengerDetails.getTrainNo());
+
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(21);
+                    os.writeObject(cancelTicketInfo);
+                    os.flush();
 
                 }
+                try {
+
+                    ObjectOutputStream os = new ObjectOutputStream(connection.socket.getOutputStream());
+                    os.writeInt(19);
+                    os.writeUTF(pnr);
+                    os.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ObjectInputStream oi = new ObjectInputStream(connection.socket.getInputStream());
+                String train = (String) oi.readUTF();
+                System.out.println(train);
+                if (train != " ") {
+                    passengerDetails = (PnrEnquiryFinalInfo) oi.readObject();
+                    showPnrDetails(passengerDetails);
+                } else {
+                    errorDisplay();
+                }
+                p2.revalidate();
+                p2.repaint();
             }
 
         } catch (Exception e) {

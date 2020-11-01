@@ -1,27 +1,53 @@
 package Classes;
 
-import java.io.*;
+import java.io.Serializable;
+import java.sql.Date;
 
-public class CancelTicketInfo implements Serializable {
-    private String username;
-    private String password;
-    private String pnr;
-
-    public CancelTicketInfo(String username, String password, String pnr) {
-        this.password = password;
-        this.pnr = pnr;
-        this.username = username;
+public class CancelTicketInfo implements Serializable{
+    private String PNR,name,src,dest,train;
+    private int userid;
+    private Date date;
+    
+    public CancelTicketInfo(String PNR,String name,int userid){
+        this.PNR = PNR;
+        this.name = name;
+        this.userid = userid;
     }
-
-    public String getPassword() {
-        return password;
+    
+    
+    public void setDate(Date date) {
+        this.date = date;
     }
-
-    public String getPnr() {
-        return pnr;
+    public void setDest(String dest) {
+        this.dest = dest;
     }
-
-    public String getUsername() {
-        return username;
+    public void setSrc(String src) {
+        this.src = src;
     }
+    public void setTrain(String train) {
+        this.train = train;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getPNR() {
+        return PNR;
+    }
+    public int getUserid() {
+        return userid;
+    }
+    public String getDest() {
+        return dest;
+    }
+    public String getSrc() {
+        return src;
+    }
+    public String getTrain() {
+        return train;
+    }
+    public Date getDate() {
+        return date;
+    }
+    
+
 }

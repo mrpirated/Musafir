@@ -1019,7 +1019,7 @@ public class HandleClient implements Runnable {
         return bookingHistory2;
     }
 
-    private String Canceluserticket(CancelTicket cancelTicket) {
+    private String Canceluserticket(CancelTicketInfo cancelTicket) {
         String PNR = cancelTicket.getPNR();
         Conn c1, c2, c3, c4;
         String query1, query2, query3, query4;
@@ -1102,13 +1102,13 @@ public class HandleClient implements Runnable {
                     }
                 }
                 for (int j = 0; j < 1; j++) {
-                    query4 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`cancelled`) VALUES ('"
+                    query4 = "INSERT INTO `booking_history` (`user_id`, `PNR`,`train`, `name`, `age`, `gender`, `source`, `destination`, `date`, `seat`,`cancelled`,`fare`) VALUES ('"
                             + bookingHistory.getUserid() + "', '" + bookingHistory.getPNR() + "','"
                             + bookingHistory.getTrain() + "' ,'" + bookingHistory.getPassengerHistory()[j].getName()
                             + "', '" + bookingHistory.getPassengerHistory()[j].getAge() + "', '"
                             + bookingHistory.getPassengerHistory()[j].getGender() + "', '" + bookingHistory.getSrc()
                             + "', '" + bookingHistory.getDest() + "', '" + bookingHistory.getDate() + "', '"
-                            + bookingHistory.getPassengerHistory()[j].getSeat() + "',1)";
+                            + bookingHistory.getPassengerHistory()[j].getSeat() + "',1,'"+bookingHistory.getPassengerHistory()[j].getFare()+"')";
                     c4 = new Conn();
                     c4.s.executeUpdate(query4);
                 }
@@ -1370,7 +1370,7 @@ public class HandleClient implements Runnable {
                         os.flush();
                         break;
                     case 21:
-                        CancelTicket cancelTicket = (CancelTicket) oi.readObject();
+                        CancelTicketInfo cancelTicket = (CancelTicketInfo) oi.readObject();
                         os.writeUTF(Canceluserticket(cancelTicket));
                         os.flush();
                         break;
