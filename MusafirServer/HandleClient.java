@@ -912,7 +912,7 @@ public class HandleClient implements Runnable {
         String trainNo, trainName, src = " ", dest = " ";
         java.sql.Date doj;
         String name, gender, seat;
-        Integer age;
+        Integer age, cancelled;
         String query = "SELECT * FROM `booking_history` WHERE `PNR` = '" + pnr + "'", query2, query3;
         BookingHistory2FinalInfo pnrDetails;
         Vector<BookingHistory2TicketInfo> passengersDetails = new Vector<BookingHistory2TicketInfo>();
@@ -935,8 +935,9 @@ public class HandleClient implements Runnable {
                 dest = rs2.getString("destination");
                 doj = rs2.getDate("date");
                 seat = rs2.getString("seat");
+                cancelled = rs2.getInt("cancelled");
 
-                temp = new BookingHistory2TicketInfo(name, age, gender, seat);
+                temp = new BookingHistory2TicketInfo(name, age, gender, seat, cancelled);
                 passengersDetails.add(temp);
             }
             while (rs2.next()) {
@@ -944,8 +945,9 @@ public class HandleClient implements Runnable {
                 age = rs2.getInt("age");
                 gender = rs2.getString("gender");
                 seat = rs2.getString("seat");
+                cancelled = rs2.getInt("cancelled");
 
-                temp = new BookingHistory2TicketInfo(name, age, gender, seat);
+                temp = new BookingHistory2TicketInfo(name, age, gender, seat, cancelled);
                 passengersDetails.add(temp);
             }
             rs2.close();
@@ -1014,7 +1016,6 @@ public class HandleClient implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return bookingHistory2;
     }
 
