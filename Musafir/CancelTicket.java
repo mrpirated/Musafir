@@ -14,7 +14,7 @@ public class CancelTicket extends JFrame implements ActionListener {
     private JLabel headLabel, pnrLabel;
     private int userid;
     private JPanel p1, p2, panel;
-    private JButton back, submit;
+    private JButton back, submit, cancelallbt;
     private JTextField pnrText;
     private String name, Username;
     private Connect connection;
@@ -192,6 +192,13 @@ public class CancelTicket extends JFrame implements ActionListener {
         passengerLabel.setBounds(240, 150, 300, 30);
         p2.add(passengerLabel);
 
+        cancelallbt = new JButton("Cancel All");
+        cancelallbt.setBackground(Color.BLACK);
+        cancelallbt.setFont(new Font("TIMES NEW ROMAN", Font.BOLD, 18));
+        cancelallbt.setForeground(Color.WHITE);
+        cancelallbt.setBounds(500, 150, 150, 20);
+        p2.add(cancelallbt);
+
         cancelTicket = new JButton[noOfPassengers];
 
         int x, y = 190;
@@ -271,11 +278,9 @@ public class CancelTicket extends JFrame implements ActionListener {
 
             x = 200;
             Integer count = i + 1;
-            cancelTicket[i] = new JButton("Cnacel Ticket for Passenger " + count.toString());
+            cancelTicket[i] = new JButton("Cancel Ticket for Passenger " + count.toString());
             cancelTicket[i].setFont(new Font("Times new roman", Font.BOLD, 15));
-            cancelTicket[i].setBounds(x, y + 60, 300, 20);
-            cancelTicket[i].setBackground(Color.BLACK);
-            cancelTicket[i].setForeground(Color.WHITE);
+            cancelTicket[i].setBounds(x, y + 60, 250, 20);
             p2.add(cancelTicket[i]);
             cancelTicket[i].addActionListener(this);
             y = y + 100;

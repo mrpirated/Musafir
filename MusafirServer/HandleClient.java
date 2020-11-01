@@ -365,7 +365,7 @@ public class HandleClient implements Runnable {
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
-            new HandleDatabase().NewTrain(trainInfo.getTrainNo(),trainInfo.getDate().toLocalDate());
+            new HandleDatabase().NewTrain(trainInfo.getTrainNo(), trainInfo.getDate().toLocalDate());
             return " ";
         }
 
@@ -958,6 +958,42 @@ public class HandleClient implements Runnable {
         return pnrDetails;
     }
 
+    public Vector<PnrEnquiryFinalInfo> PassengerDetails(PassengerInfoAdminInfo passengerInfo) {
+        Vector<PnrEnquiryFinalInfo> bookingHistory1 = new Vector<PnrEnquiryFinalInfo>();
+        PnrEnquiryFinalInfo temp;
+        String train1 = passengerInfo.getTrain();
+        String parts[] = train1.split(" ", 2);
+        String trainNo = parts[0];
+        String trainsz = parts[1];
+        String parts1[] = trainsz.split(" ", 2);
+        String trainName = parts1[1];
+        String traind = trainNo + " " + trainName;
+        System.out.println(traind);
+        String query1 = "SELECT * FROM `passenger` WHERE `train` = '" + traind + "' AND `date`= '"
+                + passengerInfo.getDate() + "'";
+        System.out.println(query1);
+        try {
+            int i = 1;
+            Conn c5 = new Conn();
+            ResultSet rs5 = c5.s.executeQuery(query1);
+            while (rs5.next()) {
+                String train = rs5.getString("train");
+                String pnr = rs5.getString("PNR");
+                System.out.println(pnr);
+                temp = GetPassengerDetails(pnr, train);
+                bookingHistory1.add(temp);
+                System.out.println(i++);
+            }
+            rs5.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bookingHistory1;
+
+    }
+
     private Vector<BookingHistory2FinalInfo> BookingHistory2(Integer userId) {
         Vector<BookingHistory2FinalInfo> bookingHistory2 = new Vector<BookingHistory2FinalInfo>();
         BookingHistory2FinalInfo temp;
@@ -1335,6 +1371,13 @@ public class HandleClient implements Runnable {
                         CancelTicket cancelTicket = (CancelTicket) oi.readObject();
                         os.writeUTF(Canceluserticket(cancelTicket));
                         os.flush();
+                        break;
+                    case 22:
+                        PassengerInfoAdminInfo passengerInfo = (PassengerInfoAdminInfo) oi.readObject();
+                        Vector<PnrEnquiryFinalInfo> bookingDetails = PassengerDetails(passengerInfo);
+                        os.writeObject(bookingDetails);
+                        os.flush();
+                        break;
                 }
 
             } catch (Exception e) {
