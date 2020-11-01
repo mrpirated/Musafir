@@ -317,6 +317,27 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
         }
 
     }
+    public float getFare(int agenum,String genderx){
+        if(dynamic){
+            if (agenum <= 12) {
+                return (float) ((fare / 2)* (2 - 0.1 * daysDifference));
+            } else if (agenum > 60 && genderx.equals("Male")) {
+                return (float) ((fare * 0.6)* (2 - 0.1 * daysDifference));
+            } else if (agenum > 58 && genderx.equals("Female")) {
+                return (float) (fare / 2* (2 - 0.1 * daysDifference));
+            } else
+                return (float) (fare* (2 - 0.1 * daysDifference));
+        }
+        if (agenum <= 12) {
+            return (float) fare / 2;
+        } else if (agenum > 60 && genderx.equals("Male")) {
+            return (float) (fare * 0.6);
+        } else if (agenum > 58 && genderx.equals("Female")) {
+            return (float) fare / 2;
+        } else
+            return (float) fare;
+        
+    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -352,17 +373,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
 
                     }
 
-                    if (agenum <= 12) {
-                        totalfare += (float) fare / 2;
-                    } else if (agenum > 60 && genderx.equals("Male")) {
-                        totalfare += (float) fare * 0.6;
-                    } else if (agenum > 58 && genderx.equals("Female")) {
-                        totalfare += (float) fare / 2;
-                    } else
-                        totalfare += (float) fare;
-                    if (dynamic) {
-                        totalfare *= (2 - 0.1 * daysDifference);
-                    }
+                    totalfare+=getFare(agenum, genderx);
                 }
                 JLabel fare = new JLabel(String.valueOf(totalfare));
                 fare.setBounds(0, 0, 100, 30);
@@ -382,7 +393,7 @@ public class PassengerTicketDetails extends JFrame implements ActionListener {
                     String genderx = (String) gender[i].getSelectedItem();
                     Character genderSend = genderx.charAt(0);
                     String berthPrefSend = (String) preference[i].getSelectedItem();
-                    passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend);
+                    passengerInfo[i] = new PassengerInfo(passengerNameSend, ageSend, genderSend, berthPrefSend,getFare(ageSend, genderx));
                 }
                 PassengersDetailForm passengerDetailForm = new PassengersDetailForm(name, trainNo, trainname, srcint,
                         destint, date, noOfPassenger, passengerInfo, type, userid, day);

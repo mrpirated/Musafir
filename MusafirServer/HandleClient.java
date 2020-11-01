@@ -737,11 +737,11 @@ public class HandleClient implements Runnable {
                             if (rs5.getInt("type") == 1)
                                 passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
                                         "S" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"), rs5.getInt("age"),
-                                        rs5.getString("gender").charAt(0));
+                                        rs5.getString("gender").charAt(0),rs5.getFloat("fare"));
                             if (rs5.getInt("type") == 2)
                                 passengerHistory[k] = new PassengerHistory(rs5.getString("name"),
                                         "B" + rs5.getInt("coach_no") + " " + rs5.getInt("seat_no"), rs5.getInt("age"),
-                                        rs5.getString("gender").charAt(0));
+                                        rs5.getString("gender").charAt(0),rs5.getFloat("fare"));
 
                             k++;
                         }
@@ -1043,7 +1043,7 @@ public class HandleClient implements Runnable {
                 index = rs1.getInt("index_no");
                 passengerHistory[0] = new PassengerHistory(rs1.getString("name"),
                         "S" + rs1.getInt("coach_no") + " " + rs1.getInt("seat_no"), rs1.getInt("age"),
-                        rs1.getString("gender").charAt(0));
+                        rs1.getString("gender").charAt(0),rs1.getFloat("fare"));
                 bookingHistory.setPassengerHistory(passengerHistory);
                 query2 = "SELECT * FROM month WHERE index_no = '" + index + "'";
                 c2 = new Conn();
@@ -1135,7 +1135,7 @@ public class HandleClient implements Runnable {
                     index = rs1.getInt("index_no");
                     passengerHistory[i] = new PassengerHistory(rs1.getString("name"),
                             "S" + rs1.getInt("coach_no") + " " + rs1.getInt("seat_no"), rs1.getInt("age"),
-                            rs1.getString("gender").charAt(0));
+                            rs1.getString("gender").charAt(0),rs1.getFloat("fare"));
 
                     i++;
                     query2 = "SELECT * FROM month WHERE index_no = '" + index + "'";
