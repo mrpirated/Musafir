@@ -97,4 +97,4 @@ Atharva Verma - [https://github.com/atharva-boop](https://github.com/atharva-boo
 
 ## Project Link
 
-Project Link: [https://github.com/dprathi/Deathly-Hallows](https://github.com/dprathi/Deathly-Hallows)
+Project Link: [https://github.com/mrpirated/Deathly-Hallows](https://github.com/mrpirated/Deathly-Hallows)
