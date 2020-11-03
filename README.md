@@ -89,7 +89,7 @@ An admin will have to log in first by running the 'LoginAdmin.java' file inside 
 
 ## Contact
 
-Deepesh Rathi - [https://github.com/dprathi](https://github.com/dprathi) - deepeshrathi5050@gmail.com
+Deepesh Rathi - [https://github.com/mrpirated](https://github.com/mrpirated) - deepeshrathi5050@gmail.com
 
 Aditya Darji - [https://github.com/aditya-darji](https://github.com/aditya-darji) - darjiaditya2000@gmail.com
 
